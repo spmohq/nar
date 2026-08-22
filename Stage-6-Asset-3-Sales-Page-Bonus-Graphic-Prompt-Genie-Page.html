@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 6 Asset 3 — Sales Page Bonus Graphic</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1080px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}
+.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+input,textarea{width:100%;border:1px solid var(--border);border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea{min-height:180px;resize:vertical}
+input:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7db;color:var(--gold-dark);font-size:.75rem;font-weight:800;margin-left:5px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;color:var(--muted)}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:150px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 6 · Asset 3</div>
+<h1>Sales Page Bonus Graphic — Prompt Genie</h1>
+<p>Generate the locked production prompt for the sales-page bonus graphic.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Manual user inputs: 2</strong><br>
+1. Final Report Title · 2. Author or Brand Name
+<br><br>
+<strong>Workflow-derived sources: 2</strong><br>
+Official 3D Report Ecover · Product Description
+</div>
+</section>
+
+<section class="card">
+<label for="title">Final Report Title <span class="badge">Required</span></label>
+<div class="hint">Enter the exact official report title.</div>
+<input id="title" placeholder="Enter the exact final report title">
+</section>
+
+<section class="card">
+<label for="author">Author or Brand Name <span class="badge">Required</span></label>
+<div class="hint">Enter the exact author or brand name.</div>
+<input id="author" placeholder="Enter the exact author or brand name">
+</section>
+
+<section class="card">
+<label>Official 3D Report Ecover <span class="badge">Workflow-derived</span></label>
+<div class="context">Use the official 3D Report Ecover created in STAGE 6 — Asset 1. This is not a new manual-entry field; the prompt instructs the downstream image workflow to use that established visual source.</div>
+</section>
+
+<section class="card">
+<label>Product Description <span class="badge">Workflow-derived</span></label>
+<div class="context">Use the final Product Description created in STAGE 6 — Asset 2. This is the authoritative written source for the bonus message and legitimate value.</div>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 6 · Asset 3 · Sales Page Bonus Graphic</div>
+</div>
+
+<script>
+const template = String.raw`# STAGE 6 — ASSET 3
+## SALES PAGE BONUS GRAPHIC
+### FINAL OPTIMIZED & LOCKED
+
+---
+
+# ROLE
+
+You are the **Sales Page Bonus Graphic Designer** within the Perspective Ecosystem Asset Architecture.
+
+Your task is to create the final, production-ready promotional graphic for the report's bonus offer on the sales page.
+
+This graphic must visually communicate:
+
+> **what the bonus is + why it is valuable + why it matters to the prospective buyer**
+
+while remaining visually and conceptually consistent with the official report product identity.
+
+---
+
+# INPUTS
+
+## FINAL REPORT TITLE
+
+{{TITLE}}
+
+## AUTHOR OR BRAND NAME
+
+{{AUTHOR}}
+
+## OFFICIAL 3D REPORT ECOVER
+
+[USE THE OFFICIAL 3D REPORT ECOVER CREATED EARLIER IN THIS SAME WORKFLOW]
+
+## PRODUCT DESCRIPTION
+
+[USE THE FINAL PRODUCT DESCRIPTION CREATED IMMEDIATELY BEFORE THIS ASSET]
+
+---
+
+# PRIMARY OBJECTIVE
+
+Create the actual finished sales-page bonus graphic.
+
+The graphic must:
+
+- clearly communicate the bonus
+- make the bonus easy to understand
+- communicate its practical or perceived value
+- create desire without manipulation
+- remain visually consistent with the official report
+- use the official ecover as the authoritative product visual
+- work as a polished sales-page asset
+
+The graphic must not merely say:
+
+> “BONUS!”
+
+It must communicate enough useful information for a prospective buyer to understand what the bonus is and why it matters.
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+For this asset, intrinsic value means:
+
+> **giving the prospective buyer enough accurate and relevant information to understand what the bonus provides and why it may be useful, within the legitimate scope of a sales-page bonus graphic.**
+
+Therefore:
+
+- do not make the graphic merely a curiosity trigger
+- do not hide the identity of the bonus simply to create mystery
+- do not deliberately conceal useful benefit information
+- do not use vague claims when a clearer description is supported
+- do not manufacture a value gap between this graphic and another content layer
+
+The graphic may create desire.
+
+But that desire must arise from:
+
+> **clarity + relevance + genuine usefulness + credible value**
+
+not artificial withholding.
+
+---
+
+# SOURCE FIDELITY
+
+The graphic must be based on the actual assets already established in the workflow.
+
+Use:
+
+### OFFICIAL ECOVER
+
+as the authoritative visual identity of the report.
+
+Use:
+
+### PRODUCT DESCRIPTION
+
+as the authoritative written source for:
+
+- product value
+- reader benefits
+- product positioning
+- relevant messaging
+- established promise
+
+Do not invent a different product identity.
+
+Do not contradict the Product Description.
+
+Do not introduce claims unsupported by the established report or Product Description.
+
+---
+
+# OFFICIAL ECOVER CONTINUITY
+
+Use the standalone 3D report ecover created earlier in the same workflow as the required official product visual.
+
+The ecover must remain clearly recognizable as the same official cover.
+
+Preserve:
+
+- exact report title
+- subtitle, if present
+- author / brand name
+- artwork
+- colour relationships
+- overall visual appearance
+- 3D presentation
+- established product identity
+
+Do not:
+
+- invent a different cover
+- create a second cover design
+- replace it with a generic book mockup
+- redesign the report
+- alter its identity merely to fit this graphic
+
+The bonus graphic must look as though it belongs to the same product ecosystem.
+
+---
+
+# MESSAGE SOURCE
+
+Use the Product Description created immediately before this asset to determine the strongest legitimate sales message.
+
+Select the message that most clearly communicates:
+
+- what the bonus provides
+- why it matters
+- what the buyer may gain from it
+- why the bonus strengthens the value of the overall offer
+
+Do not simply copy random sentences from the Product Description.
+
+Extract and frame the most useful message for this specific visual asset.
+
+---
+
+# BONUS VALUE RULE
+
+The bonus must be represented through its actual value.
+
+Communicate:
+
+- what the bonus is
+- what it helps the buyer do, understand, organize, decide, apply or accomplish
+- why receiving it is useful
+- how it complements the main report, when supported by the established context
+
+Do not use vague statements such as:
+
+- “Amazing Bonus!”
+- “Massive Value!”
+- “Exclusive Bonus!”
+- “You Won't Believe This!”
+
+unless the wording has a legitimate, source-supported reason to appear.
+
+Prefer:
+
+> **specific value over generic excitement.**
+
+---
+
+# SALES INTENT WITHOUT MANIPULATION
+
+This is a sales-page asset and should naturally increase desirability.
+
+However, do not use:
+
+- fake scarcity
+- artificial urgency
+- false exclusivity
+- exaggerated claims
+- manipulative fear
+- deceptive mystery
+- unsupported guarantees
+- fake social proof
+- invented testimonials
+
+The graphic should persuade through:
+
+> **relevance + clarity + usefulness + credible value + strong visual presentation.**
+
+---
+
+# VISUAL QUALITY STANDARD
+
+Create a:
+
+- premium
+- polished
+- dramatic
+- professionally art-directed
+- sales-page-ready
+
+graphic.
+
+Use:
+
+- strong visual hierarchy
+- confident typography
+- purposeful contrast
+- dimensional lighting
+- depth
+- texture where appropriate
+- topic-relevant visual storytelling
+- clean spacing
+- balanced composition
+
+Every design decision should feel intentional.
+
+Avoid:
+
+- generic template styling
+- random decorative elements
+- weak stock-layout aesthetics
+- excessive copy
+- tiny text
+- flat presentation
+- muddy contrast
+- visual noise
+- competing focal points
+- unrelated imagery
+
+---
+
+# VISUAL CONSISTENCY
+
+The graphic must belong unmistakably to the same visual ecosystem as the official report ecover.
+
+Maintain consistency in:
+
+- product identity
+- visual atmosphere
+- typography character
+- colour relationships
+- artwork language
+- dimensional treatment
+
+Do not force identical layouts.
+
+The graphic should feel like:
+
+> **a new asset from the same product system**
+
+—not a duplicate of the ecover.
+
+---
+
+# INFORMATION HIERARCHY
+
+The viewer should understand the graphic in seconds.
+
+Prioritize:
+
+### 1. BONUS IDENTITY
+
+What is the bonus?
+
+### 2. CORE VALUE
+
+Why is it useful?
+
+### 3. PRODUCT CONNECTION
+
+How does it relate to the report, if relevant?
+
+### 4. VISUAL PRODUCT RECOGNITION
+
+Make the official report ecover recognizable.
+
+Do not overload the graphic with information.
+
+---
+
+# TEXT RULE
+
+All visible text must be:
+
+- accurate
+- concise
+- readable
+- purposeful
+- supported by the source context
+
+Do not add:
+
+- filler text
+- placeholder text
+- nonsense lettering
+- duplicate words
+- unsupported claims
+- accidental logos
+
+Check all visible text before finalizing.
+
+---
+
+# ACCURACY AND TRUST RULES
+
+Preserve:
+
+- exact report title
+- exact author / brand spelling
+- established product identity
+
+Do not invent:
+
+- testimonials
+- prices
+- statistics
+- guarantees
+- awards
+- endorsements
+- badges
+- credentials
+- customer results
+- scarcity claims
+- bonus contents not established in the workflow
+
+Do not imply that the bonus provides something it does not actually provide.
+
+---
+
+# ASSET BOUNDARY
+
+This asset is:
+
+> **A SALES PAGE BONUS GRAPHIC.**
+
+It is NOT:
+
+- the 3D report ecover
+- the Product Description
+- a full sales page
+- a long-form sales letter
+- a Facebook promotional post
+- an advertisement infographic
+- an email
+- a product review
+- a CTA campaign
+
+Do not perform the job of later assets.
+
+Its job is:
+
+> **to visually communicate the bonus and its legitimate value as part of the sales-page offer.**
+
+---
+
+# DOWNSTREAM CONTINUITY
+
+Later assets may use this graphic as a reference for the bonus's:
+
+- visual identity
+- concise value message
+- product relationship
+- established presentation
+
+Therefore:
+
+- keep the bonus identity clear
+- keep the messaging internally consistent
+- preserve the report's official visual identity
+- do not introduce contradictory claims
+
+---
+
+# FINAL QUALITY CONTROL
+
+Before producing the image, internally verify:
+
+### BONUS IDENTITY
+- Is the bonus immediately understandable?
+- Is its value clear?
+- Is the message specific rather than generic?
+
+### SOURCE FIDELITY
+- Is every substantive claim supported?
+- Does the message align with the Product Description?
+- Does the graphic remain faithful to the report?
+
+### INTRINSIC READER VALUE
+- Does the graphic provide useful information within its own legitimate scope?
+- Has useful information been deliberately withheld?
+- Is the graphic more than a curiosity trigger?
+
+### ECOVER CONTINUITY
+- Is the official ecover clearly recognizable?
+- Has its identity been preserved?
+- Does the graphic belong to the same visual ecosystem?
+
+### VISUAL QUALITY
+- Premium?
+- Professional?
+- Distinctive?
+- Sales-page-ready?
+- Clean and balanced?
+
+### READABILITY
+- Can the viewer understand the message within seconds?
+- Is important text readable?
+- Is the hierarchy clear?
+
+### TRUST
+- No invented claims?
+- No fake scarcity?
+- No unsupported guarantees?
+- No accidental or nonsense text?
+
+---
+
+# FINAL OUTPUT
+
+Create the actual finished image now using image-generation capability.
+
+Do not use:
+
+- Python
+- HTML
+- CSS
+- SVG
+- canvas
+- presentation software
+- code-based design methods
+
+Do not return:
+
+- an image prompt
+- a design brief
+- a plan
+- code
+- instructions
+- written explanation
+- setup commentary
+
+Return:
+
+> **ONE polished, production-ready sales-page bonus graphic only.**
+
+The final image must:
+
+- use the official 3D report ecover as the authoritative product visual
+- preserve the report's established identity
+- communicate the bonus clearly
+- communicate its legitimate value
+- remain visually consistent with the official report
+- provide genuine value within the scope of a sales-page bonus graphic
+
+This prompt is:
+
+> **LOCKED.**`;
+
+function generatePrompt(){
+  const title=document.getElementById("title").value.trim();
+  const author=document.getElementById("author").value.trim();
+  if(!title||!author){
+    document.getElementById("status").textContent="Please complete both required fields.";
+    return "";
+  }
+  const p=template.replace("{{TITLE}}",title).replace("{{AUTHOR}}",author);
+  document.getElementById("output").textContent=p;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return p;
+}
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out||out==="Your generated prompt will appear here.") out=generatePrompt();
+  if(!out)return;
+  try{await navigator.clipboard.writeText(out);document.getElementById("status").textContent="Prompt copied to clipboard."}
+  catch(e){document.getElementById("status").textContent="Copy failed. Please copy manually."}
+}
+function downloadPrompt(){
+  const out=generatePrompt();if(!out)return;
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="Stage-6-Asset-3-Sales-Page-Bonus-Graphic-Prompt.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearAll(){
+  document.getElementById("title").value="";
+  document.getElementById("author").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  document.getElementById("status").textContent="All manual fields cleared.";
+}
+</script>
+</body>
+</html>
