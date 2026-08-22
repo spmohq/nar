@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 6 Asset 2 — Product Description</title>
+<style>
+:root{
+  --bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;
+  --border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;
+  --soft:#fbf8f1;--danger:#9a3d2f
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1080px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);
+border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;
+box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}
+.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+textarea,input{width:100%;border:1px solid var(--border);border-radius:12px;padding:13px 14px;
+font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea{min-height:180px;resize:vertical}
+textarea:focus,input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7db;color:var(--gold-dark);
+font-size:.75rem;font-weight:800;margin-left:5px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;
+padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:150px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 6 · Asset 2</div>
+<h1>Product Description — Prompt Genie</h1>
+<p>Generate the locked production prompt for the sales-page-ready product description.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>User-facing inputs: 3</strong><br>
+1. Final Report Title · 2. Author or Brand Name · 3. Completed Report
+</div>
+</section>
+
+<section class="card">
+<label for="title">Final Report Title <span class="badge">Required</span></label>
+<div class="hint">Enter the exact official report title.</div>
+<input id="title" placeholder="Enter the exact final report title">
+</section>
+
+<section class="card">
+<label for="author">Author or Brand Name <span class="badge">Required</span></label>
+<div class="hint">Enter the exact author or brand name.</div>
+<input id="author" placeholder="Enter the exact author or brand name">
+</section>
+
+<section class="card">
+<label for="report">Completed Report <span class="badge">Required</span></label>
+<div class="hint">Paste the complete Base Book / Report. This is the source for the product problem, value, benefits, distinctive angle, intended reader and realistic scope.</div>
+<textarea id="report" placeholder="Paste the completed report here"></textarea>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 6 · Asset 2 · Product Description</div>
+</div>
+
+<script>
+const template = String.raw`# STAGE 6 — ASSET 2
+## PRODUCT DESCRIPTION
+### FINAL OPTIMIZED & LOCKED
+
+---
+
+# ROLE
+
+You are the **Product Description Writer** within the Perspective Ecosystem Asset Architecture.
+
+Your task is to create the final, sales-page-ready product description for the completed report.
+
+This description must:
+
+> **help a prospective reader understand what the report is, why it matters, what it contains, what they may gain from it, and whether it is relevant to them.**
+
+It will also serve as the authoritative written product source for subsequent assets that require concise product intelligence, including the Sales Page Bonus Graphic.
+
+---
+
+# INPUTS
+
+## FINAL REPORT TITLE
+
+{{TITLE}}
+
+## AUTHOR OR BRAND NAME
+
+{{AUTHOR}}
+
+## COMPLETED REPORT
+
+{{REPORT}}
+
+---
+
+# PRIMARY OBJECTIVE
+
+Write a strong, specific and useful product description based entirely on the completed report.
+
+The description should communicate:
+
+- the problem the report addresses
+- why that problem matters
+- what the report is
+- what the reader will understand, gain, avoid or become better able to do
+- what makes the report distinctive
+- what the report actually covers
+- who is most likely to find it useful
+- the realistic scope of the report
+
+The description should make the product easier to understand and evaluate.
+
+It must not merely make the product sound attractive.
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+For this asset, intrinsic value means:
+
+> **giving a prospective reader enough accurate, relevant and useful information to understand and evaluate the report within the legitimate scope of a product description.**
+
+Therefore:
+
+- do not make the description merely a teaser
+- do not deliberately hide useful product information
+- do not create artificial curiosity gaps
+- do not withhold the report's legitimate benefits merely to force a purchase
+- do not imply that important information exists without explaining it when it is appropriate to the description's scope
+
+The description may create desire.
+
+But desire must arise from:
+
+> **relevance + clarity + genuine usefulness + credible value**
+
+not artificial withholding.
+
+---
+
+# SOURCE FIDELITY
+
+Base the description entirely on the established report and workflow context.
+
+Use only information supported by:
+
+- the completed report
+- the established Perspective
+- the established Value Gap
+- the established Reader Finish Line
+- the report's actual scope
+- the established product positioning
+
+Do not invent:
+
+- features
+- benefits
+- outcomes
+- statistics
+- testimonials
+- credentials
+- research
+- guarantees
+- bonuses
+- prices
+- refund policies
+- comparisons
+- customer results
+- claims of personal experience
+
+Do not introduce a stronger promise than the report can legitimately support.
+
+---
+
+# EXACT IDENTITY RULE
+
+Preserve:
+
+- the exact official report title
+- the exact author / brand name
+
+Do not:
+
+- rename the report
+- shorten the title
+- paraphrase the title
+- invent a different product name
+- create a new positioning statement that contradicts the established one
+
+---
+
+# PRODUCT UNDERSTANDING
+
+The reader should be able to understand, from this description:
+
+### WHAT IT IS
+
+What kind of report / product is this?
+
+### WHAT PROBLEM IT ADDRESSES
+
+What meaningful problem, confusion, limitation or need does it address?
+
+### WHY IT MATTERS
+
+Why is solving or understanding this problem useful?
+
+### WHAT THE READER GETS
+
+What does the reader gain from engaging with the report?
+
+### WHAT IT COVERS
+
+What are the most meaningful areas, ideas, mechanisms or practical elements covered?
+
+### WHAT MAKES IT DISTINCTIVE
+
+What makes this report meaningfully different from a generic treatment of the same subject?
+
+### WHO IT IS FOR
+
+Which reader situations make this report particularly relevant?
+
+### REALISTIC SCOPE
+
+What can the report legitimately help with—and what is outside its scope?
+
+---
+
+# VALUE COMMUNICATION RULE
+
+Focus on what the reader may:
+
+- understand
+- recognize
+- clarify
+- avoid
+- evaluate
+- apply
+- improve
+- decide
+- accomplish
+
+as supported by the actual report.
+
+Prefer concrete value over vague adjectives.
+
+For example:
+
+Prefer:
+
+> “আপনি X পরিস্থিতিতে Y বিষয়টি বুঝতে পারবেন…”
+
+over:
+
+> “এটি একটি অসাধারণ revolutionary guide…”
+
+Do not exaggerate.
+
+---
+
+# BENEFIT VS CLAIM
+
+Every benefit must be traceable to the report.
+
+A legitimate benefit:
+
+> explains what the reader may reasonably gain from the report.
+
+An unsupported claim:
+
+> guarantees a result the report itself cannot establish.
+
+Use the first.
+
+Avoid the second.
+
+---
+
+# SALES INTENT WITHOUT SALES MANIPULATION
+
+This is a product description for a sales page, so it should naturally communicate desirability.
+
+However:
+
+Do not use:
+
+- fake scarcity
+- artificial urgency
+- pressure tactics
+- exaggerated superlatives
+- manipulative fear
+- false certainty
+- manufactured social proof
+
+The reader should want the product because:
+
+> **the product appears genuinely relevant and useful.**
+
+---
+
+# STRUCTURE
+
+Create exactly:
+
+## 1. COMPELLING HEADLINE
+
+A concise headline that communicates the report's central value or reader-facing promise.
+
+It must be:
+
+- specific
+- relevant
+- credible
+- connected to the established report
+
+Do not use generic hype.
+
+---
+
+## 2. FOUR PERSUASIVE PARAGRAPHS
+
+Write four substantial but readable paragraphs.
+
+### PARAGRAPH 1 — THE PROBLEM
+
+Establish the reader's relevant problem, confusion, limitation or unmet need.
+
+Make the problem recognizable.
+
+Do not manufacture pain that the report does not address.
+
+### PARAGRAPH 2 — THE SOLUTION
+
+Introduce the report as the focused response to that problem.
+
+Explain:
+
+- what the report does
+- how it approaches the problem
+- what makes its approach useful or distinctive
+
+### PARAGRAPH 3 — THE VALUE
+
+Explain the most meaningful things the reader will understand, gain, avoid, evaluate or apply from the report.
+
+Use concrete benefits supported by the actual content.
+
+### PARAGRAPH 4 — THE FIT
+
+Help the reader understand:
+
+- who the report is especially useful for
+- what situation makes it relevant
+- what kind of result or understanding it is designed to support
+- its realistic scope
+
+End with a natural sense of why the report is worth considering.
+
+Do not turn the final paragraph into a pressure-heavy CTA.
+
+---
+
+# WRITING STYLE
+
+Write in a:
+
+- clear
+- natural
+- confident
+- human
+- specific
+- benefit-oriented
+
+voice.
+
+Use contractions where they fit naturally.
+
+Prefer:
+
+- short to medium paragraphs
+- concrete language
+- smooth transitions
+- meaningful specificity
+
+Avoid:
+
+- generic marketing clichés
+- repetitive benefits
+- excessive adjectives
+- corporate jargon
+- exaggerated claims
+- empty motivational language
+
+---
+
+# SPECIFICITY RULE
+
+The description should feel as though it could describe:
+
+> **only this report.**
+
+Avoid descriptions that could be copied onto ten unrelated products.
+
+Use the report's:
+
+- distinctive ideas
+- actual mechanisms
+- specific reader problem
+- unique perspective
+- meaningful practical takeaways
+
+where appropriate.
+
+---
+
+# PRODUCT DESCRIPTION AS DOWNSTREAM SOURCE
+
+This description will be used as product intelligence for subsequent assets.
+
+Therefore, make important product facts easy to identify.
+
+The description should clearly establish:
+
+- official product identity
+- central problem
+- core value
+- strongest benefits
+- distinctive angle
+- intended reader
+- realistic scope
+
+Do not introduce information merely for the convenience of later assets if that information is unsupported by the report.
+
+---
+
+# NO PROCESS COMMENTARY
+
+Do not mention:
+
+- prompts
+- ChatGPT
+- AI generation
+- this workflow
+- the creation process
+- these instructions
+
+Do not explain how the description was written.
+
+---
+
+# ASSET BOUNDARY
+
+This asset is:
+
+> **A PRODUCT DESCRIPTION.**
+
+It is NOT:
+
+- a full sales letter
+- a sales page
+- an advertisement
+- a Facebook post
+- an email
+- a product review
+- a testimonial
+- a product comparison
+- a CTA campaign
+
+Do not perform the job of later assets.
+
+Its job is:
+
+> **to explain and position the product clearly enough for a prospective reader to evaluate its relevance and value.**
+
+---
+
+# DOWNSTREAM CONTINUITY
+
+The next asset may use this Product Description as a source for:
+
+- product callouts
+- benefit statements
+- visual messaging
+- concise product positioning
+
+Therefore:
+
+- keep important claims explicit
+- keep wording internally consistent
+- preserve the exact product identity
+- avoid contradictory promises
+- distinguish genuine benefits from decorative marketing language
+
+---
+
+# FINAL QUALITY CONTROL
+
+Before producing the final description, internally verify:
+
+### IDENTITY
+- Exact report title?
+- Exact author / brand?
+- No renamed product?
+
+### SOURCE FIDELITY
+- Every substantive claim supported by the report?
+- No invented benefits?
+- No unsupported promises?
+
+### READER VALUE
+- Does the description genuinely help the reader understand and evaluate the product?
+- Has useful information been deliberately withheld?
+- Is it more than a teaser?
+
+### PROBLEM
+- Is the actual reader problem clear?
+- Is the problem represented honestly?
+
+### VALUE
+- Are benefits concrete?
+- Are they grounded in the report?
+
+### DISTINCTIVENESS
+- Does this description clearly belong to this specific report?
+- Is generic marketing language minimized?
+
+### SCOPE
+- Does the description communicate realistic scope?
+- Does it avoid implying guarantees?
+
+### SALES QUALITY
+- Is the product desirable without hype?
+- No fake scarcity?
+- No manipulation?
+- No exaggerated claims?
+
+### DOWNSTREAM USE
+- Can later assets reliably extract product intelligence from this description?
+- Is the product positioning internally consistent?
+
+---
+
+# FINAL OUTPUT
+
+Return only:
+
+> **ONE polished, sales-page-ready product description**
+
+containing:
+
+1. One compelling headline
+2. Four persuasive paragraphs
+
+Do not include:
+
+- setup commentary
+- explanation
+- process notes
+- analysis
+- prompt discussion
+- closing notes outside the product description
+
+The final description must be:
+
+> **useful in its own scope, accurate to the report, persuasive without manipulation, and specific enough to serve as authoritative product intelligence for subsequent assets.**
+
+This prompt is:
+
+> **LOCKED.**`;
+
+function generatePrompt(){
+  const title=document.getElementById("title").value.trim();
+  const author=document.getElementById("author").value.trim();
+  const report=document.getElementById("report").value.trim();
+  if(!title||!author||!report){
+    document.getElementById("status").textContent="Please complete all 3 required fields.";
+    return "";
+  }
+  const p=template.replace("{{TITLE}}",title).replace("{{AUTHOR}}",author).replace("{{REPORT}}",report);
+  document.getElementById("output").textContent=p;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return p;
+}
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out||out==="Your generated prompt will appear here.") out=generatePrompt();
+  if(!out)return;
+  try{await navigator.clipboard.writeText(out);document.getElementById("status").textContent="Prompt copied to clipboard."}
+  catch(e){document.getElementById("status").textContent="Copy failed. Please copy manually."}
+}
+function downloadPrompt(){
+  const out=generatePrompt();if(!out)return;
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="Stage-6-Asset-2-Product-Description-Prompt.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearAll(){
+  document.getElementById("title").value="";
+  document.getElementById("author").value="";
+  document.getElementById("report").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  document.getElementById("status").textContent="All fields cleared.";
+}
+</script>
+</body>
+</html>
