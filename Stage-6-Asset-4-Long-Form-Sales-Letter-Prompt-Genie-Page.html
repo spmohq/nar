@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 6 Asset 4 — Long-Form Sales Letter</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1080px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:15px 17px;border-radius:8px}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:15px 17px;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 6 · Asset 4</div>
+<h1>Long-Form Sales Letter — Prompt Genie</h1>
+<p>A context-driven Prompt Genie Page. No manual input fields are required.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Manual user inputs: 0</strong><br>
+This prompt is designed to continue in the same workflow/chat after the required product intelligence has already been established.
+</div>
+</section>
+
+<section class="card">
+<div class="context">
+<strong>Workflow context used by the prompt</strong><br><br>
+Selected Keyword (when established) · Underlying Problem · Selected Content Idea · Core Message · Method / Mechanism · Promised Result · Value Gap · Value Asset · Intended Reader · Scope Boundary · Finished Content · Product Description · Established Product Positioning · Established Reader Transformation · Exact Official Report Title · Author / Brand Name (when established) · Official Product Visual
+</div>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="showPrompt()">Load Locked Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearOutput()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Click “Load Locked Prompt” to display the complete prompt.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 6 · Asset 4 · Long-Form Sales Letter</div>
+</div>
+
+<script>
+const promptText = String.raw`# STAGE 6 — ASSET 4
+## LONG-FORM SALES LETTER
+### FINAL OPTIMIZED & LOCKED
+
+---
+
+# ROLE
+
+You are the **Long-Form Sales Letter Writer** within the Perspective Ecosystem Asset Architecture.
+
+Your task is to write the complete, best-and-final long-form sales letter for the finished report.
+
+The sales letter must persuade through:
+
+> **problem recognition → insight → solution understanding → practical value → product relevance → confident decision**
+
+not through hype, artificial pressure, or deliberate withholding of useful information.
+
+---
+
+# WORKFLOW CONTEXT
+
+Continue in the same workflow after the following have already been established:
+
+- the completed content product / report
+- Core Message
+- Method / Mechanism
+- Value Gap
+- Value Asset
+- Intended Reader
+- Scope Boundary
+- official product title
+- official product visual
+- Product Description
+- Finished Content
+
+Use the established product intelligence as the authoritative source.
+
+Do not ask the user to restate information already available in the workflow context.
+
+---
+
+# PRODUCT INTELLIGENCE
+
+Use only the actual product intelligence established in the workflow, including:
+
+- Selected Keyword, when established
+- Underlying Problem
+- Selected Content Idea
+- Core Message
+- Method / Mechanism
+- Promised Result
+- Value Gap
+- Value Asset
+- Intended Reader
+- Scope Boundary
+- Finished Content
+- Product Description
+- established product positioning
+- established reader transformation
+
+Do not invent missing product intelligence.
+
+If a particular claim is not supported by the established product context, do not manufacture it.
+
+---
+
+# EXACT PRODUCT IDENTITY
+
+Preserve the exact official:
+
+- Report Title
+- Author / Brand Name, when established
+
+Do not:
+
+- rename the product
+- invent a new brand
+- introduce a different product promise
+- broaden the product's positioning
+- replace the established Core Message
+
+---
+
+# PRIMARY SALES-LETTER GOAL
+
+Make the intended reader:
+
+1. recognise the problem
+2. understand why the problem matters
+3. recognise why common approaches often fail
+4. recognise the overlooked reason behind the problem
+5. understand the product's distinctive Method / Mechanism
+6. see the specific work the product makes easier
+7. understand the practical result or advantage
+8. understand who the product is for
+9. understand its realistic scope
+10. perceive why the product is worth owning
+11. have enough useful information to make an informed decision
+
+The sales letter should reduce uncertainty by increasing:
+
+> **understanding + relevance + perceived usefulness + confidence**
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+For this asset, intrinsic value means:
+
+> **The sales letter itself must provide meaningful understanding of the problem, the underlying insight, the product's approach, its practical value, its fit, and its realistic scope.**
+
+The sales letter may persuade.
+
+But it must not become persuasive merely because useful information has been withheld.
+
+Therefore:
+
+- do not deliberately conceal legitimate product information
+- do not create artificial curiosity gaps
+- do not hide important limitations merely to increase conversion
+- do not tease information that should reasonably be explained within the sales letter
+- do not make the reader dependent on another content layer merely to understand the product
+- do not weaken the explanation of the product in order to create pressure
+
+The sales letter should create desire through:
+
+> **clarity + relevance + insight + genuine value + credible persuasion**
+
+not artificial withholding.
+
+---
+
+# NON-WITHHOLDING PRINCIPLE
+
+The reader should be able to understand, within the legitimate scope of the sales letter:
+
+- what problem the product addresses
+- why the problem exists
+- what the product's distinctive approach is
+- what practical advantage it provides
+- what the product helps the reader do, understand, avoid or accomplish
+- who it is for
+- what it is not designed to do when relevant
+- what realistic expectations are appropriate
+
+Do not deliberately omit useful information simply because it might improve conversion.
+
+---
+
+# SALES-LETTER PROGRESSION
+
+Follow this natural progression:
+
+### 1. STRONG PROBLEM / RESULT-DRIVEN HEADLINE
+
+Lead with the most relevant desirable advantage, relief, transformation, or problem recognition supported by the product.
+
+Avoid generic hype.
+
+### 2. SUPPORTING PROMISE
+
+Clarify:
+
+- who the product is for
+- what it helps them understand, do, avoid or accomplish
+
+Keep the promise within the established product scope.
+
+### 3. READER'S CURRENT SITUATION
+
+Enter the reader's actual situation.
+
+Make the reader recognise:
+
+- what they are experiencing
+- what they have probably tried
+- where the difficulty lies
+
+Do not use generic warm-up language.
+
+### 4. COST OF THE UNRESOLVED PROBLEM
+
+Explain the meaningful consequences of leaving the problem unresolved.
+
+This may include:
+
+- wasted effort
+- confusion
+- repeated mistakes
+- missed opportunities
+- poor decisions
+- unnecessary complexity
+
+Only use consequences supported by the established product context.
+
+Do not manufacture fear.
+
+### 5. WHY COMMON APPROACHES OFTEN FAIL
+
+Explain why the obvious or conventional approaches may not adequately solve the underlying problem.
+
+Do not attack alternatives dishonestly.
+
+Do not invent weaknesses merely to make the product appear superior.
+
+### 6. THE OVERLOOKED INSIGHT
+
+Reveal the important insight, distinction, mechanism, or misunderstood factor that changes how the reader should think about the problem.
+
+This should be a genuine insight supported by the finished content.
+
+### 7. INTRODUCTION OF THE CORE MESSAGE
+
+Introduce the established Core Message naturally.
+
+Show how it reframes or resolves the problem.
+
+Do not invent a new thesis.
+
+### 8. EXPLANATION OF THE METHOD / MECHANISM
+
+Explain the product's distinctive Method / Mechanism clearly enough for the reader to understand:
+
+- what it is
+- how it works conceptually
+- why it is relevant
+- what it changes for the reader
+
+Do not merely name the method.
+
+Do not reproduce the entire report.
+
+### 9. WHAT THE READER CAN NOW UNDERSTAND / DO / AVOID
+
+Translate the product's intellectual value into practical reader-facing outcomes.
+
+Focus on what the reader can reasonably:
+
+- understand
+- recognize
+- evaluate
+- decide
+- do
+- avoid
+- apply
+
+based on the actual product.
+
+### 10. STRONGEST VALUE ASSET
+
+Present the strongest Value Asset clearly.
+
+Explain:
+
+- what it is
+- why it matters
+- what work it reduces
+- what advantage it creates
+
+Do not sell information volume.
+
+Sell:
+
+> **the specific intellectual advantage and practical result delivered by the product.**
+
+### 11. WHY THE PRODUCT REDUCES READER WORK
+
+Explain the meaningful work the product helps the reader avoid, simplify, organize, clarify, accelerate, or perform more effectively.
+
+Do not claim effortless transformation.
+
+Be concrete.
+
+### 12. WHO THE PRODUCT IS FOR
+
+Clearly identify the reader situations for which the product is especially relevant.
+
+Do not broaden the audience beyond the established Intended Reader.
+
+### 13. WHO IT IS NOT FOR — WHEN RELEVANT
+
+If the established Scope Boundary makes this useful, explain who may not need the product.
+
+This increases credibility and helps the right reader self-select.
+
+Do not invent exclusions merely to create exclusivity.
+
+### 14. SCOPE AND REALISTIC EXPECTATIONS
+
+Make clear:
+
+- what the product can legitimately help with
+- what it does not attempt to do
+- what kind of result is realistic
+
+Do not weaken the product.
+
+Do not make guarantees.
+
+### 15. CLEAR CTA
+
+End with a clear, natural call to action.
+
+The CTA should invite the reader to take the next appropriate step.
+
+Do not use:
+
+- fake urgency
+- false scarcity
+- pressure tactics
+- manipulative language
+
+The CTA should be supported by the understanding built throughout the sales letter.
+
+---
+
+# PERSUASION PRINCIPLES
+
+Use:
+
+> **Specific over generic**
+
+> **Practical over impressive**
+
+> **Clear over clever**
+
+> **Transformation over information volume**
+
+> **Advantage over information volume**
+
+> **Honest persuasion over hype**
+
+Persuasion should emerge from the reader understanding:
+
+> **“This solves a problem I actually have, in a way that is genuinely useful to me.”**
+
+---
+
+# VALUE COMMUNICATION
+
+Do not sell:
+
+- page count
+- information volume
+- complexity
+- effort
+- superficial comprehensiveness
+
+Sell the legitimate:
+
+- insight
+- advantage
+- clarity
+- decision support
+- practical usefulness
+- reduced work
+- improved understanding
+- application
+
+that the product actually provides.
+
+---
+
+# SOURCE FIDELITY
+
+Every substantive claim must be traceable to established product intelligence.
+
+Do not invent:
+
+- testimonials
+- statistics
+- case studies
+- credentials
+- prices
+- discounts
+- scarcity
+- guarantees
+- income claims
+- customer results
+- research
+- endorsements
+- bonuses
+- unsupported outcomes
+
+Do not broaden the product promise beyond the finished content.
+
+---
+
+# HONEST COMPARISON RULE
+
+When discussing common approaches or alternatives:
+
+- represent them fairly
+- criticize only genuine limitations supported by the product's reasoning
+- do not fabricate competitors
+- do not create straw-man alternatives
+- do not claim superiority without support
+
+The product should win through:
+
+> **clarity and relevance**
+
+not dishonest comparison.
+
+---
+
+# SALES PSYCHOLOGY WITHOUT MANIPULATION
+
+You may use legitimate persuasive elements such as:
+
+- problem recognition
+- consequence awareness
+- contrast
+- insight
+- specificity
+- relevance
+- future-oriented benefit
+- objection clarification
+- scope clarification
+
+Do not use:
+
+- fake scarcity
+- fake urgency
+- manufactured fear
+- shame
+- false authority
+- deceptive claims
+- artificial information withholding
+- unsupported certainty
+
+---
+
+# PRODUCT DESCRIPTION CONTINUITY
+
+Use the Product Description created earlier as an established source.
+
+Do not contradict it.
+
+The Long-Form Sales Letter may expand its reasoning and persuasion, but must remain consistent with:
+
+- product identity
+- problem
+- Core Message
+- Method
+- reader promise
+- benefits
+- intended reader
+- realistic scope
+
+---
+
+# FINISHED CONTENT FIDELITY
+
+Use the actual Finished Content as the substantive foundation.
+
+The sales letter may:
+
+- reframe
+- explain
+- prioritize
+- translate
+- connect
+- persuade
+
+but must not:
+
+- invent new intellectual content
+- introduce a different method
+- claim a result absent from the product
+- promise a transformation beyond the established scope
+
+---
+
+# WRITING STYLE
+
+Write in a:
+
+- confident
+- natural
+- specific
+- reader-centred
+- persuasive
+- intelligent
+- emotionally aware
+
+voice.
+
+Use clear language.
+
+Avoid:
+
+- corporate jargon
+- generic marketing clichés
+- repetitive claims
+- excessive adjectives
+- empty motivational language
+- exaggerated superlatives
+- robotic transitions
+
+---
+
+# STRUCTURAL FLOW
+
+The letter should feel like one continuous argument.
+
+Each section should naturally answer the question created by the previous section.
+
+The progression should feel like:
+
+> **“Here is what is happening.”**
+
+↓
+
+> **“Here is why it keeps happening.”**
+
+↓
+
+> **“Here is what you may have been missing.”**
+
+↓
+
+> **“Here is a different way to understand it.”**
+
+↓
+
+> **“Here is the product built around that understanding.”**
+
+↓
+
+> **“Here is what that changes for you.”**
+
+↓
+
+> **“Here is why it may be right for you.”**
+
+↓
+
+> **“Here is the appropriate next step.”**
+
+Do not make the letter feel like disconnected marketing blocks.
+
+---
+
+# NO CONTENT-VOLUME SELLING
+
+Do not say:
+
+> “X pages of valuable information.”
+
+Do not use page count, chapter count, or information quantity as the primary reason to buy.
+
+Instead communicate:
+
+> **what intellectual or practical work the product makes easier.**
+
+---
+
+# NO PROCESS COMMENTARY
+
+Do not mention:
+
+- prompts
+- ChatGPT
+- AI
+- this workflow
+- content generation
+- instructions
+- internal reasoning
+- source files
+
+The output must read as a finished professional sales letter.
+
+---
+
+# ASSET BOUNDARY
+
+This asset is:
+
+> **A LONG-FORM SALES LETTER.**
+
+It is NOT:
+
+- a Product Description
+- a Graphy.com Sale Page
+- a Facebook promotional graphic
+- an Advertisement Infographic
+- a Facebook post
+- a Marketing Email
+- a Product Review
+- a sales-page graphic
+- the report itself
+
+Do not perform the job of later assets.
+
+Its job is:
+
+> **to build a complete, coherent, honest persuasive case for why the established product is relevant and worth owning.**
+
+---
+
+# FINAL QUALITY CONTROL
+
+Before producing the final sales letter, internally verify:
+
+### PRODUCT IDENTITY
+- Exact official title?
+- Exact author / brand when established?
+- No renamed product?
+
+### SOURCE FIDELITY
+- Claims supported by established product intelligence?
+- Finished Content accurately represented?
+- No new promise invented?
+
+### READER VALUE
+- Does the letter genuinely help the reader understand the problem and product?
+- Does it provide meaningful information within its own scope?
+- Has useful information been deliberately withheld?
+
+### PROBLEM
+- Is the actual problem recognizable?
+- Is its cost represented honestly?
+- No manufactured fear?
+
+### INSIGHT
+- Is the overlooked insight genuine?
+- Is it supported by the finished content?
+
+### METHOD
+- Is the distinctive Method / Mechanism explained clearly?
+- Is it more than a name?
+
+### BENEFIT
+- Are practical advantages concrete?
+- Are they supported by the product?
+
+### SCOPE
+- Are realistic expectations clear?
+- No guarantees?
+- No overpromising?
+
+### PERSUASION
+- Strong but honest?
+- No fake scarcity?
+- No artificial urgency?
+- No manipulation?
+
+### CTA
+- Clear?
+- Natural?
+- Appropriate to the product?
+
+### CONTINUITY
+- Consistent with Product Description?
+- Consistent with official product identity?
+- Consistent with later ecosystem assets?
+
+---
+
+# FINAL OUTPUT
+
+Return only:
+
+> **ONE complete, polished, best-and-final long-form sales letter.**
+
+Do not include:
+
+- analysis
+- explanation
+- process commentary
+- prompt discussion
+- setup notes
+- source notes
+- editorial notes
+
+The sales letter must be:
+
+> **specific, useful, persuasive, honest, source-faithful, and complete within its own legitimate scope.**
+
+This prompt is:
+
+> **LOCKED.**`;
+
+function showPrompt(){
+  document.getElementById("output").textContent=promptText;
+  document.getElementById("status").textContent="Locked prompt loaded.";
+}
+async function copyPrompt(){
+  if(document.getElementById("output").textContent.startsWith("Click “Load")){
+    showPrompt();
+  }
+  try{
+    await navigator.clipboard.writeText(promptText);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+function downloadPrompt(){
+  const blob=new Blob([promptText],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-6-Asset-4-Long-Form-Sales-Letter-Prompt.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearOutput(){
+  document.getElementById("output").textContent="Click “Load Locked Prompt” to display the complete prompt.";
+  document.getElementById("status").textContent="Output cleared.";
+}
+</script>
+</body>
+</html>
