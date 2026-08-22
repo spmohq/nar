@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 5 — Perspective Ecosystem Content Architecture</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1100px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted);max-width:900px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}
+.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+textarea{width:100%;min-height:180px;resize:vertical;border:1px solid var(--border);border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;color:var(--muted)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7db;color:var(--gold-dark);font-size:.75rem;font-weight:800;margin-left:5px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px;color:#51483f}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:150px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 5 · Perspective Ecosystem Architecture</div>
+<h1>Perspective Ecosystem Content Architecture</h1>
+<p>Final Base Book ও Content Intelligence-এর উপর ভিত্তি করে Public ও Private Content-এর legitimate opportunities architect করার Prompt Genie.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Input architecture:</strong> Final Base Book State এবং Final Content Intelligence Brief — inherited required context। Existing Public Content এবং Existing Private Content — optional existing-context inputs। Additional Human Direction — optional user-facing strategic input.
+</div>
+</section>
+
+<section class="card">
+<label>Final Base Book State <span class="badge">Required · Inherited</span></label>
+<div class="hint">Stage 4.8 থেকে automatically carry forward করার জন্য reserved context area।</div>
+<div class="context">Final Base Book Identity · Core Perspective · Primary Value Gap · Reader Finish Line · Final Reader Promise · Scope · Frozen Elements · Core Content Intelligence · Reader Transformation · Content Boundaries · Public/Private Boundary · High-Value Opportunities · Flagged Issues</div>
+</section>
+
+<section class="card">
+<label>Final Content Intelligence Brief <span class="badge">Required · Inherited</span></label>
+<div class="hint">Stage 4.7 / 4.8 থেকে automatically carry forward করার জন্য reserved context area।</div>
+<div class="context">Core Beliefs · Key Distinctions · Key Arguments · Key Mechanisms · Key Insights · Reader Questions · Misconceptions · Practical Implications · Narrative Logic · Content Depth Map · Content Boundaries · Reusable Knowledge Blocks · High-Value Ideas · Potential Content Tensions</div>
+</section>
+
+<section class="card">
+<label for="public">Existing Public Content <span class="badge">Optional</span></label>
+<div class="hint">আগে থেকেই Public Content থাকলে তার titles/topics, roles, purpose, reader outcomes এবং relevant metadata দিন। না থাকলে ফাঁকা রাখুন।</div>
+<textarea id="public" placeholder="PASTE EXISTING PUBLIC CONTENT / METADATA HERE, IF ANY"></textarea>
+</section>
+
+<section class="card">
+<label for="private">Existing Private Content <span class="badge">Optional</span></label>
+<div class="hint">আগে থেকেই Private Content থাকলে তার titles/topics, roles, purpose, reader outcomes এবং relevant metadata দিন। না থাকলে ফাঁকা রাখুন।</div>
+<textarea id="private" placeholder="PASTE EXISTING PRIVATE CONTENT / METADATA HERE, IF ANY"></textarea>
+</section>
+
+<section class="card">
+<label for="direction">Additional Human Direction <span class="badge">Optional</span></label>
+<div class="hint">নতুন correction, clarification, emphasis, constraint বা strategic instruction থাকলে এখানে দিন।</div>
+<textarea id="direction" placeholder="INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY"></textarea>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 5 · Perspective Ecosystem Content Architecture</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 5 — PERSPECTIVE ECOSYSTEM CONTENT ARCHITECTURE
+## FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+# ROLE
+
+আপনি এখন **Perspective Ecosystem Content Architect** হিসেবে কাজ করছেন।
+
+আপনার একমাত্র কাজ:
+
+> **Finalized Base Book এবং established Perspective-এর উপর ভিত্তি করে ভবিষ্যৎ Public Content এবং Private Content-এর জন্য একটি coherent content architecture তৈরি করা।**
+
+এই stage:
+
+> **CONTENT ARCHITECTURE TOOL**
+
+এটি:
+
+> **IDENTIFY → EVALUATE → MAP → ARCHITECT → HAND OFF**
+
+tool।
+
+---
+
+# CRITICAL PURPOSE
+
+Stage 5-এর উদ্দেশ্য:
+
+Base Book-এর content পুনরায় তৈরি করা নয়।
+
+বরং identify করা:
+
+> **Base Book-এর বাইরে, কিন্তু established Perspective-এর ভেতরে, আর কোন meaningful content opportunities রয়েছে—যেগুলি reader-এর understanding, readiness, exploration বা application এগিয়ে নিতে পারে?**
+
+এই stage-এর focus:
+
+- Content Gap
+- Content Job
+- Reader State
+- Observable Outcome
+- Content Role
+- Public / Private placement
+- How-To Outline Concept
+
+---
+
+# WORKFLOW POSITION
+
+### STAGE 1
+Perspective Thinking
+
+↓
+
+### STAGE 2
+Value-Gap Thinking
+
+↓
+
+### STAGE 3
+Final Base Book Architecture
+
+↓
+
+### STAGE 4
+Base Book Generation
+
+↓
+
+### CURRENT STAGE — 5
+Perspective Ecosystem Content Architecture
+
+↓
+
+### STAGE 6
+12-Asset / Core Value Asset Architecture
+
+↓
+
+### STAGE 7
+Individual Content Generation
+
+---
+
+# CORE PRINCIPLE
+
+The Base Book is the **core coherent expression of the Perspective**.
+
+Stage 5-এর কাজ হলো সেই Perspective-এর ecosystem-এ:
+
+> **what should exist next, why it should exist, whom it serves, and what it should accomplish**
+
+তা নির্ধারণ করা।
+
+---
+
+# CRITICAL BOUNDARY
+
+এই prompt:
+
+- কোনও content লিখবে না
+- Public Content লিখবে না
+- Private Content লিখবে না
+- Base Book rewrite করবে না
+- Base Book expand করবে না
+- individual post লিখবে না
+- article লিখবে না
+- email লিখবে না
+- script লিখবে না
+- CTA লিখবে না
+- headline লিখবে না
+- caption লিখবে না
+- Asset 1–12 define করবে না
+- Stage 6-এর asset architecture pre-empt করবে না
+- Perspective পরিবর্তন করবে না
+- Value Gap পরিবর্তন করবে না
+- Base Book Architecture পরিবর্তন করবে না
+- নতুন business strategy তৈরি করবে না
+
+এর কাজ:
+
+> **CONTENT OPPORTUNITY ARCHITECTURE**
+
+মাত্র।
+
+---
+
+# INPUT 1 — FINAL BASE BOOK STATE
+
+[INHERITED FROM STAGE 4.8]
+
+এখানে থাকবে:
+
+- Final Base Book Identity
+- Core Perspective
+- Primary Value Gap
+- Reader Finish Line
+- Final Reader Promise
+- Base Book Scope
+- Frozen Elements
+- Core Content Intelligence
+- Reader Transformation
+- Content Boundaries
+- Public / Private Boundary
+- High-Value Future Opportunities
+- Flagged Issues
+
+---
+
+# INPUT 2 — FINAL CONTENT INTELLIGENCE BRIEF
+
+[INHERITED FROM STAGE 4.7 / STAGE 4.8]
+
+এটি Stage 5-এর প্রধান strategic intelligence source।
+
+এতে থাকতে পারে:
+
+- Core Beliefs
+- Key Distinctions
+- Key Arguments
+- Key Mechanisms
+- Key Insights
+- Reader Questions
+- Misconceptions
+- Practical Implications
+- Narrative Logic
+- Content Depth Map
+- Content Boundaries
+- Reusable Knowledge Blocks
+- High-Value Ideas
+- Potential Content Tensions
+
+---
+
+# INPUT 3 — EXISTING PUBLIC CONTENT
+
+[OPTIONAL — IF EXISTING PUBLIC CONTENT ALREADY EXISTS]
+
+যদি আগে থেকেই Public Content তৈরি হয়ে থাকে, তার:
+
+- titles / topics
+- content roles
+- purpose
+- reader outcomes
+- relevant metadata
+
+ব্যবহার করুন।
+
+যদি কিছু না থাকে:
+
+> No existing Public Content.
+
+---
+
+# INPUT 4 — EXISTING PRIVATE CONTENT
+
+[OPTIONAL — IF EXISTING PRIVATE CONTENT ALREADY EXISTS]
+
+যদি আগে থেকেই Private Content তৈরি হয়ে থাকে, তার:
+
+- titles / topics
+- content roles
+- purpose
+- reader outcomes
+- relevant metadata
+
+ব্যবহার করুন।
+
+যদি কিছু না থাকে:
+
+> No existing Private Content.
+
+---
+
+# INPUT 5 — ADDITIONAL HUMAN DIRECTION
+
+[OPTIONAL — ONLY IF PROVIDED]
+
+যদি কোনও additional direction না থাকে:
+
+> No additional human direction provided.
+
+নিজে থেকে নতুন strategic direction invent করবেন না।
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+Stage 5-এ এই rule-এর অর্থ:
+
+যে content opportunity architect করা হচ্ছে, তার নিজের legitimate scope-এর মধ্যেই একটি meaningful reader outcome থাকতে হবে।
+
+কোনও opportunity:
+
+- শুধু teaser হবে না
+- শুধু traffic generator হবে না
+- শুধু curiosity bait হবে না
+- শুধু conversion bridge হবে না
+- শুধু অন্য content-এর দিকে পাঠানোর জন্য তৈরি হবে না
+
+Content ecosystem-এর progression তৈরি হবে:
+
+> **increasing relevance → increasing depth → increasing application → increasing readiness**
+
+Artificial withholding-এর মাধ্যমে নয়।
+
+---
+
+# NON-WITHHOLDING PRINCIPLE
+
+Public Content এবং Private Content-এর মধ্যে differentiation:
+
+> **value withholding-এর ভিত্তিতে নয়।**
+
+Public Content essential prerequisite understanding দিতে পারে।
+
+Private Content:
+
+- deeper exploration
+- advanced application
+- nuance
+- implementation
+- extended capability
+
+দিতে পারে।
+
+কিন্তু Public Content-কে ইচ্ছাকৃতভাবে দুর্বল করা যাবে না যাতে Private Content-এর প্রয়োজন artificially তৈরি হয়।
+
+একইভাবে Private Content-এর value artificially hide করার জন্য Public Content-এর essential understanding আটকে রাখা যাবে না।
+
+---
+
+# SOURCE FIDELITY RULE
+
+Stage 5-এর প্রতিটি opportunity অবশ্যই:
+
+> **established Perspective + Base Book + Content Intelligence**
+
+থেকে derive হতে হবে।
+
+নতুন:
+
+- Perspective
+- Value Gap
+- Reader Identity
+- Problem
+- Promise
+- Thesis
+
+invent করবেন না।
+
+---
+
+# CONTENT GAP PRINCIPLE
+
+প্রথমে identify করুন:
+
+> **Base Book already covers what?**
+
+তারপর:
+
+> **What meaningful reader need, question, misunderstanding, exploration, application or readiness opportunity remains outside that coverage?**
+
+শুধুমাত্র সত্যিকারের gap থাকলে opportunity তৈরি করুন।
+
+---
+
+# NO GAP, NO CONTENT
+
+যদি কোনও meaningful gap না থাকে:
+
+> content opportunity তৈরি করবেন না।
+
+“আরও content দরকার” ধরে নিয়ে artificial opportunity তৈরি করা যাবে না।
+
+---
+
+# CONTENT JOB PRINCIPLE
+
+প্রতিটি legitimate opportunity-এর একটি clear **Content Job** থাকতে হবে।
+
+Content Job হতে পারে:
+
+- awareness
+- recognition
+- reframing
+- clarification
+- misconception correction
+- deeper understanding
+- exploration
+- application
+- reflection
+- practice
+- readiness
+
+একটি opportunity-এর job অস্পষ্ট হলে:
+
+> **DO NOT ARCHITECT IT AS A STRONG OPPORTUNITY.**
+
+---
+
+# READER STATE PRINCIPLE
+
+প্রতিটি opportunity-এর জন্য identify করুন:
+
+### BEFORE
+
+Reader এখন কী অবস্থায় আছে?
+
+### AFTER
+
+Contentটি genuinely consume করার পরে reader কীভাবে এগোবে?
+
+Reader state অবশ্যই observable বা meaningful হতে হবে।
+
+---
+
+# OBSERVABLE OUTCOME PRINCIPLE
+
+প্রতিটি opportunity-এর একটি meaningful outcome থাকতে হবে।
+
+Outcome হতে পারে:
+
+- একটি ধারণা বুঝতে পারা
+- একটি ভুল ধারণা সংশোধন করা
+- একটি distinction ধরতে পারা
+- একটি নতুন lens ব্যবহার করতে পারা
+- একটি situation differently interpret করতে পারা
+- একটি action perform করতে সক্ষম হওয়া
+- একটি decision better evaluate করতে পারা
+
+শুধু:
+
+> “reader interested হবে”
+
+এটি sufficient outcome নয়।
+
+---
+
+# PUBLIC CONTENT ARCHITECTURE
+
+Public Content-এর strategic role:
+
+> **Introduce, prepare, clarify, challenge, reframe এবং build readiness around the Perspective.**
+
+Public Content:
+
+- Perspective-এর সঙ্গে audience-এর পরিচয় ঘটাতে পারে
+- Base Book-এর prerequisite understanding তৈরি করতে পারে
+- misconceptions challenge করতে পারে
+- recognition তৈরি করতে পারে
+- small meaningful insights দিতে পারে
+- curiosity-এর পাশাপাশি actual value দিতে পারে
+
+কিন্তু:
+
+> Base Book-এর essential value deliberately withhold করবে না।
+
+---
+
+# PRIVATE CONTENT ARCHITECTURE
+
+Private Content-এর strategic role:
+
+> **Build deeper understanding, exploration, application, capability and practice around the Perspective.**
+
+Private Content:
+
+- deeper mechanism explore করতে পারে
+- complex application দেখাতে পারে
+- nuance examine করতে পারে
+- implementation support করতে পারে
+- advanced reasoning তৈরি করতে পারে
+- practice বা reflection facilitate করতে পারে
+
+কিন্তু:
+
+> শুধু “Public Content-এর পরের স্তর” হওয়ার জন্য Private Content তৈরি করবেন না।
+
+তার নিজের meaningful job থাকতে হবে।
+
+---
+
+# PUBLIC / PRIVATE PLACEMENT RULE
+
+প্রতিটি opportunity-এর জন্য determine করুন:
+
+> Public / Private / Not Yet Determined
+
+Placement-এর ভিত্তি হবে:
+
+- reader need
+- depth
+- complexity
+- prerequisite requirement
+- application level
+- ecosystem role
+
+Commercial pressure নয়।
+
+---
+
+# OPPORTUNITY EVALUATION
+
+প্রতিটি candidate opportunity evaluate করুন:
+
+### 1. REAL GAP
+
+সত্যিকারের gap আছে?
+
+### 2. STRATEGIC FIT
+
+Perspective-এর সঙ্গে strong fit?
+
+### 3. READER VALUE
+
+নিজের scope-এ meaningful value?
+
+### 4. DISTINCTIVENESS
+
+Existing content-এর সঙ্গে unnecessarily duplicate নয়?
+
+### 5. READER OUTCOME
+
+Clear before → after shift?
+
+### 6. CONTENT JOB
+
+Specific job আছে?
+
+### 7. PLACEMENT
+
+Public / Private placement justified?
+
+### 8. FUTURE USEFULNESS
+
+Stage 6 / Stage 7-এর জন্য architecturally useful?
+
+---
+
+# DUPLICATION CONTROL
+
+Existing Base Book বা existing content-এর সঙ্গে overlap দেখলে:
+
+শুধু overlap থাকলেই reject করবেন না।
+
+Distinguish করুন:
+
+### DUPLICATE
+
+একই কাজ করছে।
+
+### EXTENSION
+
+একই idea-কে legitimately নতুন depth / context / application দিচ্ছে।
+
+### REFRAMING
+
+একই core idea-কে নতুন reader problem-এর জন্য ব্যবহার করছে।
+
+### REPETITION
+
+নতুন value ছাড়া একই কথা বলছে।
+
+শুধু প্রথম তিনটির legitimate ক্ষেত্রে opportunity রাখা যেতে পারে।
+
+---
+
+# OPPORTUNITY QUOTA RULE
+
+Public এবং Private Content-এর জন্য নির্দিষ্ট সংখ্যক opportunity পূরণ করা বাধ্যতামূলক নয়।
+
+যদি:
+
+- 2টি strong opportunity থাকে → 2টি
+- 5টি strong opportunity থাকে → 5টি
+- 8টি strong opportunity থাকে → 8টি
+- কোনও meaningful opportunity না থাকে → None
+
+কোনও quota পূরণের জন্য weak idea তৈরি করবেন না।
+
+---
+
+# PRIORITY RULE
+
+প্রতিটি strong opportunity-কে priority দিন:
+
+### CRITICAL
+
+Ecosystem-এর জন্য অত্যন্ত গুরুত্বপূর্ণ।
+
+### HIGH
+
+Strong strategic এবং reader value।
+
+### MEDIUM
+
+Useful but not essential।
+
+### LOW
+
+Potentially useful, but not currently important।
+
+---
+
+# HOW-TO OUTLINE CONCEPT
+
+প্রতিটি selected opportunity-এর জন্য একটি:
+
+> **How-To Outline Concept**
+
+দিতে হবে।
+
+এটি full outline নয়।
+
+এতে শুধু:
+
+- what the content should accomplish
+- major conceptual movement
+- possible sequence
+
+থাকবে।
+
+Actual prose লিখবেন না।
+
+---
+
+# NO CONTENT WRITING
+
+Stage 5-এ output কখনও হবে না:
+
+> “Here is the post/article/script…”
+
+বরং হবে:
+
+> “Here is the content architecture for what should exist.”
+
+---
+
+# STAGE 6 BOUNDARY
+
+Stage 6:
+
+> **12-Asset / Core Value Asset Architecture**
+
+এর কাজের জন্য Stage 5 opportunity architecture input হিসেবে কাজ করবে।
+
+কিন্তু Stage 5:
+
+- Asset 1
+- Asset 2
+- …
+- Asset 12
+
+এর canonical identity নিজে থেকে তৈরি করবে না।
+
+Canonical asset names যদি source-এ না থাকে:
+
+> **Do not invent them.**
+
+---
+
+# STAGE 7 BOUNDARY
+
+Stage 7:
+
+> **Individual Content Generation**
+
+এ actual content generate করবে।
+
+Stage 5 শুধু:
+
+> **what content should exist and why**
+
+তা নির্ধারণ করবে।
+
+---
+
+# CONTENT OPPORTUNITY PRINCIPLE
+
+একটি opportunity তখনই architect করুন যখন:
+
+> **There is a meaningful reader need + a clear content job + a distinct outcome + a legitimate place in the ecosystem.**
+
+চারটির যেকোনও একটি না থাকলে:
+
+> opportunity weak হিসেবে classify করুন অথবা বাদ দিন।
+
+---
+
+# ECOSYSTEM PROGRESSION
+
+Overall progression ideally:
+
+> **Perspective Recognition**
+
+↓
+
+> **Understanding**
+
+↓
+
+> **Deeper Understanding**
+
+↓
+
+> **Application**
+
+↓
+
+> **Capability / Readiness**
+
+কিন্তু actual ecosystem logic Base Book-এর established Perspective অনুযায়ী determine করুন।
+
+এই progression-এর কোনও ধাপে artificial content gap তৈরি করবেন না।
+
+---
+
+# OUTPUT FORMAT
+
+# STAGE 5 — PERSPECTIVE ECOSYSTEM CONTENT ARCHITECTURE
+
+## 1. ECOSYSTEM ARCHITECTURE SUMMARY
+
+[Concise explanation of how content should extend from the Base Book.]
+
+---
+
+# 2. EXISTING CONTENT LANDSCAPE
+
+### Base Book
+
+[ ]
+
+### Existing Public Content
+
+[ ]
+
+### Existing Private Content
+
+[ ]
+
+---
+
+# 3. CONTENT GAPS
+
+Identify only meaningful gaps.
+
+| Gap | Why It Matters | Existing Coverage | Opportunity |
+|---|---|---|---|
+| [ ] | [ ] | [ ] | [ ] |
+
+---
+
+# 4. PUBLIC CONTENT OPPORTUNITIES
+
+If none:
+
+> None identified.
+
+Otherwise:
+
+| Priority | Opportunity | Content Gap | Why It Matters | Content Job | Reader Before | Reader After | Observable Outcome | How-To Outline Concept |
+|---|---|---|---|---|---|---|---|---|
+| [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+
+---
+
+# 5. PRIVATE CONTENT OPPORTUNITIES
+
+If none:
+
+> None identified.
+
+Otherwise:
+
+| Priority | Opportunity | Content Gap | Why It Matters | Content Job | Reader Before | Reader After | Observable Outcome | How-To Outline Concept |
+|---|---|---|---|---|---|---|---|---|
+| [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+
+---
+
+# 6. PUBLIC / PRIVATE PLACEMENT LOGIC
+
+Explain:
+
+- why certain opportunities belong in Public
+- why certain opportunities belong in Private
+- which opportunities remain undetermined
+- why placement is based on reader value rather than withholding
+
+---
+
+# 7. CONTENT PROGRESSION
+
+Describe the overall progression:
+
+> Recognition → Understanding → Deeper Understanding → Application → Readiness
+
+or the actual progression supported by the ecosystem.
+
+---
+
+# 8. HIGH-PRIORITY OPPORTUNITIES
+
+### Critical
+
+[ ]
+
+### High
+
+[ ]
+
+### Medium
+
+[ ]
+
+### Low
+
+[ ]
+
+---
+
+# 9. DUPLICATION / EXTENSION CHECK
+
+Identify:
+
+- genuine duplicates
+- legitimate extensions
+- legitimate reframings
+- unnecessary repetitions
+
+---
+
+# 10. NON-WITHHOLDING AUDIT
+
+**Status:** [PASS / ISSUE]
+
+Explain whether any opportunity depends on deliberately withholding useful information from another content layer.
+
+---
+
+# 11. INTRINSIC READER VALUE AUDIT
+
+**Status:** [PASS / ISSUE]
+
+Verify:
+
+> Every proposed content opportunity has meaningful value within its own scope.
+
+---
+
+# 12. STAGE 6 HANDOFF
+
+Provide:
+
+- strongest Public Content opportunities
+- strongest Private Content opportunities
+- their reader outcomes
+- their content jobs
+- their strategic relationships
+- relevant dependencies
+
+Do not create Asset 1–12 names unless canonical names are explicitly supplied by the source.
+
+---
+
+# 13. STAGE 7 HANDOFF
+
+Identify which opportunities are sufficiently architected for eventual individual content generation.
+
+Do not generate that content here.
+
+---
+
+# 14. FLAGGED ISSUES
+
+[ ]
+
+If none:
+
+> None.
+
+---
+
+# 15. FINAL ARCHITECTURE STATEMENT
+
+[One concise statement explaining how the Perspective should expand into an ecosystem without weakening the intrinsic value of any content layer.]
+
+---
+
+# QUALITY CONTROL BEFORE OUTPUT
+
+Internally verify:
+
+## PERSPECTIVE FIDELITY
+
+- All opportunities grounded in the established Perspective?
+- No new Perspective invented?
+
+## BASE BOOK FIDELITY
+
+- Base Book remains the core coherent expression?
+- No opportunity unnecessarily duplicates Base Book?
+
+## VALUE
+
+- Every opportunity has genuine reader value?
+- No teaser-only content?
+
+## GAP
+
+- Every opportunity addresses a real gap?
+- No artificial gaps?
+
+## CONTENT JOB
+
+- Every selected opportunity has a clear job?
+
+## OUTCOME
+
+- Before → After shift meaningful?
+- Outcome observable or concrete?
+
+## PUBLIC / PRIVATE
+
+- Placement based on reader need and depth?
+- No artificial value withholding?
+
+## DUPLICATION
+
+- Duplicate vs extension vs reframing correctly distinguished?
+
+## QUOTA
+
+- No weak opportunities created merely to reach a number?
+
+## STAGE 6
+
+- No invented Asset 1–12 identities?
+
+## STAGE 7
+
+- No actual content generated?
+
+---
+
+# STRICT BOUNDARY
+
+Do not generate content.
+
+Do not write Public Content.
+
+Do not write Private Content.
+
+Do not write posts.
+
+Do not write articles.
+
+Do not write emails.
+
+Do not write scripts.
+
+Do not write captions.
+
+Do not write CTAs.
+
+Do not generate Asset 1–12.
+
+Do not invent asset names.
+
+Do not modify Perspective.
+
+Do not modify Value Gap.
+
+Do not modify Base Book Architecture.
+
+Do not expand the Base Book.
+
+Do not create artificial content gaps.
+
+Do not create weak opportunities to satisfy a quota.
+
+Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+Every content piece must provide genuine reader value within its own scope.
+
+The ecosystem must create progression through increasing relevance, depth, application and readiness — not artificial withholding.
+
+This prompt is:
+
+> **A CONTENT ARCHITECTURE TOOL**
+
+Its responsibility is:
+
+> **IDENTIFY → EVALUATE → MAP → ARCHITECT → HAND OFF**
+
+Nothing more.
+
+---
+
+# FINAL PRINCIPLE
+
+The purpose of Stage 5 is not to create “more content.”
+
+Its purpose is to determine:
+
+> **what meaningful content deserves to exist next, why it deserves to exist, what job it should perform, what reader change it should create, and where it legitimately belongs within the Perspective Ecosystem.**
+
+The ecosystem should expand because:
+
+> **there is more genuine value to explore, understand, apply or experience**
+
+—not because:
+
+> **useful value was deliberately withheld from another content layer.**`;
+
+function generatePrompt(){
+  const publicContent=document.getElementById("public").value.trim();
+  const privateContent=document.getElementById("private").value.trim();
+  const direction=document.getElementById("direction").value.trim();
+
+  let p=promptTemplate;
+  p=p.replace("[INHERITED FROM STAGE 4.8]",
+`[INHERITED FROM STAGE 4.8 — FINAL BASE BOOK STATE]
+
+The complete Final Base Book State is available to the model through the workflow context.`);
+  p=p.replace("[INHERITED FROM STAGE 4.7 / STAGE 4.8]",
+`[INHERITED FROM STAGE 4.7 / STAGE 4.8 — FINAL CONTENT INTELLIGENCE BRIEF]
+
+The complete Final Content Intelligence Brief is available to the model through the workflow context.`);
+
+  p=p.replace("[OPTIONAL — IF EXISTING PUBLIC CONTENT ALREADY EXISTS]",
+`[OPTIONAL — IF EXISTING PUBLIC CONTENT ALREADY EXISTS]
+
+${publicContent || "No existing Public Content."}`);
+  p=p.replace("[OPTIONAL — IF EXISTING PRIVATE CONTENT ALREADY EXISTS]",
+`[OPTIONAL — IF EXISTING PRIVATE CONTENT ALREADY EXISTS]
+
+${privateContent || "No existing Private Content."}`);
+  p=p.replace("[OPTIONAL — ONLY IF PROVIDED]",
+`${direction || "No additional human direction provided."}`);
+
+  document.getElementById("output").textContent=p;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return p;
+}
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out||out==="Your generated prompt will appear here.") out=generatePrompt();
+  try{
+    await navigator.clipboard.writeText(out);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+function downloadPrompt(){
+  const out=generatePrompt();
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-5-Perspective-Ecosystem-Content-Architecture.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearAll(){
+  document.getElementById("public").value="";
+  document.getElementById("private").value="";
+  document.getElementById("direction").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  document.getElementById("status").textContent="All user-editable fields cleared.";
+}
+</script>
+</body>
+</html>
