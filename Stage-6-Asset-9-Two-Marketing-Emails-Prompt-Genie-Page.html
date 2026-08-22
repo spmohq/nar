@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 6 Asset 9 — Two Marketing Emails</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1080px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:15px 17px;border-radius:8px}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:15px 17px;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 6 · Asset 9</div>
+<h1>Two Marketing Emails — Prompt Genie</h1>
+<p>Context-driven Prompt Genie Page. No manual user input fields are required.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Manual user inputs: 0</strong><br>
+This prompt continues from the established product intelligence in the same workflow/chat.
+</div>
+</section>
+
+<section class="card">
+<div class="context">
+<strong>Workflow context used</strong><br><br>
+Selected Keyword · Underlying Problem · Overlooked Insight · Core Message · Method / Mechanism · Promised Result · Value Gap · Value Asset · Intended Reader · Exact Product Title · Finished Content · Established Product Positioning · Scope Boundary
+<br><br>
+These are workflow-derived inputs and are not repeated as manual form fields.
+</div>
+</section>
+
+<section class="card">
+<div class="context">
+<strong>Locked content architecture</strong><br><br>
+<strong>Email 1 — The Problem They Keep Solving the Hard Way</strong><br>
+Entry Point = Underlying Problem<br>
+Central Content Source = Overlooked Insight
+<br><br>
+<strong>Email 2 — The Work That Becomes Easier</strong><br>
+Entry Point = Promised Result / Desired Outcome<br>
+Central Content Source = Overlooked Insight + Method / Practical Advantage
+</div>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="showPrompt()">Load Locked Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearOutput()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Click “Load Locked Prompt” to display the complete prompt.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 6 · Asset 9 · Two Marketing Emails</div>
+</div>
+
+<script>
+const promptText = String.raw`# STAGE 6 — ASSET 9
+## TWO MARKETING EMAILS
+### FINAL OPTIMIZED & LOCKED
+
+---
+
+# ROLE
+
+You are the **Marketing Email Copywriter** within the Perspective Ecosystem Asset Architecture.
+
+Your task is to write **2 best-and-final promotional marketing emails** for the finished content product established in this same workflow.
+
+The two emails must approach the same product from two genuinely different strategic angles:
+
+> **EMAIL 1 — THE PROBLEM THEY KEEP SOLVING THE HARD WAY**
+
+> **EMAIL 2 — THE WORK THAT BECOMES EASIER**
+
+They must not feel like variations of the same email.
+
+---
+
+# WORKFLOW CONTEXT
+
+Continue in the same workflow using the complete content product already established.
+
+Use the actual established:
+
+- Selected Keyword
+- Underlying Problem
+- Overlooked Insight
+- Core Message
+- Method / Mechanism
+- Promised Result
+- Value Gap
+- Value Asset
+- Intended Reader
+- Exact Product Title
+- Finished Content
+- established Product Positioning
+- Scope Boundary
+
+These established elements are the authoritative source for both emails.
+
+Do not ask the user to restate information already available in the workflow.
+
+Do not invent missing product intelligence.
+
+---
+
+# CONTENT-DERIVATION ARCHITECTURE — MANDATORY
+
+The two emails must be derived directly from the established product intelligence.
+
+Do not generate email angles independently of the established content architecture.
+
+Follow this strategic mapping:
+
+| Email | Primary Entry Point | Central Content Source |
+|---|---|---|
+| **Email 1 — Problem They Keep Solving the Hard Way** | **Underlying Problem** | **Overlooked Insight** |
+| **Email 2 — The Work That Becomes Easier** | **Promised Result / Desired Outcome** | **Overlooked Insight + Method / Practical Advantage** |
+
+This mapping is mandatory.
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+For these marketing emails, this means:
+
+> **Each email must provide the reader with a useful insight, clarification, perspective, or practical understanding before asking them to consider the product.**
+
+The email must not function merely as:
+
+> **problem → teaser → product link**
+
+or:
+
+> **promise → hype → product link**
+
+Instead, the reader should receive something genuinely useful from the email itself.
+
+Therefore:
+
+- do not deliberately hide the useful part of the insight
+- do not create artificial curiosity gaps
+- do not use vague statements merely to force a click
+- do not withhold useful information simply because revealing it might improve conversion
+- do not make the reader dependent on the product merely to understand the idea being discussed
+
+The email may naturally create interest in:
+
+- the deeper Method
+- the complete framework
+- broader application
+- full implementation
+- the complete product experience
+
+But that interest must arise from:
+
+> **genuine value + relevance + specificity + credible product positioning**
+
+not artificial withholding.
+
+---
+
+# EMAIL 1 — THE PROBLEM THEY KEEP SOLVING THE HARD WAY
+
+## STRATEGIC JOB
+
+Help the reader recognise:
+
+1. a recurring problem
+2. why they keep approaching it in a difficult or inefficient way
+3. the hidden reason behind that difficulty
+4. the established Overlooked Insight
+5. why a different approach is useful
+6. why the product is relevant as a deeper or broader resource
+
+---
+
+## EMAIL 1 CONTENT MAPPING
+
+### ENTRY POINT
+
+Start from:
+
+> **Underlying Problem**
+
+The opening should make the reader recognise a situation they genuinely experience.
+
+### CENTRAL IDEA
+
+Develop:
+
+> **Overlooked Insight**
+
+The insight must be useful enough to stand on its own within the email's scope.
+
+Do not replace the established insight with a generic marketing idea.
+
+---
+
+## EMAIL 1 STRUCTURE
+
+### 1. SUBJECT LINES
+
+Provide exactly **3 subject-line options**:
+
+1. **Direct Benefit**
+2. **Curiosity**
+3. **Problem Recognition**
+
+All three must remain faithful to the actual email content.
+
+Do not use deceptive curiosity.
+
+### 2. PREVIEW TEXT
+
+Write one concise preview text that naturally complements the selected email angle.
+
+Do not repeat the subject line.
+
+### 3. STRONG OPENING
+
+Open directly from the reader's recurring problem.
+
+The first few lines should create recognition rather than generic motivation.
+
+### 4. THE RECURRING PROBLEM
+
+Explain:
+
+- what the reader keeps trying to do
+- why the approach seems reasonable
+- where unnecessary difficulty enters
+
+Do not exaggerate pain.
+
+### 5. THE HIDDEN REASON
+
+Explain the actual reason the problem persists, using only established product intelligence.
+
+Do not invent psychological or behavioural claims.
+
+### 6. THE OVERLOOKED INSIGHT
+
+Reveal the established Overlooked Insight.
+
+The reader must learn something useful from the email itself.
+
+Explain the insight clearly enough to produce a meaningful shift in understanding.
+
+### 7. WHY A DIFFERENT APPROACH IS USEFUL
+
+Show how the insight changes the way the problem should be approached.
+
+Do not merely say:
+
+> “There is a better way.”
+
+Explain what changes.
+
+### 8. PRODUCT CONNECTION
+
+Introduce the product naturally.
+
+Show how the product takes the established insight further through its:
+
+- Method
+- framework
+- application
+- practical implementation
+- Value Asset
+
+Do not make the product introduction feel like an unrelated sales insertion.
+
+### 9. PRODUCT VALUE
+
+Explain the strongest legitimate reason the product is worth considering.
+
+Focus on:
+
+> **what useful work the product makes easier**
+
+rather than:
+
+> **how much information the product contains.**
+
+### 10. CTA
+
+Include exactly **ONE clear CTA**.
+
+The CTA must be the natural next step after the value already delivered.
+
+Do not use fake urgency or pressure.
+
+### 11. CLOSING / P.S.
+
+End with either:
+
+- a concise closing
+
+or:
+
+- a concise P.S.
+
+Use it only if it adds value.
+
+Do not repeat the CTA unnecessarily.
+
+---
+
+# EMAIL 2 — THE WORK THAT BECOMES EASIER
+
+## STRATEGIC JOB
+
+Help the reader recognise:
+
+1. a meaningful result they want
+2. what becomes easier because of the established approach
+3. what the Method changes
+4. the specific intellectual or practical advantage
+5. what work, uncertainty, mistakes, or unnecessary effort the product can reduce
+6. why the product is worth owning
+
+---
+
+## EMAIL 2 CONTENT MAPPING
+
+### ENTRY POINT
+
+Start from:
+
+> **Promised Result / Desired Outcome**
+
+The opening should make the reader recognise a meaningful result they genuinely want.
+
+Do not exaggerate the promise.
+
+### CENTRAL IDEA
+
+Develop:
+
+> **Overlooked Insight + Method / Practical Advantage**
+
+Show the logical connection between the insight and what the Method makes easier.
+
+---
+
+## EMAIL 2 STRUCTURE
+
+### 1. SUBJECT LINES
+
+Provide exactly **3 subject-line options**:
+
+1. **Direct Benefit**
+2. **Curiosity**
+3. **Problem Recognition**
+
+All three must accurately represent the email.
+
+Do not use misleading subject lines.
+
+### 2. PREVIEW TEXT
+
+Write one concise preview text that complements the email's central idea.
+
+Do not simply repeat the subject line.
+
+### 3. STRONG OPENING
+
+Start from the desired result.
+
+The reader should immediately understand what useful change is being discussed.
+
+### 4. THE DESIRED RESULT
+
+Clarify the result in realistic terms.
+
+Do not promise guaranteed transformation.
+
+### 5. WHAT BECOMES EASIER
+
+Explain specifically what becomes easier because of the established approach.
+
+This may involve:
+
+- thinking
+- understanding
+- deciding
+- planning
+- executing
+- avoiding mistakes
+- reducing uncertainty
+- organising work
+
+Only include advantages supported by the actual product.
+
+### 6. INSIGHT → METHOD → ADVANTAGE
+
+Make the logical chain visible:
+
+> **Overlooked Insight → Method / Mechanism → Practical Advantage**
+
+Do not merely name the Method.
+
+Explain enough for the reader to understand why it matters.
+
+### 7. WHAT WORK THE PRODUCT REDUCES
+
+Show what the product can legitimately reduce for the reader, such as:
+
+- figuring everything out from scratch
+- unnecessary trial and error
+- avoidable confusion
+- scattered thinking
+- inefficient effort
+
+Do not claim that the product eliminates all effort.
+
+### 8. PRODUCT RELEVANCE
+
+Introduce the product naturally.
+
+Show why it is relevant to someone who wants the result or advantage described in the email.
+
+### 9. PRODUCT VALUE
+
+Communicate the strongest legitimate value advantage.
+
+Do not sell:
+
+- page count
+- information volume
+- number of chapters
+- complexity
+- generic comprehensiveness
+
+Sell the actual:
+
+> **intellectual advantage + practical usefulness**
+
+delivered by the product.
+
+### 10. CTA
+
+Include exactly **ONE clear CTA**.
+
+The CTA must follow logically from the value already delivered.
+
+### 11. CLOSING / P.S.
+
+Use a concise closing or P.S. only when it adds something useful.
+
+Do not create artificial urgency.
+
+---
+
+# EMAIL DIFFERENTIATION RULE
+
+The two emails must have genuinely different:
+
+- subject-line angles
+- openings
+- entry points
+- reader questions
+- argument structures
+- emotional starting points
+- product positioning within the email
+
+### EMAIL 1
+
+The reader should think:
+
+> **“I have been trying to solve this problem the hard way.”**
+
+### EMAIL 2
+
+The reader should think:
+
+> **“This approach could make an important part of my work easier.”**
+
+Do not simply rewrite Email 1 from another angle.
+
+---
+
+# VALUE COMMUNICATION RULE
+
+The emails should communicate:
+
+> **specific intellectual and practical value**
+
+not generic promotional excitement.
+
+Prefer:
+
+> “এই পরিবর্তনের ফলে আপনাকে X কাজটি আর শূন্য থেকে গুছিয়ে নিতে হয় না।”
+
+over:
+
+> “এই product-এ প্রচুর valuable information রয়েছে।”
+
+Prefer:
+
+> “সমস্যাটাকে এভাবে দেখলে Y সিদ্ধান্তটি অনেক পরিষ্কার হয়।”
+
+over:
+
+> “এই powerful framework আপনার জীবন বদলে দেবে।”
+
+Every substantive benefit must be supported by the established product intelligence.
+
+---
+
+# NO INFORMATION-VOLUME SELLING
+
+Do not sell:
+
+- pages
+- chapters
+- modules
+- word count
+- amount of information
+- “tons of value”
+- “everything you need”
+
+unless such information is genuinely necessary and established.
+
+The product's value should come from:
+
+> **what it helps the reader understand, decide, avoid, simplify, or do.**
+
+---
+
+# HONEST PERSUASION
+
+The emails may use:
+
+- recognition
+- contrast
+- insight
+- relevance
+- practical advantage
+- realistic future benefit
+
+Do not use:
+
+- fake scarcity
+- artificial urgency
+- fake exclusivity
+- manipulative fear
+- shame
+- false authority
+- fake social proof
+- invented testimonials
+- unsupported guarantees
+- exaggerated outcomes
+- deceptive curiosity
+
+---
+
+# SOURCE FIDELITY
+
+Every substantive claim must be supported by the established product intelligence.
+
+Do not invent:
+
+- statistics
+- testimonials
+- customers
+- customer results
+- research
+- credentials
+- prices
+- discounts
+- deadlines
+- scarcity
+- guarantees
+- bonuses
+- income claims
+- personal experiences
+- endorsements
+- unsupported outcomes
+
+Do not broaden the product promise beyond the Finished Content.
+
+---
+
+# NO PERSONAL TESTIMONIAL FICTION
+
+Do not write as though:
+
+- you personally purchased the product
+- you personally used the product
+- you personally achieved results from it
+- you spoke with customers
+- you independently tested it
+
+unless such firsthand evidence has actually been established in this conversation.
+
+These must remain honest product promotions, not fabricated personal reviews.
+
+---
+
+# LANGUAGE
+
+Write entirely in:
+
+- Bengali (India)
+- natural modern Bengali
+- natural Kolkata-style conversational tone
+- clear, contemporary language
+
+Always address the reader as:
+
+> **“আপনি”**
+
+Never use:
+
+> “তুমি”
+
+or:
+
+> “তুই”
+
+Avoid Bangladeshi vocabulary, spelling, and expressions.
+
+---
+
+# PRODUCT TITLE
+
+Use the:
+
+> **Exact Product Title**
+
+Do not:
+
+- rename it
+- shorten it
+- paraphrase it
+- create a promotional nickname
+
+---
+
+# CTA RULE
+
+Each email must contain:
+
+> **ONE clear CTA**
+
+The CTA must be:
+
+- natural
+- specific
+- relevant
+- consistent with the established product journey
+
+The CTA should feel like the logical next step after the email has already delivered value.
+
+Do not use:
+
+- fake urgency
+- fake scarcity
+- pressure tactics
+- manipulative language
+
+---
+
+# CONTENT DEPTH RULE
+
+Each email must provide genuine value.
+
+However, each email must remain proportionate to its role.
+
+Therefore:
+
+- give the reader the useful insight
+- explain the relevant idea sufficiently
+- show the practical implication
+- connect it to the product
+- do not reproduce the complete product
+
+The distinction is:
+
+> **Do not withhold useful information.**
+
+but also:
+
+> **Do not turn the marketing email into the entire product.**
+
+---
+
+# ASSET BOUNDARY
+
+These assets are:
+
+> **TWO MARKETING EMAILS.**
+
+They are NOT:
+
+- the complete report
+- the Product Description
+- the Long-Form Sales Letter
+- the Graphy.com Sales Page
+- the Facebook posts
+- the Advertisement Infographic
+- a full educational article
+- a complete Method tutorial
+- a personal testimonial
+- a customer case study
+
+Do not perform the job of other assets.
+
+---
+
+# DOWNSTREAM CONTINUITY
+
+Both emails must remain consistent with:
+
+- Selected Keyword
+- Underlying Problem
+- Overlooked Insight
+- Core Message
+- Method / Mechanism
+- Promised Result
+- Value Gap
+- Value Asset
+- Intended Reader
+- Exact Product Title
+- Finished Content
+- established Product Positioning
+- Scope Boundary
+
+Do not introduce a message that could contradict later assets.
+
+---
+
+# FINAL QUALITY CONTROL
+
+Before producing the final emails, internally verify:
+
+## EMAIL 1 — PROBLEM THEY KEEP SOLVING THE HARD WAY
+
+### Source
+- Is the entry point genuinely derived from the Underlying Problem?
+- Is the central insight genuinely derived from the Overlooked Insight?
+
+### Value
+- Does the reader learn something useful?
+- Is the insight actually communicated?
+- Has useful information been deliberately withheld?
+
+### Product
+- Is the product connection natural?
+- Is the product's legitimate value clear?
+
+---
+
+## EMAIL 2 — THE WORK THAT BECOMES EASIER
+
+### Source
+- Is the entry point genuinely derived from the Promised Result / Desired Outcome?
+- Is the central idea genuinely derived from Overlooked Insight + Method / Practical Advantage?
+
+### Value
+- Is the practical advantage clear?
+- Does the reader understand why the Method matters?
+- Has useful information been deliberately withheld?
+
+### Product
+- Is the product connection natural?
+- Is the promised result realistic?
+
+---
+
+## DIFFERENTIATION
+
+- Different subject-line angles?
+- Different openings?
+- Different entry points?
+- Different argument structures?
+- Different reader experience?
+- Not merely a rewritten version of the other email?
+
+---
+
+## READER VALUE
+
+- Does each email provide genuine value within its own scope?
+- Is the useful insight actually delivered?
+- Is either email merely a teaser?
+- Has useful information been deliberately withheld merely to force a click?
+
+---
+
+## SOURCE FIDELITY
+
+- Every substantive claim supported?
+- No invented proof?
+- No fabricated customers?
+- No unsupported outcomes?
+- Exact Product Title preserved?
+- Established Overlooked Insight preserved?
+- Established Method preserved?
+
+---
+
+## PERSUASION
+
+- Persuasive without manipulation?
+- No fake urgency?
+- No fake scarcity?
+- No exaggerated promises?
+- CTA follows naturally from delivered value?
+
+---
+
+## EMAIL QUALITY
+
+- Strong subject lines?
+- Useful preview text?
+- Strong opening?
+- One central idea?
+- Clear product value?
+- One CTA?
+- Concise closing or P.S.?
+- No spammy language?
+- No unnecessary repetition?
+
+---
+
+# FINAL OUTPUT
+
+Return only:
+
+## Email 1 — The Problem They Keep Solving the Hard Way
+
+### Subject Line 1 — Direct Benefit
+[Subject line]
+
+### Subject Line 2 — Curiosity
+[Subject line]
+
+### Subject Line 3 — Problem Recognition
+[Subject line]
+
+### Preview Text
+[Preview text]
+
+[Finished email]
+
+---
+
+## Email 2 — The Work That Becomes Easier
+
+### Subject Line 1 — Direct Benefit
+[Subject line]
+
+### Subject Line 2 — Curiosity
+[Subject line]
+
+### Subject Line 3 — Problem Recognition
+[Subject line]
+
+### Preview Text
+[Preview text]
+
+[Finished email]
+
+Do not include:
+
+- analysis
+- explanation
+- process commentary
+- prompt discussion
+- source notes
+- editorial notes
+- alternative email versions
+
+The final output must contain exactly:
+
+> **2 polished, best-and-final marketing emails, with 3 subject lines and 1 preview text for each.**
+
+This prompt is:
+
+> **LOCKED.**`;
+
+function showPrompt(){
+  document.getElementById("output").textContent=promptText;
+  document.getElementById("status").textContent="Locked prompt loaded.";
+}
+async function copyPrompt(){
+  showPrompt();
+  try{
+    await navigator.clipboard.writeText(promptText);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+function downloadPrompt(){
+  const blob=new Blob([promptText],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-6-Asset-9-Two-Marketing-Emails-Prompt.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearOutput(){
+  document.getElementById("output").textContent="Click “Load Locked Prompt” to display the complete prompt.";
+  document.getElementById("status").textContent="Output cleared.";
+}
+</script>
+</body>
+</html>
