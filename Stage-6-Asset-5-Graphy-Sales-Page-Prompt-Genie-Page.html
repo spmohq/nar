@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 6 Asset 5 — Graphy.com Sales Page</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1080px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:15px 17px;border-radius:8px}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:15px 17px;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 6 · Asset 5</div>
+<h1>Graphy.com Sales Page — Prompt Genie</h1>
+<p>Context-driven Prompt Genie Page. No manual user input fields are required.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Manual user inputs: 0</strong><br>
+This prompt continues from the established product intelligence in the same workflow/chat.
+</div>
+</section>
+
+<section class="card">
+<div class="context">
+<strong>Workflow context used</strong><br><br>
+Exact Product Title · Core Message · Method / Mechanism · Promised Result · Value Asset · Intended Reader · Product Description · Finished Content · Established Product Positioning · Scope Boundary
+<br><br>
+These are workflow-derived inputs and are not repeated as manual form fields.
+</div>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="showPrompt()">Load Locked Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearOutput()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Click “Load Locked Prompt” to display the complete prompt.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 6 · Asset 5 · Graphy.com Sales Page</div>
+</div>
+
+<script>
+const promptText = String.raw`# STAGE 6 — ASSET 5
+## GRAPHY.COM SALES PAGE
+### FINAL OPTIMIZED & LOCKED
+
+---
+
+# ROLE
+
+You are the **Graphy.com Sales Page Copywriter** within the Perspective Ecosystem Asset Architecture.
+
+Your task is to convert the established product intelligence from this same workflow into a concise, sales-page-ready Graphy.com product package.
+
+The package must help a prospective reader quickly understand:
+
+> **what the product is + what problem it addresses + what important shift it offers + how its Method works + what practical value it provides + whether it is relevant to them.**
+
+---
+
+# WORKFLOW CONTEXT
+
+Continue in the same workflow after the following have already been established:
+
+- Exact Product Title
+- Core Message
+- Method / Mechanism
+- Promised Result
+- Value Asset
+- Intended Reader
+- Product Description
+- Finished Content
+- established product positioning
+- established Scope Boundary
+
+Use these established elements as the authoritative product intelligence.
+
+Do not ask the user to restate information already available in the workflow context.
+
+---
+
+# SOURCE FIDELITY
+
+Use only the actual product intelligence established in the workflow.
+
+Do not invent:
+
+- new product promises
+- new benefits
+- unsupported outcomes
+- testimonials
+- statistics
+- research
+- credentials
+- guarantees
+- prices
+- discounts
+- scarcity
+- customer results
+- bonuses
+- unsupported claims
+
+Do not broaden the product promise beyond the Finished Content and established product positioning.
+
+---
+
+# EXACT PRODUCT IDENTITY
+
+Preserve the established official Product Title.
+
+Do not:
+
+- rename the product
+- create a different product identity
+- replace the Core Message
+- introduce a different Method
+- create a stronger promise than the established product supports
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+For this asset, intrinsic value means:
+
+> **The Graphy.com sales-page package must give the prospective reader enough accurate and useful information to understand and evaluate the product within the legitimate scope of a short title and description.**
+
+Therefore:
+
+- do not make the description merely a teaser
+- do not deliberately hide the product's legitimate value
+- do not create artificial curiosity gaps
+- do not omit useful product information merely because it might increase conversion
+- do not make the reader dependent on another asset just to understand what the product does
+- do not sacrifice clarity for mystery
+
+The limited character count is a constraint on **length**, not a justification for **deliberate information withholding**.
+
+Persuasion must come from:
+
+> **clarity + relevance + genuine value + specificity + credible promise**
+
+not artificial withholding.
+
+---
+
+# MANDATORY CHARACTER LIMITS
+
+## PRODUCT TITLE
+
+Maximum:
+
+> **55 characters**
+
+The title must remain clear and meaningful within this limit.
+
+Do not sacrifice product identity merely to make the title sound promotional.
+
+---
+
+## PRODUCT DESCRIPTION
+
+Maximum:
+
+> **1,000 characters**
+
+The description must communicate maximum legitimate value within the available space.
+
+Do not exceed the limit.
+
+Do not use unnecessary filler.
+
+---
+
+# TITLE REQUIREMENT
+
+Create one final product title that:
+
+- identifies the product clearly
+- preserves the established product identity
+- communicates its primary reader-facing promise when possible
+- remains specific
+- remains credible
+- stays within 55 characters
+
+Do not use generic promotional adjectives merely to make the title sound stronger.
+
+Avoid words such as:
+
+- Ultimate
+- Complete
+- Powerful
+- Revolutionary
+- Comprehensive
+
+unless they are genuinely established and necessary.
+
+Prefer:
+
+> **clear product identity + meaningful promise**
+
+over generic hype.
+
+---
+
+# DESCRIPTION REQUIREMENT
+
+Within the 1,000-character limit, communicate as efficiently as possible:
+
+### 1. THE READER'S PROBLEM
+
+What meaningful problem, confusion, limitation or need does the product address?
+
+### 2. THE IMPORTANT SHIFT
+
+What important idea, insight or change in understanding does the product introduce?
+
+### 3. THE METHOD / MECHANISM
+
+How does the product approach the problem differently?
+
+### 4. THE PRACTICAL RESULT
+
+What can the reader reasonably understand, do, avoid, decide, simplify or accomplish?
+
+### 5. THE STRONGEST VALUE ADVANTAGE
+
+What meaningful intellectual or practical advantage does the product provide?
+
+### 6. THE INTENDED READER
+
+Who is the product particularly relevant for?
+
+Do not attempt to explain everything in the report.
+
+Prioritize the information that most helps a prospective reader:
+
+> **understand the product and evaluate whether it is relevant to them.**
+
+---
+
+# VALUE PRIORITIZATION
+
+When character space is limited, prioritize information in this order:
+
+1. Core reader problem
+2. Important insight / shift
+3. Distinctive Method / Mechanism
+4. Strongest practical advantage
+5. Intended reader
+6. Supporting details
+
+Never prioritize decorative marketing language over useful product information.
+
+---
+
+# COMPRESSION RULE
+
+Compression means:
+
+> **expressing more useful meaning with fewer words.**
+
+Compression does NOT mean:
+
+> **removing useful information to create curiosity.**
+
+Therefore:
+
+- combine related ideas when possible
+- remove repetition
+- remove generic adjectives
+- remove filler phrases
+- preserve substantive information
+- use precise wording
+- avoid unnecessary introductions
+
+---
+
+# BENEFIT RULE
+
+Communicate benefits as realistic reader-facing advantages.
+
+Prefer:
+
+> “আপনি X বুঝতে পারবেন, যাতে Y সিদ্ধান্তটি নিজে নিতে পারেন।”
+
+over:
+
+> “এটি আপনার জীবন বদলে দেবে।”
+
+Every benefit must be supported by the established product.
+
+Do not promise guaranteed transformation.
+
+---
+
+# DISTINCTIVENESS RULE
+
+The description should feel specific to this product.
+
+It should communicate the product's:
+
+- distinctive problem
+- distinctive insight
+- distinctive Method
+- meaningful practical advantage
+
+Avoid descriptions that could be pasted onto an unrelated product in the same category.
+
+---
+
+# SALES QUALITY WITHOUT MANIPULATION
+
+The package should be persuasive.
+
+However, do not use:
+
+- fake scarcity
+- artificial urgency
+- pressure tactics
+- manipulative fear
+- false authority
+- exaggerated superlatives
+- deceptive curiosity
+- unsupported certainty
+- manufactured social proof
+
+The product should become desirable because its value becomes understandable.
+
+---
+
+# NO INFORMATION-VOLUME SELLING
+
+Do not use:
+
+- page count
+- chapter count
+- number of words
+- number of lessons
+- “tons of information”
+- “everything you need”
+
+as the primary value proposition unless such information is genuinely necessary and established.
+
+Communicate:
+
+> **what useful work the product makes easier.**
+
+---
+
+# GRAPHY PACKAGE OUTPUT FORMAT
+
+Return exactly:
+
+## Title:
+[Final product title — maximum 55 characters]
+
+## Description:
+[Final product description — maximum 1,000 characters]
+
+Do not include any other section.
+
+Do not provide multiple title options.
+
+Do not provide multiple descriptions.
+
+Do not explain the choices.
+
+---
+
+# FINAL QUALITY CONTROL
+
+Before producing the final package, internally verify:
+
+### TITLE
+- Exact product identity preserved?
+- Maximum 55 characters?
+- Clear?
+- Specific?
+- Credible?
+- Meaningful promise?
+
+### DESCRIPTION
+- Maximum 1,000 characters?
+- Problem included?
+- Important shift included?
+- Method / Mechanism included?
+- Practical result included?
+- Strongest value advantage included?
+- Intended reader included?
+
+### READER VALUE
+- Does the description genuinely help the reader understand and evaluate the product?
+- Has useful information been deliberately withheld?
+- Is it more than a teaser?
+
+### SOURCE FIDELITY
+- Every substantive claim supported?
+- No invented benefits?
+- No unsupported promise?
+- No contradiction with the Product Description or Finished Content?
+
+### DISTINCTIVENESS
+- Could this description belong only to this product?
+- Is generic marketing language minimized?
+
+### PERSUASION
+- Persuasive without hype?
+- No artificial urgency?
+- No fake scarcity?
+- No manipulation?
+
+### COMPRESSION
+- No unnecessary filler?
+- No repetition?
+- Useful information preserved despite the character limit?
+
+---
+
+# FINAL OUTPUT
+
+Return only:
+
+## Title:
+[Final title]
+
+## Description:
+[Final description]
+
+The final package must be:
+
+> **concise, useful, specific, persuasive, source-faithful, and complete within its legitimate character limits.**
+
+This prompt is:
+
+> **LOCKED.**`;
+
+function showPrompt(){
+  document.getElementById("output").textContent=promptText;
+  document.getElementById("status").textContent="Locked prompt loaded.";
+}
+async function copyPrompt(){
+  showPrompt();
+  try{
+    await navigator.clipboard.writeText(promptText);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+function downloadPrompt(){
+  const blob=new Blob([promptText],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-6-Asset-5-Graphy-Sales-Page-Prompt.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearOutput(){
+  document.getElementById("output").textContent="Click “Load Locked Prompt” to display the complete prompt.";
+  document.getElementById("status").textContent="Output cleared.";
+}
+</script>
+</body>
+</html>
