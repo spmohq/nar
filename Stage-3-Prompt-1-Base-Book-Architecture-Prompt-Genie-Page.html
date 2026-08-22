@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 3 — Base Book Architecture</title>
+<style>
+  :root{
+    --bg:#f7f1e3;
+    --card:#ffffff;
+    --text:#2f2a24;
+    --muted:#6f665d;
+    --border:#ded6ca;
+    --gold:#c89b3c;
+    --gold-dark:#8b5e1a;
+    --soft:#fbf8f1;
+    --danger:#9a3d2f;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.55;
+  }
+  .wrap{max-width:1000px;margin:auto;padding:28px 16px 56px}
+  .hero{
+    background:linear-gradient(135deg,#fffdf8,#f4ead5);
+    border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px;
+  }
+  .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--gold-dark);margin-bottom:8px}
+  h1{margin:0 0 8px;font-size:clamp(1.55rem,4vw,2.35rem);line-height:1.15}
+  .hero p{margin:8px 0 0;color:var(--muted);max-width:820px}
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;
+    margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)
+  }
+  label{display:block;font-weight:800;margin-bottom:8px}
+  .hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+  textarea{
+    width:100%;min-height:190px;resize:vertical;border:1px solid var(--border);
+    border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);
+    background:#fffdf9;outline:none
+  }
+  textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+  .optional{font-weight:600;color:var(--muted);font-size:.85rem}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  button{
+    border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;
+    cursor:pointer;background:var(--gold);color:#fff
+  }
+  button.secondary{background:#eee7db;color:var(--text)}
+  button.danger{background:#f2e0dc;color:var(--danger)}
+  button:hover{filter:brightness(.98)}
+  .status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+  .output{
+    min-height:520px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);
+    border-radius:12px;padding:16px;overflow:auto;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem
+  }
+  .note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;
+    border-radius:8px;color:#51483f}
+  .footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+  @media(max-width:600px){
+    .wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:150px}
+    button{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Stage 3 · Base Book Architecture</div>
+    <h1>Base Book Architecture Thinking</h1>
+    <p>একটি thinking and architecture tool — Stage 1-এর Perspective এবং Stage 2-এর Value Gap-কে একটি coherent Base Book reader journey-তে রূপান্তর করার জন্য।</p>
+  </section>
+
+  <section class="card">
+    <div class="note">
+      <strong>ব্যবহার:</strong> Stage 1 এবং Stage 2-এর final outputs paste করুন। চাইলে অতিরিক্ত human direction যোগ করুন। এই page actual book লিখবে না; এটি locked Stage 3 prompt generate করবে।
+    </div>
+  </section>
+
+  <section class="card">
+    <label for="stage1">1. Stage 1 — Perspective Thinking Output <span style="color:#9a3d2f">*</span></label>
+    <div class="hint">STAGE 1 — PROMPT 1-এর সম্পূর্ণ final output এখানে paste করুন।</div>
+    <textarea id="stage1" placeholder="PASTE THE FINAL OUTPUT OF STAGE 1 — PROMPT 1 HERE"></textarea>
+  </section>
+
+  <section class="card">
+    <label for="stage2">2. Stage 2 — Value-Gap Thinking Output <span style="color:#9a3d2f">*</span></label>
+    <div class="hint">STAGE 2 — PROMPT 1-এর সম্পূর্ণ final output এখানে paste করুন।</div>
+    <textarea id="stage2" placeholder="PASTE THE FINAL OUTPUT OF STAGE 2 — PROMPT 1 HERE"></textarea>
+  </section>
+
+  <section class="card">
+    <label for="direction">3. Additional Human Direction <span class="optional">(optional)</span></label>
+    <div class="hint">নতুন কোনও thinking, preference, correction, constraint বা context থাকলে এখানে দিন।</div>
+    <textarea id="direction" placeholder="INSERT ANY ADDITIONAL THINKING, PREFERENCE, CORRECTION, CONSTRAINT, OR CONTEXT HERE, IF ANY"></textarea>
+  </section>
+
+  <section class="card">
+    <div class="actions">
+      <button onclick="generatePrompt()">Generate Prompt</button>
+      <button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+      <button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+      <button class="danger" onclick="clearAll()">Clear</button>
+    </div>
+    <div id="status" class="status"></div>
+  </section>
+
+  <section class="card">
+    <label>Generated Prompt</label>
+    <div id="output" class="output">Your generated prompt will appear here.</div>
+  </section>
+
+  <div class="footer">Prompt Genie · Stage 3 — Base Book Architecture · Prompt 1</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 3 — BASE BOOK ARCHITECTURE
+## PROMPT 1 — BASE BOOK ARCHITECTURE THINKING
+### FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+## PURPOSE
+
+এই prompt-এর কাজ Base Book-এর actual content লেখা নয়।
+
+এর কাজ হলো Stage 1-এর Perspective Thinking এবং Stage 2-এর Value-Gap Thinking-এর ভিত্তিতে:
+
+> **Perspective-টি প্রতিষ্ঠা করার জন্য Base Book-এর ideal architecture কী হওয়া উচিত তা নির্ধারণ করা।**
+
+এই stage-এর মূল প্রশ্ন:
+
+> **“এই Perspective এবং Primary Value Gap-কে কেন্দ্র করে reader-কে একটি coherent logical journey-র মধ্য দিয়ে নিয়ে যেতে Base Book-এ আসলে কী কী substantive stage থাকা দরকার, এবং কোন ক্রমে?”**
+
+Base Book-কে শুধু information container হিসেবে দেখবেন না।
+
+Base Book-এর কাজ হবে:
+
+> **Reader-এর current way of seeing থেকে Perspective-সম্মত একটি নতুন, যুক্তিসঙ্গত এবং practically useful way of seeing-এর দিকে একটি coherent journey তৈরি করা।**
+
+---
+
+# INPUT
+
+## STAGE 1 — PERSPECTIVE THINKING OUTPUT
+
+[PASTE THE FINAL OUTPUT OF STAGE 1 — PROMPT 1 HERE]
+
+## STAGE 2 — VALUE-GAP THINKING OUTPUT
+
+[PASTE THE FINAL OUTPUT OF STAGE 2 — PROMPT 1 HERE]
+
+## ADDITIONAL HUMAN DIRECTION
+
+[INSERT ANY ADDITIONAL THINKING, PREFERENCE, CORRECTION, CONSTRAINT, OR CONTEXT HERE, IF ANY]
+
+---
+
+# CORE DOCTRINE
+
+Content creation must remain:
+
+> **Perspective-first, not topic-first.**
+
+Base Book architecture must therefore not begin with:
+
+> “এই বিষয়ের কোন কোন chapter থাকা উচিত?”
+
+বরং শুরু হবে:
+
+> **“Reader-কে কোন logical transformation-এর মধ্য দিয়ে নিয়ে গেলে Perspective-টি তার কাছে নতুন, যুক্তিসঙ্গত এবং practically useful way of seeing হয়ে উঠবে?”**
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+The Base Book must therefore be complete enough within its intended scope to provide genuine coherent value.
+
+It must not deliberately leave essential understanding unfinished merely to push the reader toward Public Content, Private Content, another product, or another content layer.
+
+Progression beyond the Base Book may exist because readers naturally want:
+
+- prerequisite understanding,
+- deeper exploration,
+- further application,
+- practice,
+- specialisation,
+- or continued learning.
+
+It must not depend on artificial withholding of essential value.
+
+---
+
+# BASE BOOK PRINCIPLE
+
+The Base Book is the foundational content whose primary job is to establish the Perspective.
+
+It should help the reader move from:
+
+> **Current Way of Seeing**
+
+to:
+
+> **Perspective-Consistent Way of Seeing**
+
+while meaningfully addressing the:
+
+> **Primary Value Gap**
+
+The Base Book should not attempt to solve every problem related to the broader topic.
+
+Its scope must remain aligned with:
+
+> **Perspective → Primary Value Gap → Reader Shift → Finish Line**
+
+---
+
+# TASK
+
+Stage 1 এবং Stage 2-এর outputs বিশ্লেষণ করে Base Book-এর ideal architecture নির্ধারণ করুন।
+
+Do not write the actual book.
+
+Do not prematurely generate polished chapter content.
+
+First determine the architecture that the content must follow.
+
+---
+
+# 1. BASE BOOK JOB
+
+একটি Base Book-এর জন্য ONE primary job নির্ধারণ করুন।
+
+### Primary Job
+
+[ ]
+
+### Why This Is the Correct Job
+
+[ ]
+
+### What the Base Book Must Establish
+
+[ ]
+
+### What the Base Book Does Not Need to Establish
+
+[ ]
+
+Base Book-এর job যেন generic না হয়।
+
+উদাহরণ:
+
+> “বিষয়টি সম্পর্কে reader-কে educate করা”
+
+এটি যথেষ্ট নয়।
+
+বরং job-টি Perspective establishment এবং Value Gap crossing-এর সঙ্গে directly connected হতে হবে।
+
+---
+
+# 2. BASE BOOK SCOPE
+
+Determine:
+
+### What Is Inside the Scope
+
+[ ]
+
+### What Is Outside the Scope
+
+[ ]
+
+### Why This Scope Is Appropriate
+
+[ ]
+
+### What Would Make the Book Too Broad
+
+[ ]
+
+### What Would Make the Book Too Narrow
+
+[ ]
+
+Base Book-কে unnecessarily comprehensive করবেন না।
+
+আবার এমনভাবে narrow করবেন না যাতে Perspective establish করার জন্য প্রয়োজনীয় understanding বাদ পড়ে।
+
+---
+
+# 3. READER STARTING STATE
+
+Stage 2 থেকে Base Book-এর actual starting state নির্ধারণ করুন।
+
+Reader-এর:
+
+- knowledge
+- awareness
+- interpretation
+- belief
+- assumptions
+- confusion
+- uncertainty
+- capability
+- decision-readiness
+
+এর মধ্যে কোনগুলো Base Book-এর শুরুতে relevant, তা identify করুন।
+
+### Reader Starting State
+
+[ ]
+
+### Most Important Starting-State Problem
+
+[ ]
+
+### What the Reader Is Likely to Assume
+
+[ ]
+
+### What the Reader May Not Yet Recognise
+
+[ ]
+
+---
+
+# 4. READER FINISH LINE
+
+Base Book শেষ করার পরে reader-এর realistic অবস্থাটি define করুন।
+
+### Reader Finish Line
+
+[ ]
+
+By the Finish Line, the reader should ideally:
+
+- understand the Perspective
+- understand why it matters
+- recognise the Primary Value Gap
+- understand the Specific Problem
+- understand the relevant Bottleneck
+- understand the proposed Approach
+- evaluate relevant options where necessary
+- make the Key Decision
+- know an appropriate starting point
+- understand the realistic next step
+
+সব element force করবেন না।
+
+শুধু genuinely relevant outcomes রাখুন।
+
+---
+
+# 5. CORE READER SHIFT
+
+Base Book-এর central reader shift নির্ধারণ করুন:
+
+> **Before → After**
+
+### Before
+
+[ ]
+
+### After
+
+[ ]
+
+### Core Shift
+
+[ ]
+
+### Why This Shift Is the Central Organising Principle
+
+[ ]
+
+এই shift-এর বাইরে থাকা information-এর প্রয়োজনীয়তা পরবর্তী architecture analysis-এ যাচাই করুন।
+
+---
+
+# 6. CORE NARRATIVE JOURNEY
+
+Base Book-এর পুরো narrative logic একটি coherent chain-এ প্রকাশ করুন:
+
+> **Current Way of Seeing**
+>
+> →
+>
+> **Recognition of the Problem**
+>
+> →
+>
+> **Recognition of the Value Gap**
+>
+> →
+>
+> **Why the Gap Exists / Matters**
+>
+> →
+>
+> **Reframing**
+>
+> →
+>
+> **Perspective**
+>
+> →
+>
+> **Why the Perspective Makes Sense**
+>
+> →
+>
+> **Approach / Method / Framework**
+>
+> →
+>
+> **Evaluation / Choice**
+>
+> →
+>
+> **Application**
+>
+> →
+>
+> **Result**
+>
+> →
+>
+> **Finish Line**
+
+প্রয়োজন অনুযায়ী chain adapt করুন।
+
+প্রতিটি Base Book-এ সব stage থাকা বাধ্যতামূলক নয়।
+
+---
+
+# 7. REQUIRED READER QUESTIONS
+
+Reader journey-এর প্রতিটি গুরুত্বপূর্ণ পর্যায়ে reader-এর মনে কী প্রশ্ন থাকবে তা determine করুন।
+
+Potential question types:
+
+- আসল সমস্যাটা কী?
+- আমি এতদিন বিষয়টিকে এভাবে কেন দেখেছি?
+- এই approach যথেষ্ট নয় কেন?
+- আসলে কী missing?
+- অন্যভাবে দেখলে কী পরিবর্তন হয়?
+- নতুন Perspective কী?
+- কেন এটি বিশ্বাসযোগ্য?
+- এটি কীভাবে কাজ করে?
+- কোন approach / option আমার জন্য appropriate?
+- এখন আমি কী করব?
+- আমি কীভাবে শুরু করব?
+- কী realistic result আশা করা যায়?
+
+সব প্রশ্ন force করবেন না।
+
+শুধু journey-এর জন্য genuinely necessary questions রাখুন।
+
+---
+
+# 8. NECESSARY BELIEF / INTERPRETATION SHIFTS
+
+Perspective establish করার জন্য reader-এর মধ্যে কোন belief বা interpretation shifts ঘটতে হবে তা নির্ধারণ করুন।
+
+### Shift 1
+
+[ ]
+
+### Shift 2
+
+[ ]
+
+### Shift 3
+
+[ ]
+
+প্রয়োজনে আরও যোগ করুন।
+
+প্রতিটি shift-এর জন্য determine করুন:
+
+- কেন এটি দরকার
+- কোন আগের assumption এটি পরিবর্তন করে
+- কোন পরবর্তী understanding-এর foundation তৈরি করে
+
+সবচেয়ে গুরুত্বপূর্ণ shift-গুলোকে priority দিন।
+
+---
+
+# 9. NECESSARY UNDERSTANDING
+
+Base Book-এর মাধ্যমে reader-এর কী কী understanding তৈরি হওয়া আবশ্যক তা identify করুন।
+
+Consider:
+
+- concepts
+- distinctions
+- mechanisms
+- principles
+- examples
+- comparisons
+- evidence
+- limitations
+- decision criteria
+- application knowledge
+
+প্রতিটি item-এর জন্য internally ask করুন:
+
+> **“Perspective establish করার জন্য এটি সত্যিই necessary, নাকি শুধু topic-related?”**
+
+শুধু necessary elements রাখুন।
+
+---
+
+# 10. CONTENT DEPENDENCY MAP
+
+প্রয়োজনীয় understanding-গুলোর dependency নির্ধারণ করুন।
+
+For each important element:
+
+### What Must Be Understood First?
+
+[ ]
+
+### What Depends on It?
+
+[ ]
+
+### What Can Be Understood Independently?
+
+[ ]
+
+### What Must Come Later?
+
+[ ]
+
+এর মাধ্যমে content-এর natural sequence নির্ধারণ করুন।
+
+---
+
+# 11. SUBSTANTIVE STAGE IDENTIFICATION
+
+এখন determine করুন Base Book-এ কতগুলি substantive stage genuinely দরকার।
+
+Do not assume:
+
+- 5 chapters
+- 7 chapters
+- 10 chapters
+- 12 chapters
+
+কোনও predetermined number ব্যবহার করবেন না।
+
+প্রতিটি stage-এর existence justify করতে হবে।
+
+একটি stage রাখুন শুধুমাত্র যদি সেটি:
+
+- একটি গুরুত্বপূর্ণ reader question resolve করে
+- একটি necessary understanding তৈরি করে
+- একটি belief / interpretation shift ঘটায়
+- একটি objection resolve করে
+- Value Gap crossing-এ সাহায্য করে
+- একটি decision enable করে
+- practical application সম্ভব করে
+- অথবা Finish Line-এ পৌঁছানোর জন্য necessary হয়
+
+---
+
+# 12. STAGE SEQUENCING
+
+Substantive stages-কে chronological reader journey অনুযায়ী সাজান।
+
+প্রতিটি stage-এর জন্য determine করুন:
+
+### Stage Title
+
+[ ]
+
+### Stage Purpose
+
+[ ]
+
+### Reader Question
+
+[ ]
+
+### Reader State Before
+
+[ ]
+
+### Reader State After
+
+[ ]
+
+### Key Understanding / Shift
+
+[ ]
+
+### Required Content
+
+[ ]
+
+### Required Example / Evidence / Demonstration
+
+[যদি relevant হয়]
+
+### Required Decision / Action / Tool
+
+[যদি relevant হয়]
+
+### Connection to Primary Value Gap
+
+[ ]
+
+---
+
+# 13. STAGE TRANSITION LOGIC
+
+প্রতিটি stage থেকে পরবর্তী stage-এ যাওয়ার logical reason determine করুন।
+
+For each transition:
+
+> **Because the reader now understands X, they are ready to understand Y.**
+
+Determine:
+
+### Stage X Enables
+
+[ ]
+
+### Stage Y Requires
+
+[ ]
+
+### Why Y Should Come After X
+
+[ ]
+
+যদি কোনও transition শুধুমাত্র traditional book structure-এর কারণে হয়, সেটি reconsider করুন।
+
+---
+
+# 14. OPENING ARCHITECTURE
+
+Base Book-এর Opening-এর strategic job নির্ধারণ করুন।
+
+Opening should:
+
+- reader-এর actual situation surface করতে পারে
+- Specific Problem recognise করাতে পারে
+- Primary Value Gap reveal করতে পারে
+- কেন বিষয়টি matter করে তা establish করতে পারে
+- Core Promise clarify করতে পারে
+- reader-কে journey-তে enter করাতে পারে
+
+### Opening Job
+
+[ ]
+
+### Opening Reader Question
+
+[ ]
+
+### Opening Reader State
+
+[ ]
+
+### Opening Reader State After
+
+[ ]
+
+### What the Opening Must NOT Do
+
+[ ]
+
+Generic background দিয়ে শুরু করবেন না যদি তা reader journey-এর জন্য necessary না হয়।
+
+---
+
+# 15. MIDDLE-JOURNEY ARCHITECTURE
+
+Base Book-এর middle অংশে reader কীভাবে Perspective-এর দিকে progress করবেন তা determine করুন।
+
+Identify:
+
+- recognition
+- reframing
+- explanation
+- mechanism
+- comparison
+- evaluation
+- demonstration
+- application
+
+এর মধ্যে কোনগুলো genuinely necessary তা নির্বাচন করুন।
+
+### Middle-Journey Logic
+
+[ ]
+
+### Major Shifts
+
+[ ]
+
+### Major Decisions
+
+[ ]
+
+### Major Understanding Milestones
+
+[ ]
+
+---
+
+# 16. LAST-MILE ARCHITECTURE
+
+Base Book-এর শেষে reader যেন শুধু:
+
+> “আমি বুঝেছি।”
+
+এই অবস্থায় না থাকেন।
+
+বরং যেখানে relevant:
+
+> **“আমি বুঝেছি এবং এখন কীভাবে শুরু করব তা জানি।”**
+
+সেই অবস্থায় পৌঁছান।
+
+Determine:
+
+### Understanding → Action Gap
+
+[ ]
+
+### What Reader Still Needs
+
+[ ]
+
+### What the Book Should Provide
+
+[ ]
+
+### Starting Action
+
+[ ]
+
+### Practical Tool / Asset
+
+[ ]
+
+### Main Implementation Friction
+
+[ ]
+
+### How the Book Reduces It
+
+[ ]
+
+---
+
+# 17. TEN-MINUTE WIN INTEGRATION
+
+Stage 2-এ Ten-Minute Win meaningful হলে Base Book architecture-এ সেটির ideal placement নির্ধারণ করুন।
+
+### Ten-Minute Win
+
+[ ]
+
+### Best Placement
+
+[ ]
+
+### Why It Belongs There
+
+[ ]
+
+### What Reader Should Experience After Completing It
+
+[ ]
+
+যদি Ten-Minute Win Stage 2-এ appropriate না হয়, নতুন করে force করবেন না।
+
+---
+
+# 18. CORE VALUE ASSET INTEGRATION
+
+Stage 2-এর Core Value Asset যদি meaningful হয়, Base Book-এ সেটি কোথায় এবং কীভাবে deliver করা উচিত তা determine করুন।
+
+### Core Value Asset
+
+[ ]
+
+### Best Placement
+
+[ ]
+
+### What the Asset Helps the Reader Do
+
+[ ]
+
+### What Reader Work It Removes
+
+[ ]
+
+### How It Connects to the Primary Value Gap
+
+[ ]
+
+Asset-কে শুধু bonus হিসেবে দেখবেন না।
+
+যদি এটি core reader value deliver করে, architecture-এ তার proper role দিন।
+
+---
+
+# 19. EVIDENCE & CREDIBILITY ARCHITECTURE
+
+যেখানে subject consequential বা evidence-sensitive:
+
+Determine:
+
+- কোথায় evidence দরকার
+- কোথায় example যথেষ্ট
+- কোথায় demonstration দরকার
+- কোথায় uncertainty acknowledge করতে হবে
+- কোথায় limitation জানাতে হবে
+- কোথায় safeguards দরকার
+
+### Evidence Requirements
+
+[ ]
+
+### Credibility Requirements
+
+[ ]
+
+### Important Limitations
+
+[ ]
+
+কোনও unsupported evidence বা claim invent করবেন না।
+
+---
+
+# 20. OBJECTION & MISCONCEPTION ARCHITECTURE
+
+Perspective establish করতে reader-এর কোন genuine:
+
+- doubt
+- misconception
+- objection
+- alternative interpretation
+- concern
+
+address করা দরকার তা identify করুন।
+
+শুধুমাত্র genuinely relevant objection রাখুন।
+
+### Objection / Misconception
+
+[ ]
+
+### Why It Matters
+
+[ ]
+
+### Where It Should Be Addressed
+
+[ ]
+
+### What It Should Change
+
+[ ]
+
+---
+
+# 21. OPTION / COMPARISON ARCHITECTURE
+
+যদি Perspective-এর সঙ্গে multiple approaches, methods, options বা forms যুক্ত থাকে:
+
+Determine:
+
+- কোন options reader-এর জানা দরকার
+- কোন comparison necessary
+- কোন decision criteria দরকার
+- কোন options বাদ দেওয়া যায়
+- কীভাবে reader নিজের জন্য appropriate option বেছে নেবেন
+
+### Options That Matter
+
+[ ]
+
+### Decision Criteria
+
+[ ]
+
+### Comparison Requirement
+
+[ ]
+
+### Key Choice
+
+[ ]
+
+যদি options না থাকে:
+
+> **No meaningful option/comparison architecture required.**
+
+---
+
+# 22. READER-WORK REDUCTION
+
+Base Book reader-এর কোন কাজগুলো নিজের architecture-এর মাধ্যমে কমিয়ে দেবে তা নির্ধারণ করুন।
+
+Consider:
+
+- information searching
+- concept assembly
+- comparison
+- decision-making
+- planning
+- sequencing
+- starting
+- tool selection
+- application
+
+### Work Removed
+
+[ ]
+
+### Work Simplified
+
+[ ]
+
+### Work That Reader Still Owns
+
+[ ]
+
+Base Book reader-এর agency কেড়ে নেবে না।
+
+কিন্তু unnecessary assembly work কমাবে।
+
+---
+
+# 23. NON-WITHHOLDING ARCHITECTURE TEST
+
+Internally verify করুন:
+
+> **“Base Book-এর essential understanding-এর কোনও অংশ কি শুধু অন্য content layer-এ reader-কে পাঠানোর জন্য deliberately withheld?”**
+
+যদি হ্যাঁ:
+
+> architecture revise করুন।
+
+Base Book-এর scope সীমিত হতে পারে।
+
+কিন্তু তার scope-এর মধ্যে essential value deliberately incomplete করা যাবে না।
+
+---
+
+# 24. CONTENT-SCOPE TEST
+
+প্রতিটি substantive stage-এর জন্য determine করুন:
+
+### Why This Stage Exists
+
+[ ]
+
+### What It Contributes
+
+[ ]
+
+### What Would Be Lost If Removed
+
+[ ]
+
+যদি stage বাদ দিলে reader journey বা promised result-এর meaningful ক্ষতি না হয়:
+
+> Stage-টি unnecessary হতে পারে।
+
+---
+
+# 25. DUPLICATION TEST
+
+Determine:
+
+- কোন stage একই reader need address করছে
+- কোন content unnecessarily repeated
+- কোন concept একবার গভীরভাবে explain করাই যথেষ্ট
+- কোথায় deliberate reinforcement genuinely useful
+
+প্রয়োজন হলে merge করুন।
+
+---
+
+# 26. OVERLOAD TEST
+
+একই সঙ্গে পরীক্ষা করুন:
+
+> **“আমরা কি reader-এর জন্য unnecessarily বেশি information ঢুকিয়ে দিচ্ছি?”**
+
+Identify:
+
+- topic-related but non-essential content
+- interesting but strategically irrelevant material
+- unnecessary historical background
+- excessive examples
+- unnecessary options
+- duplicate explanations
+
+প্রয়োজন না হলে বাদ দিন।
+
+---
+
+# 27. FINISH-LINE TEST
+
+Base Book-এর architecture শেষ হওয়ার পরে reader কি:
+
+- Perspective বুঝবেন?
+- Primary Value Gap বুঝবেন?
+- Specific Problem recognise করবেন?
+- Approach-এর logic বুঝবেন?
+- Key Decision নিতে পারবেন?
+- Practical starting point জানবেন?
+- Main friction সম্পর্কে প্রস্তুত থাকবেন?
+- Realistic result-এর দিকে এগোতে পারবেন?
+
+যদি গুরুত্বপূর্ণ কোনও answer “না” হয়:
+
+> architecture revise করুন।
+
+---
+
+# 28. FINAL BASE BOOK ARCHITECTURE
+
+সব analysis-এর পরে একটি coherent architecture তৈরি করুন।
+
+প্রথমে:
+
+### Base Book Core Promise
+
+[ ]
+
+### Base Book Job
+
+[ ]
+
+### Reader Starting State
+
+[ ]
+
+### Reader Finish Line
+
+[ ]
+
+### Primary Reader Shift
+
+[ ]
+
+### Primary Value Gap
+
+[ ]
+
+### Specific Problem
+
+[ ]
+
+### Key Decision
+
+[ ]
+
+তারপর:
+
+> **Complete Reader Journey**
+
+এর substantive stages chronological order-এ দিন।
+
+প্রতিটি stage-এর জন্য:
+
+### Stage Title
+
+[ ]
+
+- **Purpose:**
+- **Reader Question:**
+- **Reader State Before:**
+- **Reader State After:**
+- **Key Understanding / Shift:**
+- **Key Content to Cover:**
+- **Required Example / Evidence / Demonstration:**
+- **Required Decision / Action / Tool / Asset:**
+- **Connection to Primary Value Gap:**
+
+শুধু genuinely relevant fields ব্যবহার করুন।
+
+---
+
+# 29. FINAL ARCHITECTURE LOGIC
+
+সবশেষে পুরো Base Book-কে একটি compressed chain-এ প্রকাশ করুন:
+
+> **Reader Current State**
+>
+> →
+>
+> **Problem Recognition**
+>
+> →
+>
+> **Value Gap Recognition**
+>
+> →
+>
+> **Reframing**
+>
+> →
+>
+> **Perspective**
+>
+> →
+>
+> **Understanding**
+>
+> →
+>
+> **Evaluation**
+>
+> →
+>
+> **Decision**
+>
+> →
+>
+> **Application**
+>
+> →
+>
+> **Specific Result**
+>
+> →
+>
+> **Finish Line**
+
+প্রয়োজন অনুযায়ী chain adapt করুন।
+
+---
+
+# QUALITY CONTROL
+
+Finalising করার আগে internally verify করুন।
+
+## PERSPECTIVE
+
+- Base Book কি Perspective-first?
+- Perspective কি পুরো architecture-এর organising principle?
+- Topic কি Perspective-কে overshadow করছে না?
+- Reader-এর way of seeing কি genuinely পরিবর্তিত হচ্ছে?
+
+## VALUE GAP
+
+- Primary Value Gap কি clearly visible?
+- প্রতিটি major stage কি gap crossing-এ contribute করছে?
+- Supporting problems কি Primary Gap-এর সঙ্গে compete করছে না?
+
+## READER JOURNEY
+
+- Starting State clear?
+- Finish Line clear?
+- প্রতিটি stage কি reader-এর state পরিবর্তন করছে?
+- Stage transitions logical?
+- কোনও major logical jump আছে?
+
+## ARCHITECTURE
+
+- কোনও predetermined chapter count force করা হয়নি?
+- প্রতিটি stage-এর genuine purpose আছে?
+- Unnecessary sections বাদ?
+- Distinct reader needs unnecessarily merged নয়?
+- Simple need artificially split নয়?
+
+## LAST MILE
+
+- Understanding → Action gap addressed?
+- Blank-Page Problem reduced?
+- Reader knows where to start?
+- Main friction addressed?
+- Practical application possible?
+
+## VALUE ASSET
+
+- Core Value Asset meaningful?
+- Properly integrated?
+- Reader work reduced?
+- শুধু decorative bonus নয়?
+
+## TEN-MINUTE WIN
+
+- Relevant হলে properly placed?
+- Forced নয়?
+
+## EVIDENCE
+
+- Consequential claims-এর জন্য evidence space আছে?
+- Limitations represented?
+- Unsupported claims নেই?
+
+## OBJECTIONS
+
+- Important genuine objections addressed?
+- Artificial objections added নয়?
+
+## NON-WITHHOLDING
+
+- Essential information deliberately withheld নয়?
+- Base Book-এর own scope-এর মধ্যে genuine value complete?
+- Next content layer-এর জন্য artificial incompleteness নেই?
+
+## READER-WORK
+
+- Unnecessary research / comparison / assembly work reduced?
+- Reader-এর agency preserved?
+
+## PROMISE-DELIVERY
+
+- Core Promise realistic?
+- Architecture promise deliver করতে সক্ষম?
+- Finish Line promise-এর সঙ্গে aligned?
+
+## OVERALL COHERENCE
+
+শেষে verify করুন:
+
+> **Perspective**
+>
+> →
+>
+> **Reader Shift**
+>
+> →
+>
+> **Primary Value Gap**
+>
+> →
+>
+> **Specific Problem**
+>
+> →
+>
+> **Recognition**
+>
+> →
+>
+> **Reframing**
+>
+> →
+>
+> **Perspective Understanding**
+>
+> →
+>
+> **Approach**
+>
+> →
+>
+> **Decision**
+>
+> →
+>
+> **Application**
+>
+> →
+>
+> **Result**
+>
+> →
+>
+> **Finish Line**
+
+যদি কোনও major contradiction, duplication, missing transition বা unnecessary stage থাকে, final architecture দেওয়ার আগে revise করুন।
+
+---
+
+# OUTPUT FORMAT
+
+শুধুমাত্র নিচের structure অনুসরণ করে final strategic architecture দিন:
+
+## 1. Base Book Job
+
+## 2. Base Book Scope
+
+## 3. Reader Starting State
+
+## 4. Reader Finish Line
+
+## 5. Core Reader Shift
+
+## 6. Core Narrative Journey
+
+## 7. Required Reader Questions
+
+## 8. Necessary Belief / Interpretation Shifts
+
+## 9. Necessary Understanding
+
+## 10. Content Dependency Map
+
+## 11. Substantive Stage Logic
+
+## 12. Complete Reader Journey / Base Book Architecture
+
+প্রতিটি substantive stage-এর জন্য:
+
+### [Stage Title]
+
+- Purpose:
+- Reader Question:
+- Reader State Before:
+- Reader State After:
+- Key Understanding / Shift:
+- Key Content to Cover:
+- Required Example / Evidence / Demonstration:
+- Required Decision / Action / Tool / Asset:
+- Connection to Primary Value Gap:
+
+## 13. Opening Architecture
+
+## 14. Middle-Journey Architecture
+
+## 15. Last-Mile Architecture
+
+## 16. Ten-Minute Win Integration
+
+## 17. Core Value Asset Integration
+
+## 18. Evidence & Credibility Architecture
+
+## 19. Objection & Misconception Architecture
+
+## 20. Option / Comparison Architecture
+
+## 21. Reader-Work Reduction
+
+## 22. Final Architecture Logic
+
+---
+
+# STRICT BOUNDARY
+
+Do not write the actual Base Book.
+
+Do not write chapters.
+
+Do not write chapter prose.
+
+Do not write the final book content.
+
+Do not generate Public Content.
+
+Do not generate Private Content.
+
+Do not generate Distribution Assets.
+
+Do not generate individual social posts or blog posts.
+
+Do not generate a sales funnel.
+
+Do not generate promotional copy.
+
+Do not prematurely solve Stage 4 or later content-generation tasks.
+
+Do not invent a target audience that has not been provided.
+
+Do not force a predetermined number of chapters or stages.
+
+Do not include sections merely because they are conventional in books.
+
+Do not deliberately withhold essential information merely to create dependency on another content layer.
+
+Do not promise outcomes that the Base Book cannot realistically deliver.
+
+This is a THINKING AND ARCHITECTURE TOOL.
+
+Its purpose is to determine:
+
+> **“এই Perspective এবং Primary Value Gap-কে কেন্দ্র করে ideal Base Book-এর reader journey, substantive stages এবং architecture আসলে কেমন হওয়া উচিত?”**
+
+The output of this prompt will become the strategic foundation for the next stage of the Perspective-Building Content Workflow.`;
+
+function fill(template, token, value){
+  return template.split(token).join(value || "");
+}
+
+function generatePrompt(){
+  const s1 = document.getElementById("stage1").value.trim();
+  const s2 = document.getElementById("stage2").value.trim();
+  const d = document.getElementById("direction").value.trim();
+
+  if(!s1 || !s2){
+    setStatus("Stage 1 and Stage 2 outputs are required.");
+    return "";
+  }
+
+  let out = promptTemplate;
+  out = fill(out, "[PASTE THE FINAL OUTPUT OF STAGE 1 — PROMPT 1 HERE]", s1);
+  out = fill(out, "[PASTE THE FINAL OUTPUT OF STAGE 2 — PROMPT 1 HERE]", s2);
+  out = fill(out, "[INSERT ANY ADDITIONAL THINKING, PREFERENCE, CORRECTION, CONSTRAINT, OR CONTEXT HERE, IF ANY]",
+             d || "(No additional human direction provided.)");
+
+  document.getElementById("output").textContent = out;
+  setStatus("Prompt generated successfully.");
+  return out;
+}
+
+async function copyPrompt(){
+  let out = document.getElementById("output").textContent;
+  if(!out || out === "Your generated prompt will appear here.") out = generatePrompt();
+  if(!out) return;
+  try{
+    await navigator.clipboard.writeText(out);
+    setStatus("Prompt copied to clipboard.");
+  }catch(e){
+    setStatus("Copy failed. Please copy the generated prompt manually.");
+  }
+}
+
+function downloadPrompt(){
+  const out = generatePrompt();
+  if(!out) return;
+  const blob = new Blob([out], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Stage-3-Prompt-1-Base-Book-Architecture.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setStatus("Prompt downloaded.");
+}
+
+function clearAll(){
+  document.getElementById("stage1").value="";
+  document.getElementById("stage2").value="";
+  document.getElementById("direction").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  setStatus("All fields cleared.");
+}
+
+function setStatus(msg){document.getElementById("status").textContent=msg;}
+</script>
+</body>
+</html>

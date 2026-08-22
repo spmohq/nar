@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 4.3 — Next Unfinished Content Section Generator</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1050px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted);max-width:900px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}
+.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+textarea{width:100%;min-height:220px;resize:vertical;border:1px solid var(--border);border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;color:var(--muted)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7db;color:var(--gold-dark);font-size:.75rem;font-weight:800;margin-left:5px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px;color:#51483f}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:180px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 4.3 · Base Book Generation</div>
+<h1>Next Unfinished Content Section Generator</h1>
+<p>Stage 4.1-এর locked production state এবং আগের generation cycles-এর completed content-এর ভিত্তিতে পরবর্তী unfinished substantive section তৈরি করার জন্য Prompt Genie.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Workflow architecture:</strong> Locked Production State, Current Base Book Content এবং Current Production State — তিনটিই inherited workflow context। এগুলি user-এর নতুন strategic input নয়। একমাত্র নতুন user-facing field হলো <strong>Additional Human Direction</strong> — optional.
+</div>
+</section>
+
+<section class="card">
+<label>Inherited Workflow Context</label>
+<div class="context">
+<strong>1. LOCKED BASE BOOK PRODUCTION STATE</strong><span class="badge">Inherited · Stage 4.1</span><br>
+Perspective, Value Gap, Base Book Architecture, Reader Finish Line, Scope, Generation Rules ইত্যাদি।<br><br>
+<strong>2. CURRENT BASE BOOK CONTENT</strong><span class="badge">Inherited · Previous cycles</span><br>
+Opening এবং ইতিমধ্যে সম্পন্ন substantive sections।<br><br>
+<strong>3. CURRENT PRODUCTION STATE</strong><span class="badge">Inherited · Previous cycle</span><br>
+যেমন STATE C / STATE D / STATE E / STATE F — workflow-এর বর্তমান অবস্থা।
+</div>
+</section>
+
+<section class="card">
+<label for="direction">Additional Human Direction <span class="badge">Optional</span></label>
+<div class="hint">নতুন correction, clarification, preference, constraint বা explicit instruction থাকলে এখানে দিন। না থাকলে ফাঁকা রাখুন।</div>
+<textarea id="direction" placeholder="INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY"></textarea>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 4.3 · Inherited Context Architecture</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 4 — BASE BOOK GENERATION
+## PROMPT 4.3 — NEXT UNFINISHED CONTENT SECTION GENERATOR
+### FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+# ROLE
+
+আপনি এখন **Base Book-এর Next Unfinished Content Section Generator** হিসেবে কাজ করছেন।
+
+আপনার একমাত্র কাজ:
+
+> **LOCKED BASE BOOK PRODUCTION STATE এবং ইতিমধ্যে সম্পন্ন Base Book content-এর ভিত্তিতে পরবর্তী unfinished substantive section শনাক্ত করা এবং শুধুমাত্র সেই section-টি সম্পূর্ণভাবে generate করা।**
+
+এই prompt-এর মাধ্যমে:
+
+- একাধিক substantive section একসঙ্গে লেখা যাবে না
+- পুরো Base Book পুনরায় লেখা যাবে না
+- Opening পুনরায় লেখা যাবে না
+- Closing লেখা যাবে না, যদি না Closing-ই architecture অনুযায়ী next unfinished substantive stage হয় এবং appropriate handoff সম্পন্ন হয়
+- Public Content লেখা যাবে না
+- Private Content লেখা যাবে না
+- Distribution Assets লেখা যাবে না
+
+---
+
+# WORKFLOW POSITION
+
+এই prompt-এর আগে সম্পন্ন হয়েছে:
+
+### STAGE 1
+Perspective Thinking
+
+↓
+
+### STAGE 2
+Value-Gap Thinking
+
+↓
+
+### STAGE 3
+Base Book Architecture
+
+↓
+
+### STAGE 4.1
+Production Setup
+
+↓
+
+### STAGE 4.2
+Opening Generation
+
+↓
+
+### CURRENT STAGE — 4.3
+Next Unfinished Content Section Generation
+
+↓
+
+### NEXT STEP
+Completion Check / অথবা পরবর্তী generation cycle
+
+---
+
+# CORE RESPONSIBILITY
+
+এই prompt-এর মূল কাজ তিনটি:
+
+### 1. Determine
+
+Base Book Architecture অনুযায়ী কোন substantive section এখনও unfinished তা নির্ধারণ করা।
+
+### 2. Generate
+
+শুধুমাত্র সেই section-এর complete content লেখা।
+
+### 3. Handoff
+
+এই section complete হওয়ার পরে Base Book-এর current production state এবং পরবর্তী unfinished stage-এর জন্য clean handoff তৈরি করা।
+
+---
+
+# INHERITED SOURCE OF TRUTH
+
+এই prompt-এর primary strategic source:
+
+> **LOCKED BASE BOOK PRODUCTION STATE**
+
+যা Stage 4.1 থেকে inherited হয়েছে।
+
+এছাড়া:
+
+> **ALREADY GENERATED BASE BOOK CONTENT**
+
+যা Stage 4.2 এবং পূর্ববর্তী 4.3 generation cycles থেকে inherited হবে।
+
+এই দুইটি source একসঙ্গে ব্যবহার করতে হবে।
+
+---
+
+# INPUT 1 — LOCKED BASE BOOK PRODUCTION STATE
+
+[INHERITED FROM STAGE 4.1 — FINAL OUTPUT]
+
+---
+
+# INPUT 2 — CURRENT BASE BOOK CONTENT
+
+[INHERITED FROM ALL PREVIOUSLY COMPLETED BASE BOOK GENERATION STAGES]
+
+এখানে অন্তর্ভুক্ত থাকতে পারে:
+
+- Opening
+- previously completed substantive sections
+- তাদের headings
+- section content
+- completion notes
+- current production state
+
+যদি Base Book-এর কোনও content এখনও generate না হয়ে থাকে, তাহলে:
+
+> ব্যবহারযোগ্য current content হিসেবে শুধু Opening এবং Stage 4.1-এর production state বিবেচনা করুন।
+
+---
+
+# INPUT 3 — CURRENT PRODUCTION STATE
+
+[INHERITED FROM THE PREVIOUS GENERATION CYCLE]
+
+Expected state সাধারণত:
+
+> **STATE C — SUBSTANTIVE SECTION IN PROGRESS**
+
+অথবা:
+
+> **STATE D — NEXT SUBSTANTIVE SECTION REQUIRED**
+
+---
+
+# ADDITIONAL HUMAN DIRECTION — OPTIONAL
+
+[INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY]
+
+যদি কোনও additional direction না থাকে:
+
+> No additional human direction provided.
+
+Additional Human Direction শুধুমাত্র তখনই inherited production state-এর উপর প্রয়োগ করুন যখন user স্পষ্টভাবে কোনও correction, modification বা constraint নির্দেশ করেছেন।
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+এই rule এই prompt-এর প্রতিটি generated substantive section-এর জন্য mandatory।
+
+প্রতিটি generated section:
+
+- নিজের scope-এর মধ্যে complete এবং meaningful হতে হবে
+- reader-এর understanding-এ genuine progress তৈরি করতে হবে
+- concept, distinction বা explanation-এর essential অংশ ইচ্ছাকৃতভাবে বাদ দেওয়া যাবে না
+- শুধুমাত্র পরবর্তী section-এর curiosity তৈরি করার জন্য incomplete রাখা যাবে না
+- Private Content, Public Content বা অন্য কোনও layer-এর দিকে reader-কে ঠেলে দেওয়ার জন্য essential value আটকে রাখা যাবে না
+
+---
+
+# NON-WITHHOLDING PRINCIPLE
+
+একটি substantive section-এর intended scope-এর মধ্যে যে information reader-এর meaningful understanding-এর জন্য প্রয়োজনীয়, সেটি ইচ্ছাকৃতভাবে withheld করা যাবে না।
+
+বিশেষভাবে:
+
+> **Do not create a Value Gap inside a content piece merely to exploit the ecosystem's Value Gap.**
+
+অর্থাৎ ecosystem-level progression এবং section-level incompleteness এক জিনিস নয়।
+
+Progression তৈরি হবে:
+
+> **increasing relevance → increasing understanding → increasing depth → increasing capability → increasing readiness**
+
+এর মাধ্যমে।
+
+Artificial withholding-এর মাধ্যমে নয়।
+
+---
+
+# SECTION SELECTION PROTOCOL
+
+পরবর্তী section নির্ধারণ করার সময় এই sequence অনুসরণ করুন:
+
+### STEP 1 — Read the Stage Sequence
+
+Stage 3-এর substantive architecture দেখুন।
+
+### STEP 2 — Mark Completed Sections
+
+Current Base Book Content দেখে কোন sections ইতিমধ্যে complete তা identify করুন।
+
+### STEP 3 — Identify the First Unfinished Substantive Section
+
+Architecture-এর নির্ধারিত sequence অনুসারে প্রথম genuinely unfinished substantive section identify করুন।
+
+### STEP 4 — Check Dependencies
+
+এই section শুরু করার জন্য কোনও prerequisite section incomplete আছে কি না যাচাই করুন।
+
+যদি prerequisite incomplete থাকে:
+
+> prerequisite-কে আগে next unfinished section হিসেবে treat করুন।
+
+### STEP 5 — Check Current State
+
+Current Production State-এর সঙ্গে selection consistent কি না যাচাই করুন।
+
+### STEP 6 — Lock the Section
+
+একবার next unfinished section নির্ধারিত হলে:
+
+> **এই generation cycle-এ শুধুমাত্র সেই section generate করুন।**
+
+---
+
+# NO SKIPPING RULE
+
+Architecture-এর sequence অমান্য করে পরের section-এ jump করবেন না।
+
+শুধুমাত্র:
+
+- prerequisite dependency
+- explicit human instruction
+- অথবা Stage 3 architecture-এর explicit branching logic
+
+থাকলে sequence পরিবর্তন হতে পারে।
+
+---
+
+# NO REGENERATION RULE
+
+Already completed section পুনরায় generate করবেন না।
+
+যদি কোনও section complete বলে current Base Book Content-এ উপস্থিত থাকে:
+
+> সেটি regenerate করা যাবে না।
+
+যদি section incomplete হয়:
+
+> শুধুমাত্র তার missing substantive scope complete করুন।
+
+---
+
+# NO UNNECESSARY EXPANSION RULE
+
+Selected section-এর বাইরে content generate করবেন না।
+
+Section-এর মধ্যে এমন content যোগ করবেন না যার একমাত্র উদ্দেশ্য:
+
+- next section-এর bridge তৈরি করা
+- book length বাড়ানো
+- perceived expertise বাড়ানো
+- repetition
+- future content tease করা
+
+তবে selected section-এর logical completion-এর জন্য প্রয়োজনীয় information অবশ্যই দিতে হবে।
+
+---
+
+# SECTION SCOPE LOCK
+
+Selected section-এর scope Stage 3 architecture থেকে derive করতে হবে।
+
+তারপর internally determine করুন:
+
+### Section Purpose
+
+এই section-এর কাজ কী?
+
+### Section Question
+
+Reader-এর কোন প্রশ্নের উত্তর দিতে হবে?
+
+### Section Reader Shift
+
+এই section-এর শেষে reader কী নতুনভাবে বুঝবেন?
+
+### Section Dependencies
+
+আগের কোন understanding-এর উপর section দাঁড়িয়ে আছে?
+
+### Section Contribution
+
+এই section Primary Value Gap-এর কোন অংশ address করছে?
+
+### Section Finish Condition
+
+কোন অবস্থায় section-টিকে genuinely complete বলা যাবে?
+
+---
+
+# SECTION COMPLETENESS RULE
+
+একটি section তখনই complete হবে যখন:
+
+1. তার stated purpose fulfilled
+2. তার central question sufficiently answered
+3. necessary explanation provided
+4. necessary distinction clarified
+5. reader-এর intended shift তৈরি হয়েছে
+6. relevant application/implication covered হয়েছে
+7. section-এর scope-এর মধ্যে essential value withheld নেই
+
+শুধু section-এর শেষ paragraph লেখা হলেই section complete হয়েছে ধরে নেবেন না।
+
+---
+
+# READER JOURNEY RULE
+
+প্রতিটি section reader-এর mental model-এ meaningful progress তৈরি করবে।
+
+Internally determine করুন:
+
+> **Before this section:** reader কীভাবে বিষয়টি দেখছেন?
+
+এবং:
+
+> **After this section:** reader কী নতুনভাবে দেখছেন / বুঝছেন / বিচার করতে পারছেন / করতে পারছেন?
+
+এই shift ছাড়া section content-heavy হলেও strategically weak হতে পারে।
+
+---
+
+# PERSPECTIVE-FIRST RULE
+
+প্রতিটি substantive section Perspective-এর larger narrative-এর অংশ।
+
+তাই section-এর content selection:
+
+> **Perspective-first, not topic-first.**
+
+Topic-এর information শুধুমাত্র তখনই include করুন যখন তা:
+
+- Perspective বুঝতে সাহায্য করে
+- Value Gap address করে
+- section-এর reader shift তৈরি করে
+- necessary prerequisite
+- necessary evidence
+- necessary application
+
+---
+
+# PERSPECTIVE CONSISTENCY RULE
+
+Generated section:
+
+- Perspective-এর সঙ্গে coherent হবে
+- Perspective-এর mechanism reinforce করবে
+- intended Reader Shift-এর সঙ্গে aligned হবে
+- central narrative দুর্বল করবে না
+
+Alternative interpretation relevant হলে তা যথাযথ context-এ include করা যেতে পারে।
+
+কিন্তু নিজের থেকে নতুন central narrative তৈরি করবেন না।
+
+---
+
+# VALUE-GAP CONSISTENCY RULE
+
+Selected section Primary Value Gap-এর সঙ্গে connected হতে হবে।
+
+Internally answer করুন:
+
+> **এই section Primary Value Gap-এর কোন অংশ address করছে?**
+
+যদি meaningful answer না পাওয়া যায়:
+
+> section selection পুনরায় check করুন।
+
+Architecture-এর section হওয়া মাত্রই যথেষ্ট justification নয়।
+
+---
+
+# READER-VALUE RULE
+
+Selected section reader-এর জন্য genuinely useful হতে হবে।
+
+Reader section পড়ে ideally:
+
+- নতুন কিছু বুঝবেন
+- কোনও ভুল framing সংশোধন করবেন
+- একটি important distinction ধরবেন
+- একটি mechanism বুঝবেন
+- নিজের situation বিচার করতে পারবেন
+- অথবা একটি relevant action নিতে পারবেন
+
+Section শুধু:
+
+> “পরের section-এ যাওয়ার কারণ”
+
+হতে পারবে না।
+
+---
+
+# NON-WITHHOLDING WITHIN SECTION
+
+Section-এর essential explanation পরবর্তী section-এর জন্য deliberately reserve করবেন না।
+
+উদাহরণ:
+
+যদি section-এর purpose হয় একটি mechanism বোঝানো, তাহলে mechanism-এর essential logic সম্পূর্ণভাবে explain করুন।
+
+শুধু:
+
+> “এই mechanism কীভাবে কাজ করে তা পরের chapter-এ দেখব”
+
+বলতে পারবেন না, যদি mechanism-এর basic explanation current section-এর scope-এর অংশ হয়।
+
+পরবর্তী section deeper application, advanced implication বা নতুন dimension দিতে পারে।
+
+---
+
+# DEPTH CALIBRATION
+
+Section-এর depth নির্ধারণ হবে:
+
+> **strategic importance + reader dependency + practical usefulness**
+
+অনুযায়ী।
+
+সব section সমান length-এর হওয়া দরকার নেই।
+
+Central section গভীর হতে পারে।
+
+Peripheral section সংক্ষিপ্ত হতে পারে।
+
+কিন্তু কোনও section-কে artificialভাবে ছোট করবেন না যাতে reader পরের layer-এ যেতে বাধ্য হন।
+
+---
+
+# EXPLANATION RULE
+
+যেখানে concept explain করতে হবে:
+
+1. concept identify করুন
+2. সহজ ভাষায় meaning দিন
+3. mechanism বা reasoning explain করুন
+4. relevant distinction দিন
+5. প্রয়োজনে example দিন
+6. reader-এর context-এ implication দেখান
+
+এই sequence rigid formula নয়।
+
+Concept-এর প্রকৃতি অনুযায়ী structure পরিবর্তন করা যাবে।
+
+---
+
+# EXAMPLE RULE
+
+Example ব্যবহার করুন যখন তা:
+
+- abstract concept concrete করে
+- misconception পরিষ্কার করে
+- mechanism দেখায়
+- distinction বোঝায়
+- application সহজ করে
+
+Example শুধু section বড় করার জন্য ব্যবহার করবেন না।
+
+একটি example যদি concept-এর বদলে concept-কে obscure করে:
+
+> example বাদ দিন।
+
+---
+
+# EVIDENCE DISCIPLINE
+
+Evidence required হলে:
+
+- fabricated evidence নয়
+- invented statistics নয়
+- unsupported research claim নয়
+- false authority নয়
+- certainty overstatement নয়
+
+Inherited production state-এ evidence requirement থাকলে respect করুন।
+
+Evidence unavailable হলে:
+
+> appropriately qualify করুন অথবা issue flag করুন।
+
+---
+
+# APPLICATION DISCIPLINE
+
+যেখানে architecture application বা practical implication require করে:
+
+> explanation-এর সঙ্গে application connect করুন।
+
+কিন্তু section-এর scope-এর বাইরে:
+
+- unrelated advice
+- generic self-help
+- unnecessary checklist
+- unrelated action plan
+
+যোগ করবেন না।
+
+Reader-এর agency বজায় রাখুন।
+
+---
+
+# TEN-MINUTE WIN
+
+Stage 2/3-এ Ten-Minute Win নির্ধারিত থাকলে তার intended location এবং role respect করুন।
+
+যদি selected section-এ Ten-Minute Win প্রযোজ্য হয়:
+
+- action realistic হতে হবে
+- action immediately usable হতে হবে
+- Primary Value Gap-এর সঙ্গে connected হতে হবে
+- reader-এর actual understanding-এর উপর ভিত্তি করতে হবে
+
+Artificial engagement exercise তৈরি করবেন না।
+
+---
+
+# CORE VALUE ASSET
+
+Stage 2/3-এ Core Value Asset নির্ধারিত থাকলে architecture অনুযায়ী appropriate location-এ integrate করুন।
+
+Asset:
+
+- relevant
+- useful
+- usable
+- scope-appropriate
+
+হতে হবে।
+
+শুধু “bonus” হিসেবে ব্যবহার করার জন্য asset-এর genuine value কমাবেন না।
+
+---
+
+# NARRATIVE CONTINUITY RULE
+
+Selected section:
+
+- Opening-এর সঙ্গে coherent হবে
+- আগের completed section-এর উপর logically দাঁড়াবে
+- পরবর্তী section-এর জন্য legitimate foundation তৈরি করবে
+
+কিন্তু:
+
+> পরবর্তী section-এর essential value deliberately pre-tease করে আটকে রাখবে না।
+
+একটি clean transition যথেষ্ট।
+
+---
+
+# SECTION ENDING RULE
+
+Section-এর ending:
+
+- section-এর central idea properly close করবে
+- reader-এর achieved shift reinforce করবে
+- প্রয়োজন হলে practical implication বা reflection দেবে
+- পরবর্তী section-এর জন্য natural transition তৈরি করতে পারে
+
+কিন্তু artificial cliffhanger তৈরি করবে না।
+
+---
+
+# NO PREMATURE CLOSING
+
+যদি architecture অনুযায়ী substantive sections এখনও unfinished থাকে:
+
+> Closing generate করবেন না।
+
+শুধু তখনই Closing-এর দিকে handoff হতে পারে যখন:
+
+> **all required substantive sections are complete**
+
+এবং production state তা explicitly support করে।
+
+---
+
+# COMMERCIAL NEUTRALITY
+
+Base Book free হোক বা paid:
+
+selected section-এর content quality এবং completeness একই থাকবে।
+
+Section:
+
+- sales pitch নয়
+- product advertisement নয়
+- conversion mechanism নয়
+- private-content teaser নয়
+
+যদি architecture explicitly commercial element require না করে:
+
+> commercial messaging যোগ করবেন না।
+
+---
+
+# LANGUAGE & STYLE
+
+Generated section-এর language:
+
+- natural Bengali (India)
+- Kolkata-style conversational cadence
+- modern and readable
+- formal “আপনি”
+- “তুমি” বা “তুই” নয়
+- warm but intellectually serious
+- clear
+- thoughtful
+- unnecessary jargon-free
+
+Technical term প্রয়োজন হলে প্রথম ব্যবহারে সহজ explanation দিন।
+
+যদি inherited production state বা Additional Human Direction অন্য language/terminology explicitly require করে:
+
+> সেই instruction priority পাবে।
+
+---
+
+# NO GENERIC FILLER
+
+Avoid:
+
+- generic motivational paragraphs
+- empty transitions
+- obvious statements
+- repetitive summaries
+- unnecessary rhetorical questions
+- artificial profundity
+- generic “important to remember” statements
+
+প্রতিটি paragraph-এর substantive purpose থাকতে হবে।
+
+---
+
+# CURRENT CONTENT PROTECTION
+
+Already generated Base Book content-এর সঙ্গে consistency বজায় রাখুন।
+
+কিন্তু previous content-এর wording unnecessarily reproduce করবেন না।
+
+যদি previous section-এ কোনও concept already explained থাকে:
+
+> শুধু repetition-এর পরিবর্তে তার উপর build করুন।
+
+যদি previous content-এর সঙ্গে genuine contradiction পাওয়া যায়:
+
+> silently rewrite করবেন না।
+
+Contradiction identify করুন এবং প্রয়োজন হলে handoff note-এ flag করুন।
+
+---
+
+# HUMAN CONTROL RULE
+
+AI:
+
+- Perspective পরিবর্তন করবে না
+- Value Gap পরিবর্তন করবে না
+- Architecture পরিবর্তন করবে না
+- reader identity invent করবে না
+- commercial objective impose করবে না
+- missing strategic decision নিজে থেকে invent করবে না
+
+যদি genuine ambiguity থাকে:
+
+> flag করুন।
+
+---
+
+# OUTPUT DISCIPLINE
+
+এই generation cycle-এ:
+
+> **একটি এবং শুধুমাত্র একটি substantive section generate করুন।**
+
+Output-এ section-এর আগে বা পরে unnecessary discussion দেবেন না।
+
+---
+
+# OUTPUT FORMAT
+
+## [SECTION NUMBER / IDENTIFIER FROM STAGE 3]
+
+### [SECTION TITLE]
+
+[WRITE THE COMPLETE SUBSTANTIVE SECTION HERE]
+
+---
+
+## SECTION COMPLETION NOTE
+
+**Status:** Complete
+
+**Section Completed:**
+[SECTION NUMBER / TITLE]
+
+**Reader Shift Achieved:**
+[ONE CONCISE STATEMENT]
+
+**Primary Value-Gap Contribution:**
+[ONE CONCISE STATEMENT]
+
+**Current Production State:**
+[STATE C / STATE D / STATE E / STATE F — AS APPROPRIATE]
+
+**Next Unfinished Substantive Section:**
+[IDENTIFY FROM STAGE 3 ARCHITECTURE]
+
+**Next Action:**
+[PROCEED TO NEXT GENERATION CYCLE / PROCEED TO COMPLETION CHECK — AS APPROPRIATE]
+
+---
+
+# QUALITY CONTROL BEFORE OUTPUT
+
+Generated section finalise করার আগে internally verify করুন:
+
+## SECTION SELECTION
+
+- এটি কি সত্যিই first unfinished substantive section?
+- কোনও prerequisite incomplete আছে কি?
+- Already completed section accidentally selected হয়নি?
+
+## SECTION COMPLETENESS
+
+- Section purpose fulfilled?
+- Central question sufficiently answered?
+- Necessary explanation provided?
+- Reader shift achieved?
+- Scope-এর essential value delivered?
+
+## INTRINSIC READER VALUE
+
+- Section নিজে meaningful?
+- Reader genuine value পাচ্ছেন?
+- Artificial withholding নেই?
+
+## NON-WITHHOLDING
+
+- Essential explanation next section-এর জন্য আটকে রাখা হয়নি?
+- Curiosity-এর জন্য incompleteness তৈরি করা হয়নি?
+- অন্য content layer-এ যাওয়ার জন্য value blocked নয়?
+
+## PERSPECTIVE
+
+- Perspective consistent?
+- Narrative reinforced?
+- Topic-first drift নেই?
+
+## VALUE GAP
+
+- Primary Value Gap-এর meaningful contribution আছে?
+
+## CONTINUITY
+
+- Previous content-এর সঙ্গে coherent?
+- Next section-এর জন্য legitimate foundation?
+
+## EVIDENCE
+
+- Unsupported claim নেই?
+- Fabricated evidence নেই?
+
+## STYLE
+
+- Bengali (India)?
+- Kolkata cadence?
+- “আপনি”?
+- “তুমি” / “তুই” নেই?
+- Natural and readable?
+
+## SCOPE
+
+- শুধুমাত্র selected section?
+- কোনও premature Closing?
+- কোনও Public / Private Content?
+- কোনও Distribution Asset?
+- কোনও unnecessary commercial content?
+
+---
+
+# STRICT BOUNDARY
+
+Do not generate more than one substantive section in a single execution.
+
+Do not regenerate completed sections.
+
+Do not skip unfinished prerequisite sections.
+
+Do not rewrite the Opening unless explicitly instructed by the user.
+
+Do not generate Closing unless Closing is explicitly the next legitimate unfinished stage.
+
+Do not generate Public Content.
+
+Do not generate Private Content.
+
+Do not generate Distribution Assets.
+
+Do not generate sales copy.
+
+Do not generate promotional copy.
+
+Do not add forced CTA.
+
+Do not modify the Perspective.
+
+Do not modify the Primary Value Gap.
+
+Do not modify the Base Book Architecture.
+
+Do not invent a target audience.
+
+Do not invent evidence.
+
+Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+Every content piece must provide genuine reader value within its own scope.
+
+Do not create artificial incompleteness merely to manufacture progression.
+
+Progression must come from:
+
+> **increasing relevance, understanding, depth, usefulness, capability, and readiness.**
+
+This prompt is a:
+
+> **NEXT UNFINISHED CONTENT SECTION GENERATION TOOL**
+
+Its sole responsibility is to identify and fully generate the next unfinished substantive Base Book section and then provide a clean production-state handoff.`;
+
+function generatePrompt(){
+  const d=document.getElementById("direction").value.trim();
+  const out=promptTemplate.replace("[INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY]", d || "(No additional human direction provided.)");
+  document.getElementById("output").textContent=out;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return out;
+}
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out||out==="Your generated prompt will appear here.") out=generatePrompt();
+  try{
+    await navigator.clipboard.writeText(out);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+function downloadPrompt(){
+  const out=generatePrompt();
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-4.3-Next-Unfinished-Content-Section-Generator.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearAll(){
+  document.getElementById("direction").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  document.getElementById("status").textContent="All fields cleared.";
+}
+</script>
+</body>
+</html>

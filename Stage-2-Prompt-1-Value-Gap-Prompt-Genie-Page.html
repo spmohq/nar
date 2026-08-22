@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 2 Prompt 1</title>
+<style>
+  :root{
+    --bg:#f7f1e3; --card:#fff; --text:#2f2a24; --muted:#6f665d;
+    --border:#ded6ca; --gold:#c89b3c; --gold-dark:#8b5e1a; --soft:#fbf8f1;
+    --danger:#9a3d2f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+       background:var(--bg);color:var(--text);line-height:1.55}
+  .wrap{max-width:1000px;margin:auto;padding:28px 16px 56px}
+  .hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);
+        border-radius:18px;padding:28px;margin-bottom:18px}
+  .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--gold-dark);margin-bottom:8px}
+  h1{margin:0 0 8px;font-size:clamp(1.55rem,4vw,2.35rem);line-height:1.15}
+  .hero p{margin:8px 0 0;color:var(--muted);max-width:800px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;
+        margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+  label{display:block;font-weight:800;margin-bottom:8px}
+  .hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+  textarea{width:100%;min-height:170px;resize:vertical;border:1px solid var(--border);
+           border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);
+           background:#fffdf9;outline:none}
+  textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+  .optional{font-weight:600;color:var(--muted);font-size:.85rem}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;
+         background:var(--gold);color:#fff}
+  button.secondary{background:#eee7db;color:var(--text)}
+  button.danger{background:#f2e0dc;color:var(--danger)}
+  .status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+  .output{min-height:480px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);
+          border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+          font-size:.9rem}
+  .note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px;color:#51483f}
+  .footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+  @media(max-width:600px){
+    .wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:145px}
+    button{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Stage 2 · Value-Gap Thinking</div>
+    <h1>Primary Value Gap Analysis</h1>
+    <p>A thinking tool that takes the Stage 1 strategic foundation and identifies the single Value Gap the content should meaningfully address.</p>
+  </section>
+
+  <section class="card">
+    <div class="note">
+      <strong>Use:</strong> Paste the final output of Stage 1 Prompt 1. Add optional human context if you have any. This page generates the complete Stage 2 Prompt 1 with your inputs inserted.
+    </div>
+  </section>
+
+  <section class="card">
+    <label for="stage1">1. Stage 1 — Perspective Thinking Output <span style="color:#9a3d2f">*</span></label>
+    <div class="hint">Paste the complete final output from STAGE 1 — PROMPT 1.</div>
+    <textarea id="stage1" placeholder="PASTE THE FINAL OUTPUT OF STAGE 1 — PROMPT 1 HERE"></textarea>
+  </section>
+
+  <section class="card">
+    <label for="context">2. Additional Human Context <span class="optional">(optional)</span></label>
+    <div class="hint">Add any new observation, correction, constraint, concern, or context that should materially affect the Value-Gap analysis.</div>
+    <textarea id="context" placeholder="INSERT ANY ADDITIONAL THINKING, OBSERVATION, CORRECTION, CONSTRAINT, OR CONTEXT HERE, IF ANY"></textarea>
+  </section>
+
+  <section class="card">
+    <div class="actions">
+      <button onclick="generatePrompt()">Generate Prompt</button>
+      <button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+      <button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+      <button class="danger" onclick="clearAll()">Clear</button>
+    </div>
+    <div id="status" class="status"></div>
+  </section>
+
+  <section class="card">
+    <label>Generated Prompt</label>
+    <div id="output" class="output">Your generated prompt will appear here.</div>
+  </section>
+
+  <div class="footer">Prompt Genie · Stage 2 — Value-Gap Thinking · Prompt 1</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 2 — VALUE-GAP THINKING
+## PROMPT 1 — PRIMARY VALUE GAP ANALYSIS
+### FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+## PURPOSE
+
+এই prompt-এর কাজ content তৈরি করা নয়।
+
+এর কাজ হলো Stage 1-এ নির্ধারিত Perspective এবং Base Content-এর strategic direction-এর মধ্যে থেকে:
+
+> **পাঠকের Current State ও Desired State-এর মধ্যকার সবচেয়ে গুরুত্বপূর্ণ Primary Value Gap-টি নির্ভুলভাবে শনাক্ত, define এবং operationalise করা।**
+
+এই stage-এর মূল প্রশ্ন:
+
+> **“Perspective-টি meaningful করার জন্য পাঠকের কোন গুরুত্বপূর্ণ gap-টি আমাকে address করতে হবে?”**
+
+এখানে Value Gap-কে শুধু একটি theoretical marketing concept হিসেবে ব্যবহার করবেন না।
+
+Value Gap হবে পুরো reader journey-এর organising principle।
+
+---
+
+# INPUT
+
+## STAGE 1 — PERSPECTIVE THINKING OUTPUT
+
+[PASTE THE FINAL OUTPUT OF STAGE 1 — PROMPT 1 HERE]
+
+## ADDITIONAL HUMAN CONTEXT
+
+[INSERT ANY ADDITIONAL THINKING, OBSERVATION, CORRECTION, CONSTRAINT, OR CONTEXT HERE, IF ANY]
+
+---
+
+# CORE DOCTRINE
+
+Content creation must remain:
+
+> **Perspective-first, not topic-first.**
+
+Value Gap নির্বাচন করা হবে Perspective-এর উদ্দেশ্য থেকে।
+
+Do not begin by asking:
+
+> “এই বিষয়ের কোন problem নিয়ে content বানানো যায়?”
+
+Begin by asking:
+
+> **“এই Perspective গ্রহণ করার আগে এবং পরে reader-এর অবস্থার মধ্যে সবচেয়ে meaningful এবং addressable difference কোথায়?”**
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+---
+
+# VALUE-GAP PRINCIPLE
+
+A Value Gap exists between:
+
+> **Where the reader is now**
+>
+> →
+>
+> **Where the reader realistically wants or needs to be**
+
+The purpose of this stage is not to maximise the number of problems, frustrations, desires, or benefits identified.
+
+The purpose is to select:
+
+> **ONE Primary Value Gap**
+
+that provides the strongest foundation for the Perspective-building journey.
+
+---
+
+# TASK
+
+Stage 1-এর output বিশ্লেষণ করে নিচের বিষয়গুলো determine করুন।
+
+---
+
+## 1. READER STATE RECONSTRUCTION
+
+Stage 1-এর analysis থেকে reader-এর বর্তমান ও desired অবস্থাকে পুনর্গঠন করুন।
+
+### Current Reader State
+
+Determine:
+
+- reader কী বোঝেন
+- কী বোঝেন না
+- কীভাবে বিষয়টিকে দেখেন
+- কী believe করেন
+- কী ভুলভাবে interpret করতে পারেন
+- কী recognise করেন না
+- কী করতে চান
+- কী করতে পারেন না
+- কী নিয়ে uncertain
+- কী result চান
+
+[ ]
+
+### Desired Reader State
+
+Determine:
+
+- কী বুঝতে হবে
+- কী নতুনভাবে দেখতে হবে
+- কী recognise করতে হবে
+- কোন belief / interpretation পরিবর্তিত হতে পারে
+- কী সিদ্ধান্ত নিতে পারতে হবে
+- কী করতে পারতে হবে
+- কোন realistic result-এর দিকে এগোতে হবে
+
+[ ]
+
+---
+
+# 2. POTENTIAL VALUE GAPS
+
+Perspective-এর সঙ্গে সম্পর্কিত সম্ভাব্য Value Gap-গুলো identify করুন।
+
+যেখানে relevant, consider:
+
+- awareness gap
+- understanding gap
+- interpretation gap
+- belief gap
+- judgment gap
+- decision gap
+- capability gap
+- implementation gap
+- confidence-through-understanding gap
+- process gap
+- consistency gap
+- evaluation gap
+- application gap
+
+প্রতিটি সম্ভাব্য gap-এর জন্য সংক্ষেপে determine করুন:
+
+### Gap
+
+[ ]
+
+### Current State
+
+[ ]
+
+### Desired State
+
+[ ]
+
+### Why It Exists
+
+[ ]
+
+### Why It Matters
+
+[ ]
+
+### Can This Content Realistically Address It?
+
+[Yes / Partly / No]
+
+একাধিক সম্ভাব্য gap থাকলে তাদের priority দিন।
+
+---
+
+# 3. PRIMARY VALUE GAP SELECTION
+
+সব সম্ভাব্য gap-এর মধ্যে ONE Primary Value Gap নির্বাচন করুন।
+
+Primary Value Gap সেই gap হবে যা:
+
+- Perspective-এর সঙ্গে সবচেয়ে সরাসরি connected
+- reader-এর care করার সবচেয়ে শক্তিশালী কারণ তৈরি করে
+- promised result-এর সঙ্গে সবচেয়ে পরিষ্কারভাবে connected
+- এই content-এর scope-এর মধ্যে realistically addressable
+- reader journey-এর strongest organising principle
+- decision এবং action-এর সঙ্গে meaningfulভাবে connected
+
+### SELECTED PRIMARY VALUE GAP
+
+[ ]
+
+### Why This Gap Is Primary
+
+[ ]
+
+### Why Other Gaps Are Secondary
+
+[ ]
+
+Other gaps বাদ দিতে হবে না।
+
+কিন্তু তারা Primary Gap-এর সঙ্গে compete করবে না।
+
+---
+
+# 4. VALUE-GAP CHAIN
+
+Primary Value Gap-কে একটি coherent causal chain-এ প্রকাশ করুন:
+
+> **Current Reader State**
+>
+> →
+>
+> **Primary Value Gap**
+>
+> →
+>
+> **Specific Problem**
+>
+> →
+>
+> **Bottleneck**
+>
+> →
+>
+> **Main Friction**
+>
+> →
+>
+> **Approach / Solution**
+>
+> →
+>
+> **Practical Application**
+>
+> →
+>
+> **Specific Result**
+>
+> →
+>
+> **Finish Line**
+
+প্রতিটি stage-এর relationship explain করুন।
+
+যেখানে কোনও element genuinely প্রযোজ্য নয়, সেটি force করবেন না।
+
+---
+
+# 5. SPECIFIC PROBLEM
+
+Primary Value Gap-এর সবচেয়ে গুরুত্বপূর্ণ practical expression শনাক্ত করুন।
+
+Specific Problem এমন হতে হবে যা reader বাস্তবে অনুভব করতে পারেন বা recognise করতে পারেন।
+
+এটি vague হতে পারবে না।
+
+Avoid:
+
+- “reader needs knowledge”
+- “reader has problems”
+- “reader wants improvement”
+- “reader lacks confidence”
+
+unless these are made specific and causal.
+
+### Specific Problem
+
+[ ]
+
+### How It Appears in Real Life
+
+[ ]
+
+### Why It Is a Consequence of the Primary Value Gap
+
+[ ]
+
+### What the Reader Is Currently Doing Instead
+
+[ ]
+
+---
+
+# 6. BOTTLENECK
+
+Bottleneck হলো সেই প্রধান obstacle যা:
+
+> reader general idea বুঝলেও তাকে desired state-এর দিকে এগোতে বাধা দেয়।
+
+Ask:
+
+> **“Reader যদি বিষয়টি মোটামুটি বুঝেও ফেলেন, তবু কোন একটি জিনিস তাকে এগোতে সবচেয়ে বেশি থামাবে?”**
+
+### Primary Bottleneck
+
+[ ]
+
+### Why This Is the Bottleneck
+
+[ ]
+
+### What Happens If It Is Not Addressed
+
+[ ]
+
+### Can the Content Realistically Address It?
+
+[ ]
+
+একাধিক obstacle থাকলে ONE primary bottleneck নির্বাচন করুন।
+
+---
+
+# 7. MAIN FRICTION
+
+Bottleneck এবং friction এক নয়।
+
+Bottleneck হলো progress-এর প্রধান structural obstacle।
+
+Friction হলো action বা implementation-কে practically difficult করে এমন বাধা।
+
+যেখানে relevant, consider:
+
+- কোথা থেকে শুরু করবেন না জানা
+- অতিরিক্ত options
+- complexity
+- uncertainty
+- lack of time
+- inconsistency
+- difficulty choosing
+- difficulty applying
+- difficulty maintaining
+- fear of making the wrong choice
+- difficulty translating knowledge into action
+
+### Main Friction
+
+[ ]
+
+### Why It Makes Action Difficult
+
+[ ]
+
+### What Reader Currently Does Because of This Friction
+
+[ ]
+
+### How the Content Could Reduce It
+
+[ ]
+
+Irrelevant friction invent করবেন না।
+
+---
+
+# 8. DESIRED RESULT
+
+Primary Value Gap অতিক্রম করার ফলে reader realistically কোন result-এর দিকে এগোতে পারবেন?
+
+### Specific Result
+
+[ ]
+
+### What the Reader Will Be Able to Understand / Decide / Do
+
+[ ]
+
+### Observable Evidence of Progress
+
+[ ]
+
+### What This Result Does NOT Guarantee
+
+[ ]
+
+Result অবশ্যই realistic হতে হবে।
+
+Transformation-এর guarantee দেবেন না।
+
+---
+
+# 9. KEY DECISION
+
+Value Gap অতিক্রম করার পথে reader-এর সবচেয়ে গুরুত্বপূর্ণ decision কী?
+
+### Key Decision
+
+[ ]
+
+### Why This Decision Matters
+
+[ ]
+
+### What the Reader Needs to Know Before Making It
+
+[ ]
+
+### What Could Make the Decision Difficult
+
+[ ]
+
+### What Would Make the Decision Easier
+
+[ ]
+
+Decision-টি Perspective-এর natural consequence হতে হবে।
+
+Artificial commercial decision তৈরি করবেন না।
+
+---
+
+# 10. LAST-MILE GAP
+
+এখন determine করুন:
+
+> **Reader যদি সব explanation বুঝেও ফেলেন, তাহলে “আমি বুঝলাম” থেকে “আমি করতে পারছি”-তে যেতে আর কী দরকার?**
+
+### Understanding → Action Gap
+
+[ ]
+
+### What the Reader Still Has to Figure Out
+
+[ ]
+
+### What the Content Should Remove
+
+[ ]
+
+### What the Reader Should Be Able to Do Without Starting From a Blank Page
+
+[ ]
+
+এই section-এর মূল উদ্দেশ্য হলো:
+
+> **Blank-Page Problem শনাক্ত করা।**
+
+---
+
+# 11. PRACTICAL APPLICATION REQUIREMENT
+
+Determine করুন reader-এর practical application-এর জন্য কী কী দরকার।
+
+যেখানে relevant:
+
+- starting point
+- input
+- sequence
+- choices
+- decision rules
+- examples
+- checks
+- practice
+- feedback
+- troubleshooting
+- continuation
+
+### Minimum Practical Requirements
+
+[ ]
+
+### What the Reader Must Be Able to Do
+
+[ ]
+
+### What the Reader Must NOT Have to Figure Out Alone
+
+[ ]
+
+---
+
+# 12. TEN-MINUTE WIN
+
+Primary Value Gap-এর সঙ্গে directly connected এমন কোনও meaningful action আছে কি যা reader approximately ten minutes-এর মধ্যে করতে পারেন?
+
+### Ten-Minute Win
+
+[ ]
+
+### Why It Matters
+
+[ ]
+
+### What It Produces
+
+[ ]
+
+### How It Connects to the Primary Value Gap
+
+[ ]
+
+### What It Does NOT Promise
+
+[ ]
+
+যদি genuinely meaningful Ten-Minute Win না থাকে:
+
+> **No meaningful Ten-Minute Win identified.**
+
+Force করবেন না।
+
+---
+
+# 13. CORE VALUE ASSET
+
+Primary Value Gap কমাতে reader-এর কাজ কমানোর জন্য কোন practical asset সবচেয়ে useful হতে পারে?
+
+Consider:
+
+- checklist
+- worksheet
+- decision guide
+- self-assessment
+- action plan
+- tracker
+- practice schedule
+- template
+- routine
+- comparison guide
+- framework
+- diagnostic
+- calculator
+- reference tool
+- other practical tool
+
+### Core Value Asset
+
+[ ]
+
+### What It Helps the Reader Produce / Decide / Do
+
+[ ]
+
+### What Reader Work It Removes
+
+[ ]
+
+### Why This Asset Is More Useful Than Simply Giving More Information
+
+[ ]
+
+### What the Asset Must Contain
+
+[ ]
+
+যদি কোনও meaningful asset না থাকে:
+
+> **No meaningful Core Value Asset identified.**
+
+---
+
+# 14. SOLUTION / APPROACH REQUIREMENT
+
+Primary Value Gap address করতে কী ধরনের Approach প্রয়োজন?
+
+Determine:
+
+### Required Approach
+
+[ ]
+
+### What Problem It Addresses
+
+[ ]
+
+### Why It Fits the Primary Value Gap
+
+[ ]
+
+### What Mechanism Makes It Relevant
+
+[ ]
+
+### What It Does Differently From the Current Approach
+
+[ ]
+
+এখানে কোনও approach শুধু আকর্ষণীয় বলে নির্বাচন করবেন না।
+
+Approach-টি Primary Value Gap-এর সঙ্গে logically connected হতে হবে।
+
+---
+
+# 15. APPROACH CREDIBILITY REQUIREMENT
+
+Reader-এর কাছে Approach গ্রহণযোগ্য করতে কী ধরনের understanding দরকার তা determine করুন।
+
+Where relevant:
+
+- mechanism
+- reasoning
+- evidence
+- demonstration
+- comparison
+- limitation
+- conditions
+- appropriate use
+- inappropriate use
+
+### What the Reader Needs to Believe
+
+[ ]
+
+### What the Reader Needs to Understand
+
+[ ]
+
+### What the Reader Needs to See / Experience
+
+[ ]
+
+### What the Content Must Not Overclaim
+
+[ ]
+
+---
+
+# 16. VALUE-GAP CROSSING LOGIC
+
+একটি clear causal chain তৈরি করুন:
+
+> **Because the reader currently [CURRENT STATE],**
+>
+> **they experience [SPECIFIC PROBLEM].**
+>
+> **The main reason they remain stuck is [BOTTLENECK].**
+>
+> **Action is further complicated by [MAIN FRICTION].**
+>
+> **The Perspective introduces [APPROACH].**
+>
+> **This helps address the gap by [MECHANISM].**
+>
+> **The reader can then [PRACTICAL APPLICATION].**
+>
+> **This moves them toward [SPECIFIC RESULT].**
+
+এই chain-এ কোনও causal jump থাকলে identify করুন।
+
+---
+
+# 17. FINISH LINE
+
+Define the realistic state the reader should reach by the end of the relevant content.
+
+### Finish Line
+
+[ ]
+
+By the Finish Line, the reader should ideally:
+
+- understand the relevant Perspective
+- understand the Primary Value Gap
+- recognise the Specific Problem
+- understand the Bottleneck
+- understand the Main Friction
+- understand the proposed Approach
+- make the Key Decision
+- know where to start
+- take an appropriate first action
+- know what realistic result to work toward
+
+সব element force করবেন না।
+
+---
+
+# 18. READER-WORK REDUCTION TEST
+
+Ask:
+
+> **“এই content না থাকলে reader-কে নিজেরাই কতটা কাজ করে solution assemble করতে হতো?”**
+
+Determine:
+
+### Work the Reader Would Otherwise Need to Do
+
+[ ]
+
+### Work This Content Should Remove
+
+[ ]
+
+### Remaining Work That Must Stay With the Reader
+
+[ ]
+
+Content-এর কাজ reader-এর সব thinking কেড়ে নেওয়া নয়।
+
+কিন্তু unnecessary assembly work কমানো উচিত।
+
+---
+
+# 19. NON-WITHHOLDING TEST
+
+Internally verify করুন:
+
+> **“আমি কি Primary Value Gap-এর কোনও গুরুত্বপূর্ণ অংশ ইচ্ছাকৃতভাবে অসম্পূর্ণ রাখছি শুধু যাতে reader অন্য content layer-এ যেতে বাধ্য হন?”**
+
+যদি হ্যাঁ হয়:
+
+> সেই reasoning reject করুন।
+
+Reader progression তৈরি হবে:
+
+- increasing relevance
+- increasing depth
+- increasing capability
+- increasing usefulness
+- increasing readiness
+
+এর মাধ্যমে।
+
+Artificial information withholding-এর মাধ্যমে নয়।
+
+---
+
+# 20. CONTENT-SCOPE TEST
+
+Primary Value Gap-এর কতটা অংশ এই content realistically address করতে পারে তা নির্ধারণ করুন।
+
+### What This Content Can Solve
+
+[ ]
+
+### What This Content Can Partially Address
+
+[ ]
+
+### What Must Remain Outside Its Scope
+
+[ ]
+
+এটি অত্যন্ত গুরুত্বপূর্ণ।
+
+একটি content piece-কে এমন promise দেবেন না যা তার scope-এর বাইরে।
+
+---
+
+# 21. VALUE-GAP PRIORITY TEST
+
+Final Primary Value Gap নির্বাচন করার আগে internally verify করুন:
+
+- এটি কি Perspective-এর সঙ্গে directly connected?
+- এটি কি reader-এর জন্য meaningful?
+- এটি কি practical?
+- এটি কি realistically addressable?
+- এটি কি Specific Problem তৈরি করে?
+- এটি কি Specific Result-এর সঙ্গে connected?
+- এটি কি Bottleneck-এর সঙ্গে connected?
+- এটি কি Key Decision-এর সঙ্গে connected?
+- এটি কি Approach-এর প্রয়োজনীয়তা explain করতে সাহায্য করে?
+- এটি কি reader journey-এর strongest organising principle?
+
+যদি একাধিক gap এখনও সমান শক্তিশালী হয়:
+
+> তাদের মধ্যে একটি Primary Gap নির্বাচন করার জন্য আরও discriminating reasoning করুন।
+
+---
+
+# 22. FINAL VALUE-GAP STRATEGIC BRIEF
+
+সব analysis-এর পরে একটি concise strategic brief তৈরি করুন।
+
+### Perspective
+
+[ ]
+
+### Current Reader State
+
+[ ]
+
+### Desired Reader State
+
+[ ]
+
+### Primary Value Gap
+
+[ ]
+
+### Specific Problem
+
+[ ]
+
+### Bottleneck
+
+[ ]
+
+### Main Friction
+
+[ ]
+
+### Required Approach
+
+[ ]
+
+### Specific Result
+
+[ ]
+
+### Key Decision
+
+[ ]
+
+### Last-Mile Need
+
+[ ]
+
+### Ten-Minute Win
+
+[ ]
+
+### Core Value Asset
+
+[ ]
+
+### Finish Line
+
+[ ]
+
+---
+
+# QUALITY CONTROL
+
+Finalising করার আগে internally verify করুন।
+
+## PRIMARY VALUE GAP
+
+- One Primary Value Gap clearly selected?
+- Gap কি Perspective-এর সঙ্গে directly connected?
+- Gap কি meaningful?
+- Gap কি realistically addressable?
+- Supporting gaps কি Primary Gap-এর সঙ্গে compete করছে না?
+
+## SPECIFIC PROBLEM
+
+- Problem কি practical?
+- Problem কি gap-এর genuine expression?
+- Problem কি vague নয়?
+- Problem-এর causal relationship clear?
+
+## BOTTLENECK
+
+- One primary bottleneck selected?
+- এটি কি সত্যিই progress-এর প্রধান obstacle?
+- শুধু আরেকটি generic problem-কে Bottleneck বলা হয়নি?
+
+## FRICTION
+
+- Friction কি Bottleneck থেকে আলাদা?
+- এটি কি বাস্তব implementation difficulty?
+- Irrelevant friction invent করা হয়নি?
+
+## RESULT
+
+- Specific Result realistic?
+- Observable?
+- Primary Value Gap-এর সঙ্গে connected?
+- Guaranteed transformation নয়?
+
+## DECISION
+
+- Key Decision clear?
+- Perspective এবং Value Gap থেকে naturally follows?
+- Artificial commercial decision নয়?
+
+## LAST MILE
+
+- Understanding → Action gap identified?
+- Blank-Page Problem addressed?
+- Reader-এর unnecessary work reduced?
+
+## APPROACH
+
+- Approach কি Primary Value Gap-এর সঙ্গে logically connected?
+- Mechanism clear?
+- Current approach-এর সঙ্গে relevant distinction আছে?
+- Unsupported claims নেই?
+
+## ASSET
+
+- Core Value Asset genuinely useful?
+- Reader work কমায়?
+- Tangible output / decision / action তৈরি করতে সাহায্য করে?
+- শুধু decorative bonus নয়?
+
+## TEN-MINUTE WIN
+
+- Relevant হলে meaningful?
+- Primary Value Gap-এর সঙ্গে connected?
+- বাস্তবে approximately ten minutes-এর মধ্যে করা সম্ভব?
+- Forced নয়?
+
+## READER VALUE
+
+- Every content piece can provide genuine value within its own scope?
+- কোনও useful information deliberately withheld নয়?
+- Content incomplete রাখা হয়নি শুধু next-layer consumption force করার জন্য?
+
+## SCOPE
+
+- Content কী করতে পারে তা clear?
+- কী করতে পারে না তাও clear?
+- Promise এবং delivery-এর মধ্যে contradiction নেই?
+
+## OVERALL COHERENCE
+
+শেষে verify করুন:
+
+> **Perspective**
+>
+> →
+>
+> **Current State**
+>
+> →
+>
+> **Primary Value Gap**
+>
+> →
+>
+> **Specific Problem**
+>
+> →
+>
+> **Bottleneck**
+>
+> →
+>
+> **Main Friction**
+>
+> →
+>
+> **Approach**
+>
+> →
+>
+> **Application**
+>
+> →
+>
+> **Specific Result**
+>
+> →
+>
+> **Key Decision**
+>
+> →
+>
+> **Finish Line**
+
+এই chain-এ কোনও major logical jump, contradiction বা duplication থাকলে final output দেওয়ার আগে revise করুন।
+
+---
+
+# OUTPUT FORMAT
+
+শুধুমাত্র নিচের structure অনুসরণ করে final strategic analysis দিন:
+
+## 1. Reader State Reconstruction
+
+## 2. Potential Value Gaps
+
+## 3. Primary Value Gap
+
+## 4. Value-Gap Chain
+
+## 5. Specific Problem
+
+## 6. Bottleneck
+
+## 7. Main Friction
+
+## 8. Specific Result
+
+## 9. Key Decision
+
+## 10. Last-Mile Gap
+
+## 11. Practical Application Requirement
+
+## 12. Ten-Minute Win
+
+## 13. Core Value Asset
+
+## 14. Required Approach
+
+## 15. Approach Credibility Requirement
+
+## 16. Value-Gap Crossing Logic
+
+## 17. Finish Line
+
+## 18. Reader-Work Reduction
+
+## 19. Content-Scope Test
+
+## 20. Final Value-Gap Strategic Brief
+
+---
+
+# STRICT BOUNDARY
+
+Do not generate the Base Book.
+
+Do not generate the Base Book title.
+
+Do not generate the final Base Book outline.
+
+Do not generate Public Content.
+
+Do not generate Private Content.
+
+Do not generate Distribution Assets.
+
+Do not generate individual content pieces.
+
+Do not generate a sales funnel.
+
+Do not generate promotional copy.
+
+Do not turn this analysis into a finished article, chapter, ebook, post, or guide.
+
+Do not invent a target audience that has not been provided.
+
+Do not assume demographic characteristics that are not supported by the input.
+
+Do not force a Value Gap where no meaningful gap exists.
+
+Do not force a Ten-Minute Win or Core Value Asset when neither is genuinely appropriate.
+
+This is a THINKING TOOL.
+
+Its purpose is to determine:
+
+> **“Perspective-টির সঙ্গে সম্পর্কিত সবচেয়ে গুরুত্বপূর্ণ reader Value Gap কোনটি, সেটি কেন গুরুত্বপূর্ণ, এবং সেই gap অতিক্রম করার জন্য content-কে আসলে কী কাজ করতে হবে?”**
+
+The output of this prompt will become the strategic foundation for the next stage of the Perspective-Building Content Workflow.`;
+
+function fill(template, token, value){
+  return template.split(token).join(value || "");
+}
+
+function generatePrompt(){
+  const stage1 = document.getElementById("stage1").value.trim();
+  const context = document.getElementById("context").value.trim();
+
+  if(!stage1){
+    setStatus("Stage 1 output is required.");
+    return "";
+  }
+
+  let out = promptTemplate;
+  out = fill(out, "[PASTE THE FINAL OUTPUT OF STAGE 1 — PROMPT 1 HERE]", stage1);
+  out = fill(out, "[INSERT ANY ADDITIONAL THINKING, OBSERVATION, CORRECTION, CONSTRAINT, OR CONTEXT HERE, IF ANY]",
+             context || "(No additional human context provided.)");
+
+  document.getElementById("output").textContent = out;
+  setStatus("Prompt generated successfully.");
+  return out;
+}
+
+async function copyPrompt(){
+  let out = document.getElementById("output").textContent;
+  if(!out || out === "Your generated prompt will appear here.") out = generatePrompt();
+  if(!out) return;
+  try{
+    await navigator.clipboard.writeText(out);
+    setStatus("Prompt copied to clipboard.");
+  }catch(e){
+    setStatus("Copy failed. Please copy the generated prompt manually.");
+  }
+}
+
+function downloadPrompt(){
+  const out = generatePrompt();
+  if(!out) return;
+  const blob = new Blob([out], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Stage-2-Prompt-1-Primary-Value-Gap-Analysis.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setStatus("Prompt downloaded.");
+}
+
+function clearAll(){
+  document.getElementById("stage1").value="";
+  document.getElementById("context").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  setStatus("All fields cleared.");
+}
+
+function setStatus(msg){
+  document.getElementById("status").textContent=msg;
+}
+</script>
+</body>
+</html>

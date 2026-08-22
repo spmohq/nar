@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 4.1 — Production Setup</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1000px;margin:auto;padding:28px 16px 56px}.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.55rem,4vw,2.35rem);line-height:1.15}.hero p{margin:8px 0 0;color:var(--muted);max-width:820px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+textarea{width:100%;min-height:190px;resize:vertical;border:1px solid var(--border);border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}.optional{font-weight:600;color:var(--muted);font-size:.85rem}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}button.danger{background:#f2e0dc;color:var(--danger)}.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:520px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px;color:#51483f}.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:150px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 4.1 · Base Book Generation</div>
+<h1>Production Setup</h1>
+<p>Stage 1–3-এর inherited workflow context-কে একটি locked Base Book production state-এ compile করার জন্য Prompt Genie.</p>
+</section>
+
+<section class="card">
+<div class="note"><strong>Workflow note:</strong> Stage 1, Stage 2 এবং Stage 3 এখানে নতুন user input নয়। এগুলি previous-stage handoff context হিসেবে ধরা হয়েছে। এই Genie Page-এ একমাত্র নতুন human input হলো <strong>Additional Human Direction</strong> — optional.</div>
+</section>
+
+<section class="card">
+<label>Inherited Workflow Context</label>
+<div class="context">
+<strong>Stage 1 — Perspective Thinking Output</strong><br>
+Inherited from the previous stage<br><br>
+<strong>Stage 2 — Value-Gap Thinking Output</strong><br>
+Inherited from the previous stage<br><br>
+<strong>Stage 3 — Base Book Architecture Output</strong><br>
+Inherited from the previous stage
+</div>
+</section>
+
+<section class="card">
+<label for="direction">Additional Human Direction <span class="optional">(optional)</span></label>
+<div class="hint">নতুন কোনও human thinking, preference, correction, constraint বা context থাকলে এখানে দিন। না থাকলে ফাঁকা রাখুন।</div>
+<textarea id="direction" placeholder="INSERT ANY NEW HUMAN THINKING, PREFERENCE, CORRECTION, CONSTRAINT, OR CONTEXT HERE, IF ANY"></textarea>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 4.1 — Production Setup · Inherited Context Architecture</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 4 — BASE BOOK GENERATION
+## PROMPT 4.1 — PRODUCTION SETUP
+### FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+# PURPOSE
+
+এই prompt-এর কাজ Base Book লেখা নয়।
+
+এর কাজ হলো পূর্ববর্তী stages-এ ইতিমধ্যে নির্ধারিত:
+
+- Perspective
+- Value Gap
+- Base Book Architecture
+
+এবং সংশ্লিষ্ট strategic decisions-কে একটি:
+
+> **LOCKED BASE BOOK PRODUCTION STATE**
+
+-এ compile করা।
+
+অর্থাৎ এই prompt নতুন করে Perspective, Value Gap বা Base Book Architecture তৈরি করবে না।
+
+এটি:
+
+> **Strategy → Production State**
+
+এই handoff সম্পন্ন করবে।
+
+---
+
+# CORE DOCTRINE
+
+Content creation must remain:
+
+> **Perspective-first, not topic-first.**
+
+Base Book generation-এর প্রতিটি substantive decision-এর organising principle হবে:
+
+> **Perspective → Reader Shift → Primary Value Gap → Base Book Architecture → Reader Finish Line**
+
+Topic নিজে content selection-এর sufficient reason নয়।
+
+কোনও বিষয় Base Book-এ শুধু relevant বলে ঢুকবে না।
+
+তার inclusion-এর জন্য strategic necessity থাকতে হবে।
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+Base Book-এর প্রতিটি substantive section:
+
+- নিজের scope-এর মধ্যে meaningful হতে হবে
+- reader-এর understanding বা capability-তে genuine contribution রাখতে হবে
+- শুধু পরবর্তী section-এর teaser হতে পারবে না
+- essential information ইচ্ছাকৃতভাবে আটকে রাখতে পারবে না
+- অন্য content layer-এ পাঠানোর জন্য artificially incomplete হতে পারবে না
+
+Base Book-এর progression তৈরি হবে:
+
+> **increasing relevance → increasing understanding → increasing depth → increasing capability → increasing readiness**
+
+এর মাধ্যমে।
+
+Artificial withholding-এর মাধ্যমে নয়।
+
+---
+
+# INHERITED WORKFLOW CONTEXT
+
+এই prompt-এর আগে সম্পন্ন হওয়া stages-এর final outputs এই workflow-এর inherited context হিসেবে বিবেচিত হবে।
+
+## INHERITED CONTEXT 1 — STAGE 1: PERSPECTIVE THINKING
+
+[INHERITED FROM STAGE 1 — FINAL OUTPUT]
+
+---
+
+## INHERITED CONTEXT 2 — STAGE 2: VALUE-GAP THINKING
+
+[INHERITED FROM STAGE 2 — FINAL OUTPUT]
+
+---
+
+## INHERITED CONTEXT 3 — STAGE 3: BASE BOOK ARCHITECTURE
+
+[INHERITED FROM STAGE 3 — FINAL OUTPUT]
+
+---
+
+# IMPORTANT CONTEXT RULE
+
+উপরের Stage 1, Stage 2 এবং Stage 3 outputs:
+
+> **NEW USER INPUT নয়।**
+
+এগুলি পূর্ববর্তী workflow stages-এর locked outputs এবং production setup-এর জন্য inherited context।
+
+AI-এর কাজ এগুলিকে পুনরায় strategicভাবে redesign করা নয়।
+
+বিশেষভাবে:
+
+- Stage 1-এর Perspective পুনরায় নির্বাচন করবেন না।
+- Stage 2-এর Primary Value Gap পুনরায় নির্ধারণ করবেন না।
+- Stage 3-এর Base Book Architecture নতুন করে তৈরি করবেন না।
+- Stage 1–3-এর strategic decisions-কে নিজের পছন্দ অনুযায়ী replace করবেন না।
+
+আপনার কাজ হলো:
+
+> **already-decided strategy-কে production-ready state-এ compile করা।**
+
+---
+
+# ADDITIONAL HUMAN DIRECTION — OPTIONAL
+
+[INSERT ANY NEW HUMAN THINKING, PREFERENCE, CORRECTION, CONSTRAINT, OR CONTEXT HERE, IF ANY]
+
+যদি কোনও নতুন human direction না থাকে:
+
+> No additional human direction provided.
+
+---
+
+# HUMAN OVERRIDE RULE
+
+Additional Human Direction থাকলে সেটিকে carefully interpret করুন।
+
+Latest explicit human instruction inherited workflow context-এর উপর priority পাবে **শুধুমাত্র যেখানে user স্পষ্টভাবে কোনও পূর্ববর্তী সিদ্ধান্ত পরিবর্তন, সংশোধন বা সীমাবদ্ধ করতে চাইছেন।**
+
+কোনও apparent difference দেখলেই inherited strategy পরিবর্তন করবেন না।
+
+প্রথমে determine করুন:
+
+> এটি কি সত্যিই একটি strategic change, নাকি শুধু অতিরিক্ত clarification?
+
+যদি সত্যিকারের contradiction থাকে এবং user-এর intention পরিষ্কার না হয়:
+
+> **DO NOT SILENTLY RESOLVE**
+
+বরং issue-টি flag করুন।
+
+---
+
+# SOURCE-OF-TRUTH HIERARCHY
+
+যদি inherited context এবং নতুন human direction-এর মধ্যে tension থাকে:
+
+### 1. Latest explicit human instruction
+
+সবচেয়ে বেশি priority।
+
+### 2. Stage 3 — Base Book Architecture
+
+Base Book-এর structural source of truth।
+
+### 3. Stage 2 — Value-Gap Thinking
+
+Primary Value Gap, Specific Problem, Bottleneck, Friction, Result, Finish Line ইত্যাদির strategic source।
+
+### 4. Stage 1 — Perspective Thinking
+
+Perspective এবং intended Reader Shift-এর strategic source।
+
+### 5. General conventions
+
+শুধুমাত্র উপরের sources-এ কোনও বিষয় unspecified থাকলে ব্যবহার করা যাবে।
+
+---
+
+# PRODUCTION OBJECTIVE
+
+এই production environment-এর একমাত্র substantive objective:
+
+> **Stage 3-এ নির্ধারিত Base Book Architecture অনুযায়ী একটি coherent, self-contained এবং reader-useful Base Book তৈরি করার জন্য একটি locked production state তৈরি করা।**
+
+Base Book-এর primary role:
+
+> **Perspective establish করা।**
+
+এবং তার মাধ্যমে:
+
+> **Primary Value Gap meaningfulভাবে address করা।**
+
+Base Book-এর কাজ:
+
+- topic সম্পর্কে যত বেশি সম্ভব information দেওয়া নয়
+- encyclopedic coverage দেওয়া নয়
+- সব related problem solve করা নয়
+- reader-কে অন্য content layer-এ push করা নয়
+- কোনও commercial conversion বাধ্য করা নয়
+
+---
+
+# BASE BOOK DEFINITION
+
+এই workflow-এ:
+
+> **Base Book = Perspective-এর foundational coherent explanation and application layer.**
+
+এটি reader-কে:
+
+> **Current Way of Seeing**
+
+থেকে:
+
+> **Perspective-Consistent Way of Seeing**
+
+-এর দিকে নিয়ে যাবে।
+
+এবং যেখানে relevant:
+
+> **Understanding → Decision → Application**
+
+পর্যন্ত নিয়ে যাবে।
+
+---
+
+# READER DEFINITION
+
+কোনও specific demographic target audience assume করা যাবে না, যদি তা inherited context বা Additional Human Direction-এ explicitly provided না থাকে।
+
+“Reader” বলতে বোঝাবে:
+
+> **যে ব্যক্তি এই Perspective এবং সংশ্লিষ্ট Value Gap-এর সঙ্গে meaningfully concerned।**
+
+Reader-এর সম্পর্কে নিজে থেকে invent করবেন না:
+
+- age
+- gender
+- income
+- profession
+- location
+- education
+- lifestyle
+- personality
+- demographic characteristics
+
+যদি কোনও reader characteristic strategicভাবে প্রয়োজন হয় এবং context-এ তা নির্ধারিত না থাকে:
+
+> **Flag the uncertainty rather than inventing it.**
+
+---
+
+# BASE BOOK SCOPE LOCK
+
+Stage 3-এর Base Book Scope-কে production boundary হিসেবে treat করুন।
+
+Base Book-এর মধ্যে থাকবে শুধুমাত্র সেই বিষয়গুলো যা:
+
+- Perspective establish করতে সাহায্য করে
+- Primary Value Gap address করে
+- reader journey-এর জন্য necessary
+- Stage 3 architecture-এর substantive stages-এর অংশ
+- reader-এর Finish Line-এ পৌঁছানোর জন্য relevant
+
+Base Book-এর বাইরে থাকবে:
+
+- unrelated topic knowledge
+- interesting but unnecessary information
+- excessive background
+- tangential examples
+- unnecessary options
+- content whose only purpose is promotion
+- future content layer-এর essential value
+
+---
+
+# ARCHITECTURE LOCK
+
+Stage 3-এর substantive stages এবং sequence respect করুন।
+
+নিজে থেকে:
+
+- stage reorder
+- stage merge
+- stage split
+- stage delete
+- new major stage add
+
+করবেন না।
+
+শুধুমাত্র তখনই issue flag করুন যখন production-এর সময়:
+
+- genuine logical contradiction
+- missing prerequisite
+- impossible dependency
+- বা explicit human correction
+
+ধরা পড়ে।
+
+এমন সমস্যা দেখা দিলে:
+
+1. সমস্যা identify করুন
+2. affected stage identify করুন
+3. reason explain করুন
+4. correction-এর প্রয়োজন flag করুন
+
+কিন্তু:
+
+> **Do not silently rewrite the architecture.**
+
+---
+
+# READER JOURNEY LOCK
+
+Base Book-এর narrative progression অবশ্যই reader state-এর progression অনুসরণ করবে।
+
+প্রতিটি substantive section-এর ক্ষেত্রে internally determine করুন:
+
+> **Reader এই section-এর আগে কী জানেন / বোঝেন / বিশ্বাস করেন?**
+
+এবং:
+
+> **এই section-এর পরে তিনি কী নতুনভাবে বুঝবেন / দেখবেন / সিদ্ধান্ত নিতে পারবেন?**
+
+যদি কোনও section reader state-এ meaningful change না আনে এবং শুধু information যোগ করে:
+
+> তার strategic necessity reconsider করুন।
+
+---
+
+# LOGICAL DEPENDENCY RULE
+
+কোনও concept, explanation, decision বা application-এর আগে তার necessary prerequisite understanding থাকতে হবে।
+
+Never assume that the reader already understands a prerequisite merely because it is obvious to the writer.
+
+কিন্তু একই সঙ্গে:
+
+> prerequisite-এর নামে unnecessary information ঢোকাবেন না।
+
+প্রতিটি prerequisite-এর জন্য internally ask করুন:
+
+> **“এটি না জানলে পরের stage genuinely বোঝা যাবে কি?”**
+
+যদি উত্তর “না” হয়:
+
+> সেটি Base Book-এ include করার জন্য আরও justification প্রয়োজন।
+
+---
+
+# NARRATIVE CONTINUITY RULE
+
+প্রতিটি section:
+
+- আগের section থেকে logically emerge করবে
+- পরের section-এর জন্য necessary foundation তৈরি করবে
+- reader-এর journey-তে identifiable progress তৈরি করবে
+
+Section-to-section progression ideally:
+
+> **Because X is now understood, Y can now be understood.**
+
+এই logic অনুসরণ করবে।
+
+শুধু conventional chapter structure বা chronological convenience-এর কারণে sequence তৈরি করবেন না।
+
+---
+
+# PERSPECTIVE CONSISTENCY RULE
+
+Base Book-এর কোনও section Perspective-এর সঙ্গে contradiction তৈরি করতে পারবে না।
+
+প্রতিটি major explanation-এর ক্ষেত্রে internally verify করুন:
+
+- এটি কি Perspective-কে reinforce করছে?
+- Perspective-এর mechanism-এর সঙ্গে consistent?
+- Reader-এর desired shift-এর দিকে নিয়ে যাচ্ছে?
+- কোনও alternative framing কি unintendedভাবে central narrative দুর্বল করছে?
+
+Relevant alternative interpretation থাকলে তা বাদ দেবেন না।
+
+কিন্তু তার role clearly contextualise করুন।
+
+---
+
+# VALUE-GAP CONSISTENCY RULE
+
+Base Book-এর content selection Primary Value Gap-এর সঙ্গে aligned থাকতে হবে।
+
+প্রতিটি major section-এর জন্য internally identify করুন:
+
+> **এই section Primary Value Gap-এর কোন অংশ address করছে?**
+
+যদি কোনও section-এর meaningful answer না থাকে:
+
+> section-টির inclusion reconsider করুন।
+
+---
+
+# READER-VALUE RULE
+
+প্রতিটি substantive section-এর নিজস্ব reader-facing value থাকতে হবে।
+
+একটি section শুধুমাত্র:
+
+- পরের section-এর teaser
+- curiosity device
+- artificial cliffhanger
+- promotional bridge
+- CTA setup
+
+হতে পারবে না।
+
+একটি section-এর শেষে reader ideally:
+
+> **“আমি এখন আগের তুলনায় কিছু বেশি বুঝি / দেখতে পারি / বিচার করতে পারি / করতে পারি।”**
+
+এই অবস্থায় থাকবেন।
+
+---
+
+# NON-WITHHOLDING RULE
+
+Base Book-এর intended scope-এর মধ্যে কোনও essential understanding ইচ্ছাকৃতভাবে incomplete রাখা যাবে না।
+
+শুধু যাতে reader Private Content পড়েন, তার জন্য Base Book-এর essential explanation আটকে রাখা যাবে না।
+
+শুধু যাতে reader কোনও paid product কিনতে আগ্রহী হন, তার জন্য essential method deliberately obscure করা যাবে না।
+
+শুধু যাতে পরের chapter পড়েন, তার জন্য current section-এর necessary conclusion intentionally withheld করা যাবে না।
+
+Next content layer-এর role হতে পারে:
+
+- deeper exploration
+- additional application
+- advanced practice
+- specialisation
+- alternative use cases
+
+কিন্তু Base Book-এর intended scope-এর essential value incomplete রাখা যাবে না।
+
+---
+
+# COMMERCIAL NEUTRALITY RULE
+
+Base Book free হোক বা paid—production architecture নিজে থেকে পরিবর্তন হবে না।
+
+Base Book-এর existence-এর জন্য:
+
+- selling বাধ্যতামূলক নয়
+- monetisation বাধ্যতামূলক নয়
+- CTA বাধ্যতামূলক নয়
+- product promotion বাধ্যতামূলক নয়
+
+যদি Base Book free হওয়াই Perspective establishment-এর জন্য সবচেয়ে appropriate strategy হয়:
+
+> সেটিকে valid outcome হিসেবে treat করুন।
+
+Base Book-কে artificially commercialise করবেন না।
+
+---
+
+# EVIDENCE DISCIPLINE
+
+যেখানে evidence প্রয়োজন:
+
+- unsupported claim invent করবেন না
+- fabricated statistics ব্যবহার করবেন না
+- fictional evidence তৈরি করবেন না
+- certainty overstate করবেন না
+
+Stage 3-এ evidence requirement থাকলে সেটিকে respect করুন।
+
+যদি required evidence unavailable হয়:
+
+> uncertainty বা evidence requirement flag করুন।
+
+---
+
+# EXAMPLE DISCIPLINE
+
+Examples-এর কাজ হবে:
+
+- concept clarify করা
+- mechanism demonstrate করা
+- distinction বোঝানো
+- application দেখানো
+- misconception correct করা
+
+Example শুধু content length বাড়ানোর জন্য ব্যবহার করবেন না।
+
+Examples Perspective বা Value Gap-এর সঙ্গে relevant হতে হবে।
+
+---
+
+# APPLICATION DISCIPLINE
+
+যেখানে Stage 3 application-এর requirement নির্ধারণ করেছে, সেখানে explanation-কে practical implication-এর সঙ্গে connect করুন।
+
+কিন্তু:
+
+> application-এর নামে এমন promise করবেন না যা Base Book-এর scope-এর বাইরে।
+
+Reader-এর agency বজায় রাখুন।
+
+Base Book reader-এর হয়ে সিদ্ধান্ত নেবে না যদি framework অনুযায়ী reader-এর নিজের judgment প্রয়োজন হয়।
+
+---
+
+# ASSET INTEGRATION
+
+Stage 2 বা Stage 3-এ Core Value Asset নির্ধারিত থাকলে সেটিকে architecture-এর appropriate location-এ integrate করার জন্য প্রস্তুত থাকুন।
+
+Asset যেন:
+
+- genuinely useful
+- relevant
+- usable
+- reader work reducing
+
+হয়।
+
+Asset-কে শুধু decorative bonus হিসেবে treat করবেন না যদি সেটি actual reader value-এর core অংশ হয়।
+
+---
+
+# TEN-MINUTE WIN INTEGRATION
+
+Stage 2/3-এ meaningful Ten-Minute Win থাকলে তার intended location respect করুন।
+
+Ten-Minute Win:
+
+- relevant
+- realistic
+- immediately actionable
+- Primary Value Gap-এর সঙ্গে connected
+
+হতে হবে।
+
+শুধু engagement বাড়ানোর জন্য artificial micro-action তৈরি করবেন না।
+
+---
+
+# QUALITY OVER COMPLETENESS
+
+Base Book-এর objective:
+
+> **maximum information নয়; sufficient coherent understanding।**
+
+যদি দুটি content element-এর মধ্যে:
+
+- একটি essential এবং focused
+- অন্যটি interesting কিন্তু non-essential
+
+হয়:
+
+> essential element-কে priority দিন।
+
+কিন্তু essential explanation যেন excessively compressed হয়ে reader-এর understanding ক্ষতিগ্রস্ত না করে।
+
+---
+
+# DEPTH CALIBRATION
+
+প্রতিটি section-এর depth নির্ধারণ হবে:
+
+> **strategic importance + reader dependency + practical usefulness**
+
+অনুযায়ী।
+
+সব section সমান length-এর হওয়া দরকার নেই।
+
+Central concept-এর জন্য বেশি explanation প্রয়োজন হলে দিন।
+
+Peripheral concept unnecessarily deep করবেন না।
+
+---
+
+# LANGUAGE & STYLE BASELINE
+
+Final Base Book-এর language:
+
+- natural Bengali (India)
+- Kolkata-style conversational cadence
+- modern, readable Bengali
+- formal “আপনি”
+- “তুমি” বা “তুই” নয়
+- অপ্রয়োজনীয় jargon নয়
+- প্রয়োজনীয় technical term হলে প্রথম ব্যবহারে সহজ explanation
+- artificial translation-এর মতো ভাষা নয়
+
+তবে inherited context বা Additional Human Direction-এ অন্য language বা terminology explicitly required হলে সেই instruction priority পাবে।
+
+---
+
+# THINKING VS WRITING
+
+এই production setup actual Base Book prose generate করবে না।
+
+এটি পরবর্তী generation prompts-এর জন্য:
+
+- scope
+- source
+- state
+- sequence
+- constraints
+- quality rules
+- value rules
+- reader journey
+
+lock করবে।
+
+---
+
+# LOCKED PRODUCTION STATE
+
+Inherited contexts এবং Additional Human Direction analyse করার পরে একটি single production state তৈরি করুন।
+
+এই state-এ অন্তত নিম্নলিখিত elements থাকবে:
+
+### Perspective
+
+[ ]
+
+### Primary Reader Shift
+
+[ ]
+
+### Primary Value Gap
+
+[ ]
+
+### Specific Problem
+
+[ ]
+
+### Bottleneck
+
+[ ]
+
+### Main Friction
+
+[ ]
+
+### Required Approach
+
+[ ]
+
+### Specific Result
+
+[ ]
+
+### Key Decision
+
+[ ]
+
+### Reader Finish Line
+
+[ ]
+
+### Base Book Core Promise
+
+[ ]
+
+### Base Book Scope
+
+[ ]
+
+### Substantive Stage Sequence
+
+[ ]
+
+### Opening Requirement
+
+[ ]
+
+### Last-Mile Requirement
+
+[ ]
+
+### Ten-Minute Win
+
+[ ]
+
+### Core Value Asset
+
+[ ]
+
+### Evidence Requirements
+
+[ ]
+
+### Important Objections / Misconceptions
+
+[ ]
+
+### Important Constraints
+
+[ ]
+
+---
+
+# GENERATION STATE MODEL
+
+Base Book generation একটি controlled iterative process হিসেবে treat করুন।
+
+Possible states:
+
+### STATE A — NOT STARTED
+
+কোনও substantive Base Book content এখনও generated হয়নি।
+
+### STATE B — OPENING REQUIRED
+
+Opening এখনও complete নয়।
+
+### STATE C — SUBSTANTIVE SECTION IN PROGRESS
+
+একটি substantive section generate হচ্ছে।
+
+### STATE D — NEXT SUBSTANTIVE SECTION REQUIRED
+
+Current section complete; architecture অনুযায়ী পরবর্তী unfinished section identify করা দরকার।
+
+### STATE E — SUBSTANTIVE CONTENT COMPLETE
+
+সব substantive stages complete।
+
+### STATE F — CLOSING REQUIRED
+
+Closing এখনও লেখা হয়নি।
+
+### STATE G — BOOK COMPLETE
+
+Base Book এবং Closing complete।
+
+### STATE H — FINAL AUDIT REQUIRED
+
+Final completion audit করতে হবে।
+
+পরবর্তী generation prompts এই state model respect করবে।
+
+---
+
+# UNFINISHED-CONTENT PRINCIPLE
+
+পরবর্তী generation prompts-কে কখনও অনুমান করতে দেওয়া যাবে না যে কোন section “next”।
+
+Next unfinished substantive section determine করতে হবে:
+
+> **Stage 3 architecture + already completed content + current production state**
+
+এই তিনটির ভিত্তিতে।
+
+যে section already complete:
+
+> পুনরায় generate করা যাবে না।
+
+যে section incomplete:
+
+> তাকে complete করতে হবে।
+
+যে section শুরুই হয়নি:
+
+> architecture-এর sequence অনুযায়ী next appropriate unfinished section হবে।
+
+---
+
+# NO PREMATURE CLOSING RULE
+
+Base Book-এর substantive architecture complete হওয়ার আগে Closing generate করা যাবে না।
+
+Closing তখনই generate হবে যখন:
+
+> **সব required substantive sections complete এবং final reader Finish Line logically reached।**
+
+---
+
+# NO CONTENT REPAIR IN SETUP
+
+এই prompt-এর মাধ্যমে:
+
+- missing chapter লেখা যাবে না
+- section rewrite করা যাবে না
+- content generate করা যাবে না
+- architecture silently modify করা যাবে না
+
+যদি production setup-এর সময় structural problem ধরা পড়ে:
+
+> **FLAG — DO NOT SILENTLY REPAIR**
+
+পরবর্তী appropriate stage-এ correction-এর জন্য তা report করতে হবে।
+
+---
+
+# HUMAN CONTROL RULE
+
+এই workflow-এ AI-এর কাজ:
+
+> **structure, reasoning, sequencing এবং generation support করা।**
+
+AI-এর কাজ নয়:
+
+- user's Perspective পরিবর্তন করা
+- user's core narrative replace করা
+- নিজের পছন্দের Perspective introduce করা
+- unsupported audience invent করা
+- commercial objective impose করা
+- content strategy নিজের মতো করে redefine করা
+
+যদি inherited context-এর মধ্যে genuine contradiction থাকে:
+
+> contradiction identify করুন।
+
+নিজে থেকে user-এর intention replace করবেন না।
+
+---
+
+# PRODUCTION CONSTRAINTS
+
+Base Book generation-এর সময়:
+
+- Stage 3 architecture respect করতে হবে
+- Primary Value Gap respect করতে হবে
+- Reader Finish Line respect করতে হবে
+- Intrinsic Reader Value Rule respect করতে হবে
+- Non-Withholding Principle respect করতে হবে
+- Scope respect করতে হবে
+- Reader agency preserve করতে হবে
+- Unsupported claims avoid করতে হবে
+- Artificial commercial pressure avoid করতে হবে
+
+---
+
+# SETUP VALIDATION
+
+Production state finalise করার আগে internally verify করুন:
+
+## INHERITED CONTEXT
+
+- Stage 1 context available?
+- Stage 2 context available?
+- Stage 3 architecture available?
+- Context যথাযথভাবে inherited হিসেবে treat করা হয়েছে?
+- কোনও inherited strategic decision unnecessarily rewritten হয়নি?
+
+## HUMAN DIRECTION
+
+- Additional Human Direction considered?
+- যদি direction change নির্দেশ করে, তা correctly identified?
+- Ambiguous contradiction silently resolved হয়নি?
+
+## STRATEGIC ALIGNMENT
+
+- Perspective clear?
+- Reader Shift clear?
+- Primary Value Gap clear?
+- Base Book Job clear?
+- Finish Line clear?
+
+## ARCHITECTURE
+
+- Substantive stage sequence available?
+- Stage purposes identifiable?
+- Dependencies understandable?
+- Opening requirement identifiable?
+- Last-mile requirement identifiable?
+
+## VALUE
+
+- Intrinsic Reader Value Rule active?
+- Non-Withholding Principle active?
+- Base Book-এর intended scope-এর মধ্যে genuine value deliver করার ক্ষমতা আছে?
+
+## SCOPE
+
+- In-scope clear?
+- Out-of-scope clear?
+- No unnecessary expansion?
+
+## COMMERCIAL NEUTRALITY
+
+- Free/paid status architecture distort করছে না?
+- No forced selling logic?
+- No artificial CTA dependency?
+
+## GENERATION CONTROL
+
+- Current production state identifiable?
+- Next unfinished section later determine করা যাবে?
+- Already completed content later regenerate হবে না?
+- Closing prematurely generate হবে না?
+
+## HUMAN CONTROL
+
+- No unsupported assumptions?
+- No silent strategic rewrites?
+- Contradictions flagged rather than invented away?
+
+---
+
+# OUTPUT
+
+এই prompt actual Base Book content generate করবে না।
+
+শুধুমাত্র একটি:
+
+> **LOCKED BASE BOOK PRODUCTION STATE**
+
+তৈরি করবে।
+
+Output format:
+
+## LOCKED BASE BOOK PRODUCTION STATE
+
+### 1. Perspective
+[ ]
+
+### 2. Primary Reader Shift
+[ ]
+
+### 3. Primary Value Gap
+[ ]
+
+### 4. Specific Problem
+[ ]
+
+### 5. Bottleneck
+[ ]
+
+### 6. Main Friction
+[ ]
+
+### 7. Required Approach
+[ ]
+
+### 8. Specific Result
+[ ]
+
+### 9. Key Decision
+[ ]
+
+### 10. Reader Finish Line
+[ ]
+
+### 11. Base Book Core Promise
+[ ]
+
+### 12. Base Book Job
+[ ]
+
+### 13. Base Book Scope
+[ ]
+
+### 14. Substantive Stage Sequence
+[ ]
+
+### 15. Opening Requirement
+[ ]
+
+### 16. Last-Mile Requirement
+[ ]
+
+### 17. Ten-Minute Win
+[ ]
+
+### 18. Core Value Asset
+[ ]
+
+### 19. Evidence Requirements
+[ ]
+
+### 20. Important Objections / Misconceptions
+[ ]
+
+### 21. Important Constraints
+[ ]
+
+### 22. Current Production State
+[ ]
+
+### 23. Generation Rules
+[ ]
+
+### 24. Potential Structural Issues Requiring Human Attention
+[ ]
+
+---
+
+# STRICT BOUNDARY
+
+Do not write the Base Book.
+
+Do not write the Opening.
+
+Do not write any chapter or substantive section.
+
+Do not generate Closing.
+
+Do not generate Public Content.
+
+Do not generate Private Content.
+
+Do not generate Distribution Assets.
+
+Do not generate individual content pieces.
+
+Do not generate promotional copy.
+
+Do not generate sales copy.
+
+Do not generate a sales funnel.
+
+Do not modify the Perspective.
+
+Do not invent a target audience.
+
+Do not invent evidence.
+
+Do not silently modify Stage 3 architecture.
+
+Do not silently resolve contradictions in the inherited context.
+
+Do not deliberately withhold useful information as a future-content hook.
+
+Do not treat the Base Book as incomplete merely because deeper content may exist elsewhere.
+
+Do not ask the user to re-enter Stage 1, Stage 2, or Stage 3 outputs as new strategic inputs when those outputs are already available as inherited workflow context.
+
+This is a:
+
+> **PRODUCTION SETUP AND CONTROL TOOL**
+
+Its purpose is to establish the locked state from which the subsequent Base Book Generation prompts can safely operate.
+
+The next prompt in the workflow should use this locked production state rather than reconstructing the strategy from scratch.`;
+
+function generatePrompt(){
+  const d=document.getElementById("direction").value.trim();
+  let out=promptTemplate.replace("[INSERT ANY NEW HUMAN THINKING, PREFERENCE, CORRECTION, CONSTRAINT, OR CONTEXT HERE, IF ANY]",d||"(No additional human direction provided.)");
+  document.getElementById("output").textContent=out;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return out;
+}
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out||out==="Your generated prompt will appear here.") out=generatePrompt();
+  try{await navigator.clipboard.writeText(out);document.getElementById("status").textContent="Prompt copied to clipboard."}
+  catch(e){document.getElementById("status").textContent="Copy failed. Please copy manually."}
+}
+function downloadPrompt(){
+  const out=generatePrompt(); const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;
+  a.download="Stage-4.1-Prompt-Production-Setup.txt";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearAll(){document.getElementById("direction").value="";document.getElementById("output").textContent="Your generated prompt will appear here.";document.getElementById("status").textContent="All fields cleared."}
+</script>
+</body>
+</html>

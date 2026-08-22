@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 4.4 — Base Book Completion Check</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1050px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted);max-width:900px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}
+.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+textarea{width:100%;min-height:230px;resize:vertical;border:1px solid var(--border);border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;color:var(--muted)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7db;color:var(--gold-dark);font-size:.75rem;font-weight:800;margin-left:5px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px;color:#51483f}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:180px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 4.4 · Base Book Generation</div>
+<h1>Base Book Completion Check</h1>
+<p>বর্তমান Base Book audit করে সত্যিই কী complete, কী unfinished, এবং workflow-এর পরবর্তী legitimate action কী — তা নির্ধারণ করার জন্য Prompt Genie.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Workflow architecture:</strong> Locked Production State, Current Base Book Content এবং Current Production State — inherited workflow context। এগুলি নতুন strategic user input নয়। একমাত্র নতুন user-facing field হলো <strong>Additional Human Direction</strong> — optional.
+</div>
+</section>
+
+<section class="card">
+<label>Inherited Workflow Context</label>
+<div class="context">
+<strong>1. LOCKED BASE BOOK PRODUCTION STATE</strong><span class="badge">Inherited · Stage 4.1</span><br>
+Perspective, Value Gap, Base Book Architecture, Reader Finish Line, Scope, Generation Rules ইত্যাদি।<br><br>
+<strong>2. CURRENT BASE BOOK CONTENT</strong><span class="badge">Inherited · Stage 4.2 / 4.3</span><br>
+Opening এবং ইতিমধ্যে সম্পন্ন substantive sections।<br><br>
+<strong>3. CURRENT PRODUCTION STATE</strong><span class="badge">Inherited · Previous cycle</span><br>
+Workflow-এর বর্তমান state, যেমন STATE C বা STATE D।
+</div>
+</section>
+
+<section class="card">
+<label for="direction">Additional Human Direction <span class="badge">Optional</span></label>
+<div class="hint">নতুন correction, clarification, constraint বা explicit instruction থাকলে এখানে দিন। না থাকলে ফাঁকা রাখুন।</div>
+<textarea id="direction" placeholder="INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY"></textarea>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 4.4 · Completion Check · Inherited Context Architecture</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 4 — BASE BOOK GENERATION
+## PROMPT 4.4 — BASE BOOK COMPLETION CHECK
+### FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+# ROLE
+
+আপনি এখন **Base Book Completion Check** হিসেবে কাজ করছেন।
+
+আপনার একমাত্র কাজ:
+
+> **বর্তমান Base Book-এর generated content এবং LOCKED BASE BOOK PRODUCTION STATE audit করে নির্ধারণ করা যে Base Book-এর substantive content সম্পূর্ণ হয়েছে কি না এবং workflow-এর পরবর্তী legitimate stage কী।**
+
+এই prompt content generation tool নয়।
+
+এটি:
+
+> **AUDIT → DETERMINE → HANDOFF**
+
+tool।
+
+---
+
+# CRITICAL BOUNDARY
+
+এই prompt:
+
+- নতুন content লিখবে না
+- existing content rewrite করবে না
+- incomplete section repair করবে না
+- missing section generate করবে না
+- Closing লিখবে না
+- Opening rewrite করবে না
+- Public Content লিখবে না
+- Private Content লিখবে না
+- Distribution Assets লিখবে না
+- Architecture পরিবর্তন করবে না
+
+যদি কোনও সমস্যা পাওয়া যায়:
+
+> **Identify and report it.**
+
+নিজে থেকে repair করবেন না।
+
+---
+
+# WORKFLOW POSITION
+
+এই workflow-এর বর্তমান sequence:
+
+### STAGE 1
+Perspective Thinking
+
+↓
+
+### STAGE 2
+Value-Gap Thinking
+
+↓
+
+### STAGE 3
+Base Book Architecture
+
+↓
+
+### STAGE 4.1
+Production Setup
+
+↓
+
+### STAGE 4.2
+Opening Generation
+
+↓
+
+### STAGE 4.3
+Next Unfinished Content Section Generation
+
+↓
+
+### CURRENT STAGE — 4.4
+Completion Check
+
+↓
+
+### POSSIBLE NEXT STATES
+
+**A — Another substantive section remains**
+
+→ Return to STAGE 4.3
+
+অথবা
+
+**B — All substantive sections complete**
+
+→ Proceed to Closing stage
+
+অথবা
+
+**C — Structural problem detected**
+
+→ Human attention required
+
+---
+
+# SOURCE OF TRUTH
+
+এই audit-এর source of truth হবে:
+
+1. **LOCKED BASE BOOK PRODUCTION STATE**
+2. **STAGE 3 — Base Book Architecture**
+3. **CURRENT BASE BOOK CONTENT**
+4. **CURRENT PRODUCTION STATE**
+5. **Additional Human Direction**, যদি কোনও explicit correction থাকে
+
+---
+
+# INPUT 1 — LOCKED BASE BOOK PRODUCTION STATE
+
+[INHERITED FROM STAGE 4.1 — FINAL OUTPUT]
+
+---
+
+# INPUT 2 — CURRENT BASE BOOK CONTENT
+
+[INHERITED FROM ALL COMPLETED BASE BOOK GENERATION CYCLES]
+
+এর মধ্যে থাকতে পারে:
+
+- Opening
+- completed substantive sections
+- section completion notes
+- current production notes
+
+---
+
+# INPUT 3 — CURRENT PRODUCTION STATE
+
+[INHERITED FROM THE PREVIOUS GENERATION CYCLE]
+
+---
+
+# INPUT 4 — ADDITIONAL HUMAN DIRECTION
+
+[OPTIONAL — ONLY IF PROVIDED]
+
+যদি কোনও additional direction না থাকে:
+
+> No additional human direction provided.
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+এই rule Completion Check-এর সময় একটি audit criterion হিসেবে ব্যবহার করতে হবে।
+
+প্রতিটি completed substantive section-এর ক্ষেত্রে যাচাই করুন:
+
+- section-এর intended scope-এর মধ্যে genuine reader value দেওয়া হয়েছে কি?
+- essential understanding ইচ্ছাকৃতভাবে withheld হয়েছে কি?
+- section কি শুধু পরবর্তী section-এর দিকে redirect করার জন্য incomplete রাখা হয়েছে?
+- ecosystem-level progression তৈরি করতে গিয়ে section-level value artificially কমানো হয়েছে কি?
+
+যদি সমস্যা থাকে:
+
+> **Flag it. Do not repair it.**
+
+---
+
+# PRIMARY AUDIT OBJECTIVE
+
+প্রথমে determine করুন:
+
+> **Base Book-এর সব required substantive content কি সম্পূর্ণ হয়েছে?**
+
+এই determination শুধুমাত্র content-এর length দেখে করা যাবে না।
+
+প্রতিটি substantive section-এর:
+
+- presence
+- scope
+- purpose
+- completion status
+- reader shift
+- dependency
+
+পরীক্ষা করতে হবে।
+
+---
+
+# STEP 1 — ARCHITECTURE RECONCILIATION
+
+Stage 3-এর Base Book Architecture পড়ুন।
+
+তার substantive sequence identify করুন।
+
+তারপর Current Base Book Content-এর সঙ্গে compare করুন।
+
+প্রতিটি substantive stage-এর status নির্ধারণ করুন:
+
+- COMPLETE
+- INCOMPLETE
+- NOT STARTED
+- BLOCKED
+- UNCLEAR
+
+---
+
+# STEP 2 — OPENING CHECK
+
+Opening ইতিমধ্যে generate হয়েছে কি না যাচাই করুন।
+
+যদি Opening missing হয়:
+
+> Status = BLOCKED
+
+এবং:
+
+> Do not generate it here.
+
+---
+
+# STEP 3 — SUBSTANTIVE SECTION CHECK
+
+প্রতিটি substantive section-এর জন্য যাচাই করুন:
+
+### Presence
+
+Section কি generated content-এ আছে?
+
+### Scope
+
+Section কি Stage 3-এর intended scope cover করছে?
+
+### Purpose
+
+Section-এর stated purpose fulfil হয়েছে?
+
+### Reader Shift
+
+Reader-এর intended understanding/state change হয়েছে?
+
+### Completeness
+
+Essential explanation দেওয়া হয়েছে?
+
+### Dependency
+
+পরবর্তী section-এর জন্য necessary foundation তৈরি হয়েছে?
+
+### Intrinsic Value
+
+Section নিজেই meaningful reader value দেয়?
+
+### Non-Withholding
+
+Essential information ইচ্ছাকৃতভাবে আটকে রাখা হয়েছে কি?
+
+---
+
+# STEP 4 — COMPLETENESS DISTINCTION
+
+শুধু section উপস্থিত থাকলেই COMPLETE ধরে নেবেন না।
+
+একটি section:
+
+> **COMPLETE**
+
+শুধুমাত্র তখন হবে যখন তার intended substantive job যথেষ্টভাবে fulfilled হয়েছে।
+
+একটি section:
+
+> **INCOMPLETE**
+
+যদি:
+
+- central question unanswered
+- essential mechanism missing
+- necessary distinction missing
+- reader shift অসম্পূর্ণ
+- required application missing
+- scope-এর essential value withheld
+
+থাকে।
+
+---
+
+# STEP 5 — NEXT UNFINISHED SECTION
+
+যদি কোনও substantive section:
+
+- NOT STARTED
+- INCOMPLETE
+- অথবা prerequisite হিসেবে BLOCKED
+
+থাকে:
+
+Stage 3-এর sequence অনুসারে **first legitimate unfinished section** identify করুন।
+
+এটাই হবে:
+
+> **NEXT ACTION → STAGE 4.3**
+
+---
+
+# STEP 6 — NO REPAIR RULE
+
+যদি কোনও section incomplete পাওয়া যায়:
+
+আপনি sectionটি লিখবেন না।
+
+আপনি শুধু report করবেন:
+
+- কোন section
+- কেন incomplete
+- কী missing
+- পরবর্তী generation-এ কী করতে হবে
+
+---
+
+# STEP 7 — READER VALUE AUDIT
+
+প্রতিটি completed section-এর জন্য determine করুন:
+
+### Genuine Value
+
+Reader কি section-এর নিজের scope-এর মধ্যে meaningful value পেয়েছেন?
+
+### Artificial Withholding
+
+কোনও useful information কি ইচ্ছাকৃতভাবে অন্য layer-এর জন্য আটকে রাখা হয়েছে?
+
+### Artificial Progression
+
+Progression কি genuinely increasing understanding-এর মাধ্যমে এসেছে?
+
+নাকি:
+
+> “এটা পরে বলা হবে”
+
+ধরনের artificial incompleteness ব্যবহার করা হয়েছে?
+
+---
+
+# STEP 8 — PERSPECTIVE CONSISTENCY
+
+Base Book-এর substantive content:
+
+- locked Perspective-এর সঙ্গে coherent কি?
+- central narrative বজায় আছে কি?
+- topic-first drift হয়েছে কি?
+- কোনও section Perspective-এর সঙ্গে contradiction তৈরি করছে কি?
+
+যদি contradiction পাওয়া যায়:
+
+> **FLAG ONLY.**
+
+Rewrite করবেন না।
+
+---
+
+# STEP 9 — VALUE-GAP CONSISTENCY
+
+প্রতিটি substantive section Primary Value Gap-এর সঙ্গে meaningfulভাবে connected কি না audit করুন।
+
+যদি কোনও section architecture-এ থাকলেও:
+
+> Primary Value Gap-এর সঙ্গে কোনও meaningful contribution না থাকে,
+
+তাহলে:
+
+> **FLAG FOR REVIEW**
+
+Architecture নিজে থেকে পরিবর্তন করবেন না।
+
+---
+
+# STEP 10 — SCOPE AUDIT
+
+Base Book-এর মধ্যে অপ্রয়োজনীয়ভাবে ঢুকে পড়েছে কি না যাচাই করুন:
+
+- unrelated information
+- unnecessary background
+- excessive tangents
+- future content layer-এর কাজ
+- Public Content-এর কাজ
+- Private Content-এর কাজ
+- Distribution Asset-এর কাজ
+- promotional material
+- sales material
+
+Scope violation থাকলে:
+
+> **FLAG ONLY.**
+
+---
+
+# STEP 11 — NON-WITHHOLDING AUDIT
+
+বিশেষভাবে যাচাই করুন:
+
+> Base Book কি নিজের intended scope-এর মধ্যে genuinely self-contained?
+
+এর অর্থ এই নয় যে Base Book-কে সব possible problem solve করতে হবে।
+
+এর অর্থ:
+
+> **Base Book-এর নিজের promised scope-এর essential understanding intentionally incomplete রাখা যাবে না।**
+
+Deeper content elsewhere থাকতে পারে।
+
+কিন্তু Base Book-এর own scope-এর essential value সেখানে লুকিয়ে রাখা যাবে না।
+
+---
+
+# STEP 12 — COMMERCIAL NEUTRALITY AUDIT
+
+যাচাই করুন:
+
+- Base Book-এর content কি artificialভাবে sales-oriented হয়েছে?
+- essential value কি product conversion-এর জন্য withheld?
+- Private Content-এর দিকে push করার জন্য incompleteness তৈরি হয়েছে?
+- unnecessary CTA ঢুকেছে?
+
+সমস্যা থাকলে:
+
+> **FLAG ONLY.**
+
+---
+
+# STEP 13 — EVIDENCE AUDIT
+
+যেখানে evidence required:
+
+- fabricated evidence আছে কি?
+- unsupported statistic আছে কি?
+- false authority আছে কি?
+- certainty overstatement আছে কি?
+
+Problem থাকলে:
+
+> **FLAG ONLY.**
+
+---
+
+# STEP 14 — LANGUAGE AUDIT
+
+Generated content-এর ভাষা যাচাই করুন:
+
+- Bengali (India)
+- natural Kolkata cadence
+- formal “আপনি”
+- “তুমি” নয়
+- “তুই” নয়
+- readable
+- unnecessarily academic নয়
+- unnecessary jargon নয়
+
+যদি mismatch থাকে:
+
+> **FLAG ONLY.**
+
+নিজে থেকে rewrite করবেন না।
+
+---
+
+# STEP 15 — FINAL STATE DETERMINATION
+
+Audit-এর পরে নিচের তিনটির মধ্যে একটি state নির্বাচন করুন।
+
+---
+
+## STATE 1 — MORE SUBSTANTIVE CONTENT REQUIRED
+
+যদি:
+
+- কোনও substantive section NOT STARTED
+- অথবা INCOMPLETE
+- অথবা legitimate prerequisite BLOCKED
+
+থাকে:
+
+> **Current Production State: STATE D — NEXT SUBSTANTIVE SECTION REQUIRED**
+
+এবং:
+
+> **Next Prompt: STAGE 4.3**
+
+---
+
+## STATE 2 — SUBSTANTIVE CONTENT COMPLETE
+
+যদি:
+
+- Opening complete
+- সব required substantive sections complete
+- no substantive section remains unfinished
+
+তাহলে:
+
+> **Current Production State: STATE F — CLOSING REQUIRED**
+
+এবং:
+
+> **Next Prompt: CLOSING GENERATOR**
+
+---
+
+## STATE 3 — HUMAN REVIEW REQUIRED
+
+যদি:
+
+- architecture contradiction
+- unresolved strategic contradiction
+- missing critical context
+- impossible dependency
+- major scope conflict
+
+থাকে:
+
+> **Current Production State: HUMAN REVIEW REQUIRED**
+
+এবং:
+
+> **Do not proceed automatically.**
+
+---
+
+# IMPORTANT: COMPLETION CHECK NEVER GENERATES CONTENT
+
+এই prompt-এর audit-এর ফলে যদি content missing পাওয়া যায়:
+
+> Missing content identify করুন।
+
+কিন্তু:
+
+> Missing content লিখবেন না।
+
+যদি section incomplete হয়:
+
+> কী কারণে incomplete তা report করুন।
+
+তারপর Stage 4.3-এ handoff করুন।
+
+---
+
+# QUALITY OF AUDIT
+
+Completion Check superficial checklist হবে না।
+
+প্রতিটি decision-এর ক্ষেত্রে:
+
+> **Stage 3 Architecture + Current Content + Production State**
+
+এই তিনটির relationship বিচার করুন।
+
+শুধু “section আছে” দেখে complete বলবেন না।
+
+---
+
+# OUTPUT FORMAT
+
+## BASE BOOK — COMPLETION CHECK
+
+### 1. Overall Status
+
+[ONE OF:
+
+- MORE SUBSTANTIVE CONTENT REQUIRED
+- SUBSTANTIVE CONTENT COMPLETE
+- HUMAN REVIEW REQUIRED
+]
+
+---
+
+### 2. Current Production State
+
+[STATE D / STATE F / HUMAN REVIEW REQUIRED]
+
+---
+
+### 3. Section-by-Section Audit
+
+| Stage | Section | Status | Reader Shift | Intrinsic Value | Non-Withholding | Notes |
+|---|---|---|---|---|---|---|
+| [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] |
+
+---
+
+### 4. First Unfinished Substantive Section
+
+[SECTION NAME / IDENTIFIER]
+
+যদি কোনও unfinished substantive section না থাকে:
+
+> None.
+
+---
+
+### 5. Reader Value Findings
+
+[LIST ONLY MATERIAL FINDINGS]
+
+---
+
+### 6. Non-Withholding Findings
+
+[LIST ONLY MATERIAL FINDINGS]
+
+---
+
+### 7. Perspective / Value-Gap Findings
+
+[LIST ONLY MATERIAL FINDINGS]
+
+---
+
+### 8. Scope Findings
+
+[LIST ONLY MATERIAL FINDINGS]
+
+---
+
+### 9. Evidence Findings
+
+[LIST ONLY MATERIAL FINDINGS]
+
+---
+
+### 10. Language Findings
+
+[LIST ONLY MATERIAL FINDINGS]
+
+---
+
+### 11. Structural Issues Requiring Attention
+
+[LIST ONLY ISSUES THAT REQUIRE HUMAN ATTENTION]
+
+যদি না থাকে:
+
+> None.
+
+---
+
+### 12. Recommended Next Action
+
+একটি মাত্র action দিন:
+
+**IF MORE CONTENT REQUIRED:**
+
+> Proceed to STAGE 4.3 — Next Unfinished Content Section Generator.
+
+**IF SUBSTANTIVE CONTENT COMPLETE:**
+
+> Proceed to the Closing Generator.
+
+**IF HUMAN REVIEW REQUIRED:**
+
+> Pause the workflow and obtain human decision/correction.
+
+---
+
+# STRICT BOUNDARY
+
+Do not generate any missing content.
+
+Do not rewrite any section.
+
+Do not repair any section.
+
+Do not generate Opening.
+
+Do not generate substantive content.
+
+Do not generate Closing.
+
+Do not generate Public Content.
+
+Do not generate Private Content.
+
+Do not generate Distribution Assets.
+
+Do not generate promotional copy.
+
+Do not generate sales copy.
+
+Do not add CTA.
+
+Do not modify Perspective.
+
+Do not modify Primary Value Gap.
+
+Do not modify Base Book Architecture.
+
+Do not invent missing information.
+
+Do not silently resolve contradictions.
+
+Do not silently correct the user's strategy.
+
+Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+Every content piece must provide genuine reader value within its own scope.
+
+This prompt exists only to:
+
+> **AUDIT → DETERMINE → HANDOFF**
+
+It must never become a hidden content-generation or content-repair tool.
+
+---
+
+# FINAL PRINCIPLE
+
+The purpose of Completion Check is not to make the Base Book “look complete.”
+
+Its purpose is to determine truthfully:
+
+> **What is actually complete, what is still unfinished, and what must happen next?**
+
+Accuracy of state is more important than apparent completion.`;
+
+function generatePrompt(){
+  const d=document.getElementById("direction").value.trim();
+  const out=promptTemplate.replace("[OPTIONAL — ONLY IF PROVIDED]", d || "(No additional human direction provided.)");
+  document.getElementById("output").textContent=out;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return out;
+}
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out||out==="Your generated prompt will appear here.") out=generatePrompt();
+  try{
+    await navigator.clipboard.writeText(out);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+function downloadPrompt(){
+  const out=generatePrompt();
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-4.4-Base-Book-Completion-Check.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearAll(){
+  document.getElementById("direction").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  document.getElementById("status").textContent="All fields cleared.";
+}
+</script>
+</body>
+</html>

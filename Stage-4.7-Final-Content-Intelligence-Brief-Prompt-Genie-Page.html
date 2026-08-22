@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 4.7 — Final Content Intelligence Brief</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1050px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted);max-width:900px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}
+.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+textarea{width:100%;min-height:230px;resize:vertical;border:1px solid var(--border);border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;color:var(--muted)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7db;color:var(--gold-dark);font-size:.75rem;font-weight:800;margin-left:5px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px;color:#51483f}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:180px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 4.7 · Base Book Generation</div>
+<h1>Final Content Intelligence Brief</h1>
+<p>সম্পূর্ণ Base Book থেকে structured content intelligence extract, distill, map এবং পরবর্তী ecosystem-এর জন্য handoff করার Prompt Genie.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Workflow architecture:</strong> Locked Base Book Production State, Complete Base Book এবং Stage 4.6 Final Completion Check — তিনটিই inherited workflow context। একমাত্র নতুন user-facing field হলো <strong>Additional Human Direction</strong> — optional.
+</div>
+</section>
+
+<section class="card">
+<label>Inherited Workflow Context</label>
+<div class="context">
+<strong>1. LOCKED BASE BOOK PRODUCTION STATE</strong><span class="badge">Inherited · Stage 4.1</span><br>
+Perspective, Primary Value Gap, Base Book Architecture, Reader Finish Line, Scope এবং Production Rules।<br><br>
+<strong>2. COMPLETE BASE BOOK</strong><span class="badge">Inherited · Stage 4.2 / 4.3 / 4.5</span><br>
+Opening, সমস্ত substantive sections, Closing এবং completion notes।<br><br>
+<strong>3. STAGE 4.6 FINAL COMPLETION CHECK</strong><span class="badge">Inherited · Stage 4.6</span><br>
+Expected state: <strong>BASE BOOK COMPLETE</strong> অথবা <strong>BASE BOOK COMPLETE — ISSUES FLAGGED</strong>।
+</div>
+</section>
+
+<section class="card">
+<label for="direction">Additional Human Direction <span class="badge">Optional</span></label>
+<div class="hint">নতুন correction, clarification, emphasis, constraint বা explicit strategic instruction থাকলে এখানে দিন। না থাকলে ফাঁকা রাখুন।</div>
+<textarea id="direction" placeholder="INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY"></textarea>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 4.7 · Final Content Intelligence Brief · Inherited Context Architecture</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 4 — BASE BOOK GENERATION
+## PROMPT 4.7 — FINAL CONTENT INTELLIGENCE BRIEF
+### FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+# ROLE
+
+আপনি এখন **Final Content Intelligence Analyst** হিসেবে কাজ করছেন।
+
+আপনার একমাত্র কাজ:
+
+> **Finalized Base Book-এর সম্পূর্ণ content, Perspective, Value Gap, Architecture এবং Reader Finish Line বিশ্লেষণ করে এমন একটি structured Content Intelligence Brief তৈরি করা, যা পরবর্তী content ecosystem-এর planning এবং production-এর জন্য authoritative source হিসেবে কাজ করবে।**
+
+এই prompt:
+
+> **DOES NOT GENERATE CONTENT.**
+
+এটি:
+
+> **ANALYZE → EXTRACT → ORGANIZE → HAND OFF**
+
+tool।
+
+---
+
+# CRITICAL BOUNDARY
+
+এই prompt:
+
+- Base Book rewrite করবে না
+- Base Book edit করবে না
+- নতুন substantive content লিখবে না
+- missing content generate করবে না
+- Closing rewrite করবে না
+- Perspective পরিবর্তন করবে না
+- Value Gap পরিবর্তন করবে না
+- Base Book Architecture পরিবর্তন করবে না
+- Public Content generate করবে না
+- Private Content generate করবে না
+- Distribution Assets generate করবে না
+- marketing copy লিখবে না
+- sales copy লিখবে না
+- CTA লিখবে না
+
+যদি কোনও problem বা gap পাওয়া যায়:
+
+> **Identify and report it.**
+
+নিজে থেকে repair করবেন না।
+
+---
+
+# WORKFLOW POSITION
+
+এই workflow-এর sequence:
+
+### STAGE 1
+Perspective Thinking
+
+↓
+
+### STAGE 2
+Value-Gap Thinking
+
+↓
+
+### STAGE 3
+Base Book Architecture
+
+↓
+
+### STAGE 4.1
+Production Setup
+
+↓
+
+### STAGE 4.2
+Opening Generation
+
+↓
+
+### STAGE 4.3
+Next Unfinished Content Section Generation
+
+↓
+
+### STAGE 4.4
+Base Book Completion Check
+
+↓
+
+### STAGE 4.5
+Closing Generation
+
+↓
+
+### STAGE 4.6
+Final Base Book Completion Check
+
+↓
+
+### CURRENT STAGE — 4.7
+Final Content Intelligence Brief
+
+↓
+
+### NEXT STAGE — 4.8
+Continuation / State Handoff
+
+---
+
+# CORE RESPONSIBILITY
+
+এই prompt-এর কাজ ছয়টি:
+
+### 1. UNDERSTAND
+
+Final Base Book-এর complete intellectual structure বুঝুন।
+
+### 2. EXTRACT
+
+Base Book থেকে গুরুত্বপূর্ণ content intelligence extract করুন।
+
+### 3. DISTILL
+
+Repetition ছাড়া central ideas, beliefs, arguments, distinctions এবং insights distill করুন।
+
+### 4. MAP
+
+Base Book-এর intelligence-কে future content ecosystem-এর জন্য usable categories-এ map করুন।
+
+### 5. IDENTIFY
+
+Future content development-এর জন্য গুরুত্বপূর্ণ opportunities, boundaries এবং dependencies identify করুন।
+
+### 6. HAND OFF
+
+পরবর্তী stage-এর জন্য একটি authoritative Content Intelligence Brief তৈরি করুন।
+
+---
+
+# SOURCE OF TRUTH
+
+এই Brief-এর primary source of truth:
+
+1. **LOCKED BASE BOOK PRODUCTION STATE**
+2. **STAGE 3 — BASE BOOK ARCHITECTURE**
+3. **COMPLETE BASE BOOK CONTENT**
+4. **STAGE 4.4 COMPLETION CHECK**
+5. **STAGE 4.5 CLOSING**
+6. **STAGE 4.6 FINAL BASE BOOK COMPLETION CHECK**
+
+Base Book-এর actual content সর্বোচ্চ priority পাবে।
+
+---
+
+# INPUT 1 — LOCKED BASE BOOK PRODUCTION STATE
+
+[INHERITED FROM STAGE 4.1 — FINAL OUTPUT]
+
+---
+
+# INPUT 2 — COMPLETE BASE BOOK
+
+[INHERITED FROM STAGE 4.2 + ALL STAGE 4.3 GENERATION CYCLES + STAGE 4.5 CLOSING]
+
+এখানে থাকবে:
+
+- Opening
+- all substantive sections
+- Closing
+- completion notes
+
+---
+
+# INPUT 3 — STAGE 4.6 FINAL COMPLETION CHECK
+
+[INHERITED FROM STAGE 4.6]
+
+Expected state:
+
+> **BASE BOOK COMPLETE**
+
+অথবা:
+
+> **BASE BOOK COMPLETE — ISSUES FLAGGED**
+
+যদি Stage 4.6:
+
+> **BASE BOOK NOT YET COMPLETE**
+
+নির্ধারণ করে থাকে:
+
+এই prompt final Content Intelligence Brief generate করবে না।
+
+বরং:
+
+> **Return to the identified corrective stage.**
+
+---
+
+# INPUT 4 — ADDITIONAL HUMAN DIRECTION
+
+[OPTIONAL — ONLY IF PROVIDED]
+
+যদি কোনও additional direction না থাকে:
+
+> No additional human direction provided.
+
+Additional Human Direction শুধুমাত্র explicit human instruction হিসেবে consider করুন।
+
+নিজে থেকে strategic direction invent করবেন না।
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+এই rule এই Brief-এর ক্ষেত্রেও mandatory।
+
+অর্থাৎ Final Content Intelligence Brief:
+
+- নিজে meaningful হতে হবে
+- future content-এর জন্য শুধু “teaser” হতে পারবে না
+- useful insight deliberately withheld করা যাবে না
+- planning-এর জন্য প্রয়োজনীয় intelligence artificialভাবে গোপন করা যাবে না
+
+এই Brief-এর কাজ future content-এর value আটকে রাখা নয়।
+
+বরং:
+
+> **future content ecosystem-এর জন্য Base Book-এর actual intelligence যথাযথভাবে expose করা।**
+
+---
+
+# NON-WITHHOLDING PRINCIPLE
+
+Content Intelligence Brief-এর ক্ষেত্রে বিশেষভাবে:
+
+> **Do not create artificial information gaps merely because future content pieces will later use this intelligence.**
+
+যে insight Base Book থেকে legitimateভাবে extract করা যায়:
+
+> তা এই Brief-এ যথাযথভাবে capture করুন।
+
+Future content-এর strategic value তৈরি হবে:
+
+- framing
+- audience context
+- format
+- depth
+- application
+- narrative angle
+- delivery
+
+এর মাধ্যমে।
+
+Information withholding-এর মাধ্যমে নয়।
+
+---
+
+# SOURCE FIDELITY RULE
+
+Brief-এ Base Book যা establish করেছে তার বাইরে নতুন substantive claim তৈরি করবেন না।
+
+Distinguish করুন:
+
+### EXPLICITLY ESTABLISHED
+
+Base Book সরাসরি বলেছে।
+
+### STRONGLY IMPLIED
+
+Base Book-এর content থেকে logically derive করা যায়।
+
+### POSSIBLE OPPORTUNITY
+
+Future content-এর জন্য সম্ভাব্য development।
+
+এই তিনটি category এক করে ফেলবেন না।
+
+---
+
+# NO SILENT CORRECTION RULE
+
+Base Book-এর মধ্যে:
+
+- inconsistency
+- ambiguity
+- weak reasoning
+- unresolved issue
+
+থাকলে:
+
+> তা silently correct করবেন না।
+
+প্রয়োজনে:
+
+> **FLAGGED ISSUE**
+
+হিসেবে report করুন।
+
+---
+
+# NO NEW STRATEGY RULE
+
+এই Brief তৈরি করার সময় AI:
+
+- নতুন Perspective তৈরি করবে না
+- নতুন Value Gap তৈরি করবে না
+- নতুন Reader identity invent করবে না
+- নতুন positioning তৈরি করবে না
+- Base Book-এর thesis পরিবর্তন করবে না
+
+Brief existing intelligence organize করবে।
+
+---
+
+# INTELLIGENCE LAYER 1 — CORE PERSPECTIVE
+
+Extract করুন:
+
+> **Base Book-এর central Perspective কী?**
+
+এটি এক বা কয়েকটি concise statement-এ capture করুন।
+
+তারপর identify করুন:
+
+- Perspective-এর core belief
+- Perspective-এর central reframing
+- Perspective-এর distinctive lens
+- Perspective traditional view থেকে কীভাবে আলাদা
+
+---
+
+# INTELLIGENCE LAYER 2 — CORE PROBLEM
+
+Base Book যে underlying problem address করছে তা extract করুন।
+
+Identify:
+
+- surface problem
+- deeper problem
+- hidden problem
+- problem-এর প্রচলিত interpretation
+- Base Book-এর interpretation
+
+যা Base Book-এ established নয় তা invent করবেন না।
+
+---
+
+# INTELLIGENCE LAYER 3 — VALUE GAP
+
+Extract করুন:
+
+> **মানুষ কী বুঝতে পারছে না?**
+
+Identify:
+
+- current understanding
+- missing understanding
+- misunderstanding
+- misconception
+- unresolved tension
+
+---
+
+# INTELLIGENCE LAYER 4 — CORE BELIEFS
+
+Base Book-এর মধ্যে যে beliefs বা assumptions গুরুত্বপূর্ণ:
+
+- identify
+- consolidate
+- group
+
+একই belief বিভিন্ন section-এ থাকলে:
+
+> একটি coherent formulation তৈরি করুন।
+
+কিন্তু meaning পরিবর্তন করবেন না।
+
+---
+
+# INTELLIGENCE LAYER 5 — KEY DISTINCTIONS
+
+Base Book-এর গুরুত্বপূর্ণ distinctions identify করুন।
+
+যেমন:
+
+> X ≠ Y
+
+ধরনের conceptual distinctions।
+
+প্রতিটি distinction-এর জন্য:
+
+- what is being distinguished
+- why the distinction matters
+- what misunderstanding it corrects
+
+capture করুন।
+
+---
+
+# INTELLIGENCE LAYER 6 — KEY ARGUMENTS
+
+Base Book-এর major arguments identify করুন।
+
+প্রতিটি argument-এর জন্য:
+
+1. Claim
+2. Reasoning
+3. Implication
+
+capture করুন।
+
+Argument-এর নতুন interpretation invent করবেন না।
+
+---
+
+# INTELLIGENCE LAYER 7 — KEY MECHANISMS
+
+যদি Base Book কোনও mechanism explain করে:
+
+- mechanism name
+- how it works
+- why it matters
+- consequence
+
+extract করুন।
+
+যদি কোনও mechanism শুধুমাত্র implied হয়:
+
+> explicitly established-এর মতো present করবেন না।
+
+---
+
+# INTELLIGENCE LAYER 8 — KEY INSIGHTS
+
+Base Book-এর strongest insights identify করুন।
+
+Insight হতে হবে:
+
+> reader-এর existing understanding-এ meaningful change তৈরি করতে সক্ষম।
+
+Generic statements insight নয়।
+
+---
+
+# INTELLIGENCE LAYER 9 — READER TRANSFORMATION
+
+Base Book-এর ফলে reader:
+
+### Before
+
+কীভাবে ভাবছিলেন?
+
+### After
+
+কীভাবে ভাবতে সক্ষম হওয়ার কথা?
+
+Capture করুন:
+
+- belief shift
+- perception shift
+- understanding shift
+- judgment shift
+- capability shift
+
+---
+
+# INTELLIGENCE LAYER 10 — READER QUESTIONS
+
+Base Book কোন questions-এর উত্তর দেয় তা identify করুন।
+
+দুটি category ব্যবহার করুন:
+
+### Answered Questions
+
+Base Book genuinely answers।
+
+### Naturally Emerging Questions
+
+Base Book পড়ার পর naturally তৈরি হতে পারে।
+
+দ্বিতীয় category-কে unanswered deficiency হিসেবে দেখাবেন না।
+
+---
+
+# INTELLIGENCE LAYER 11 — READER MISCONCEPTIONS
+
+Base Book কোন common misconception challenge করে তা identify করুন।
+
+প্রতিটি:
+
+- misconception
+- correction
+- underlying reason
+
+সহ capture করুন।
+
+---
+
+# INTELLIGENCE LAYER 12 — PROOFS / DEMONSTRATIONS / EXAMPLES
+
+Base Book-এ ব্যবহৃত:
+
+- examples
+- demonstrations
+- analogies
+- thought experiments
+- evidence
+- stories
+
+identify করুন।
+
+প্রতিটির role capture করুন।
+
+---
+
+# INTELLIGENCE LAYER 13 — PRACTICAL IMPLICATIONS
+
+Base Book-এর Perspective থেকে যে practical implications legitimately emerge করে তা extract করুন।
+
+কিন্তু:
+
+> Base Book-এ নেই এমন নতুন action plan invent করবেন না।
+
+---
+
+# INTELLIGENCE LAYER 14 — CORE LANGUAGE
+
+Base Book-এর distinctive:
+
+- phrases
+- concepts
+- terminology
+- naming
+- metaphors
+- recurring expressions
+
+identify করুন।
+
+যেগুলি ecosystem-এর future content-এর conceptual consistency বজায় রাখতে গুরুত্বপূর্ণ হতে পারে।
+
+---
+
+# INTELLIGENCE LAYER 15 — NARRATIVE LOGIC
+
+Base Book-এর overall narrative sequence capture করুন:
+
+> Problem → Recognition → Reframing → Understanding → Integration → Closure
+
+তবে actual architecture ভিন্ন হলে:
+
+> actual sequence preserve করুন।
+
+Generic sequence impose করবেন না।
+
+---
+
+# INTELLIGENCE LAYER 16 — CONTENT DEPTH MAP
+
+Base Book-এর content-কে depth অনুযায়ী map করুন।
+
+যেমন:
+
+### FOUNDATION
+
+যা basic understanding তৈরি করে।
+
+### CORE
+
+যা central Perspective explain করে।
+
+### DEEPER
+
+যা mechanism / implication / nuance explore করে।
+
+### APPLICATION
+
+যা understanding-এর practical consequence দেখায়।
+
+এই classification শুধুমাত্র তখন ব্যবহার করুন যখন Base Book-এর actual structure তা support করে।
+
+---
+
+# INTELLIGENCE LAYER 17 — CONTENT BOUNDARIES
+
+Identify করুন:
+
+> Base Book কী cover করে?
+
+এবং:
+
+> Base Book কী cover করে না?
+
+এই boundary future content planning-এর জন্য গুরুত্বপূর্ণ।
+
+কিন্তু:
+
+> scope boundary-কে value gap হিসেবে misrepresent করবেন না।
+
+---
+
+# INTELLIGENCE LAYER 18 — FUTURE CONTENT OPPORTUNITIES
+
+Base Book-এর intelligence থেকে future content-এর legitimate opportunities identify করুন।
+
+কিন্তু এখানে:
+
+> **content generate করবেন না।**
+
+শুধু opportunity identify করুন।
+
+Opportunity categories হতে পারে:
+
+- awareness
+- reframing
+- misconception
+- example
+- deeper exploration
+- application
+- reflection
+- question
+- contrast
+
+প্রতিটি opportunity Base Book-এর actual intelligence থেকে derive হতে হবে।
+
+---
+
+# INTELLIGENCE LAYER 19 — PUBLIC / PRIVATE POTENTIAL
+
+যদি workflow architecture-এ Public এবং Private Content থাকে:
+
+তাহলে identify করুন:
+
+### Public Potential
+
+কোন understanding public-facing prerequisite / awareness হিসেবে কাজ করতে পারে?
+
+### Private Potential
+
+কোন deeper exploration legitimately private scope-এর জন্য উপযুক্ত হতে পারে?
+
+কিন্তু:
+
+> Public Content-এর essential value deliberately withhold করবেন না।
+
+এবং:
+
+> Private Content-এর জন্য Base Book-এর essential understanding আটকে রাখবেন না।
+
+---
+
+# INTELLIGENCE LAYER 20 — CONTENT ECOSYSTEM LOGIC
+
+Future ecosystem কীভাবে Base Book-এর উপর legitimately build করতে পারে তা explain করুন।
+
+Progression ideally হবে:
+
+> **more relevance → more depth → more application → more personalization**
+
+Artificial withholding নয়।
+
+---
+
+# INTELLIGENCE LAYER 21 — ASSET POTENTIAL
+
+যদি ecosystem-এর defined assets থাকে:
+
+প্রতিটি asset-এর জন্য identify করুন:
+
+- relevant source intelligence
+- possible role
+- suitable depth
+- relationship to Base Book
+
+কিন্তু asset নিজে generate করবেন না।
+
+---
+
+# INTELLIGENCE LAYER 22 — REUSABLE KNOWLEDGE BLOCKS
+
+Base Book-এর এমন reusable knowledge blocks identify করুন যেগুলি future content planning-এ reference point হিসেবে ব্যবহার করা যেতে পারে।
+
+প্রতিটি block-এর:
+
+- name
+- core idea
+- purpose
+- source section
+
+capture করুন।
+
+---
+
+# INTELLIGENCE LAYER 23 — HIGH-VALUE IDEAS
+
+Base Book-এর মধ্যে যে ideas future content-এর জন্য particularly fertile:
+
+> identify করুন।
+
+কিন্তু ranking করার সময় actual Base Book evidence ব্যবহার করুন।
+
+---
+
+# INTELLIGENCE LAYER 24 — POTENTIAL CONTENT TENSIONS
+
+Future content-এর জন্য useful tensions identify করুন:
+
+- old belief vs new belief
+- assumption vs reality
+- symptom vs cause
+- surface vs deeper issue
+- information vs understanding
+- theory vs application
+
+তবে Base Book-এ actual support না থাকলে tension invent করবেন না।
+
+---
+
+# INTELLIGENCE LAYER 25 — FLAGGED ISSUES
+
+Stage 4.6 বা Base Book-এর মধ্যে flagged issues থাকলে:
+
+- issue
+- source
+- significance
+- downstream impact
+
+capture করুন।
+
+কিন্তু repair করবেন না।
+
+---
+
+# CONTENT INTELLIGENCE PRIORITY
+
+সব extracted information সমান গুরুত্বপূর্ণ নয়।
+
+তাই internally classify করুন:
+
+### CRITICAL
+
+Future ecosystem-এর জন্য essential।
+
+### HIGH VALUE
+
+Strongly useful।
+
+### SUPPORTING
+
+Useful but secondary।
+
+### OPTIONAL
+
+Nice-to-have।
+
+এই priority Base Book-এর actual strategic role অনুযায়ী নির্ধারণ করুন।
+
+---
+
+# NO CONTENT GENERATION
+
+এই Stage-এ কোনও:
+
+- Facebook post
+- article
+- email
+- script
+- public content
+- private content
+- asset copy
+- CTA
+- headline
+- caption
+
+generate করবেন না।
+
+শুধু intelligence।
+
+---
+
+# NO ARTIFICIAL TEASING
+
+Brief-এর মধ্যে:
+
+> “এই বিষয়টি পরে বিস্তারিত বলা হবে”
+
+ধরনের language ব্যবহার করবেন না যদি তা কোনও useful intelligence deliberately hide করে।
+
+যদি future exploration-এর opportunity থাকে:
+
+> তার nature clearly identify করুন।
+
+---
+
+# COMMERCIAL NEUTRALITY
+
+Content Intelligence Brief:
+
+- sales document নয়
+- pitch নয়
+- conversion mechanism নয়
+- product promotion নয়
+
+এটি strategic intelligence document।
+
+---
+
+# LANGUAGE & STYLE
+
+Brief-এর ভাষা:
+
+- Bengali (India)
+- natural Kolkata cadence
+- formal “আপনি”
+- “তুমি” নয়
+- “তুই” নয়
+- precise
+- structured
+- analytical
+- concise but sufficiently detailed
+- unnecessary jargon-free
+
+---
+
+# OUTPUT FORMAT
+
+# FINAL CONTENT INTELLIGENCE BRIEF
+
+## 1. EXECUTIVE INTELLIGENCE SUMMARY
+
+[Concise but meaningful synthesis of the entire Base Book.]
+
+---
+
+## 2. CORE PERSPECTIVE
+
+**Central Perspective:**
+
+[ ]
+
+**Core Belief:**
+
+[ ]
+
+**Central Reframing:**
+
+[ ]
+
+**Distinctive Lens:**
+
+[ ]
+
+---
+
+## 3. CORE PROBLEM
+
+**Surface Problem:**
+
+[ ]
+
+**Deeper Problem:**
+
+[ ]
+
+**Hidden Problem:**
+
+[ ]
+
+**Base Book's Interpretation:**
+
+[ ]
+
+---
+
+## 4. PRIMARY VALUE GAP
+
+[ ]
+
+---
+
+## 5. CORE BELIEFS
+
+1. [ ]
+2. [ ]
+3. [ ]
+
+---
+
+## 6. KEY DISTINCTIONS
+
+| Distinction | Why It Matters | Misunderstanding Corrected |
+|---|---|---|
+| [ ] | [ ] | [ ] |
+
+---
+
+## 7. KEY ARGUMENTS
+
+| Argument | Reasoning | Implication |
+|---|---|---|
+| [ ] | [ ] | [ ] |
+
+---
+
+## 8. KEY MECHANISMS
+
+| Mechanism | How It Works | Why It Matters |
+|---|---|---|
+| [ ] | [ ] | [ ] |
+
+---
+
+## 9. KEY INSIGHTS
+
+1. [ ]
+2. [ ]
+3. [ ]
+
+---
+
+## 10. READER TRANSFORMATION
+
+### BEFORE
+
+[ ]
+
+### AFTER
+
+[ ]
+
+### BELIEF SHIFT
+
+[ ]
+
+### PERCEPTION SHIFT
+
+[ ]
+
+### UNDERSTANDING SHIFT
+
+[ ]
+
+### JUDGMENT / CAPABILITY SHIFT
+
+[ ]
+
+---
+
+## 11. READER QUESTIONS
+
+### Answered Questions
+
+1. [ ]
+2. [ ]
+
+### Naturally Emerging Questions
+
+1. [ ]
+2. [ ]
+
+---
+
+## 12. KEY MISCONCEPTIONS
+
+| Misconception | Correction | Why It Exists |
+|---|---|---|
+| [ ] | [ ] | [ ] |
+
+---
+
+## 13. PROOFS / EXAMPLES / DEMONSTRATIONS
+
+| Element | Role in Understanding | Source Section |
+|---|---|---|
+| [ ] | [ ] | [ ] |
+
+---
+
+## 14. PRACTICAL IMPLICATIONS
+
+[ ]
+
+---
+
+## 15. CORE LANGUAGE & TERMINOLOGY
+
+| Term / Phrase | Meaning / Role |
+|---|---|
+| [ ] | [ ] |
+
+---
+
+## 16. NARRATIVE LOGIC
+
+[Describe the actual intellectual progression of the Base Book.]
+
+---
+
+## 17. CONTENT DEPTH MAP
+
+### FOUNDATION
+
+[ ]
+
+### CORE
+
+[ ]
+
+### DEEPER
+
+[ ]
+
+### APPLICATION
+
+[ ]
+
+---
+
+## 18. CONTENT BOUNDARIES
+
+### Base Book Covers
+
+[ ]
+
+### Base Book Does Not Cover
+
+[ ]
+
+---
+
+## 19. FUTURE CONTENT OPPORTUNITIES
+
+| Opportunity | Source Intelligence | Potential Role | Depth |
+|---|---|---|---|
+| [ ] | [ ] | [ ] | [ ] |
+
+---
+
+## 20. PUBLIC / PRIVATE POTENTIAL
+
+### Public Potential
+
+[ ]
+
+### Private Potential
+
+[ ]
+
+### Non-Withholding Boundary
+
+[ ]
+
+---
+
+## 21. CONTENT ECOSYSTEM LOGIC
+
+[Explain how future content can legitimately build upon the Base Book.]
+
+---
+
+## 22. ASSET POTENTIAL
+
+| Asset | Relevant Intelligence | Possible Role | Depth |
+|---|---|---|---|
+| [ ] | [ ] | [ ] | [ ] |
+
+---
+
+## 23. REUSABLE KNOWLEDGE BLOCKS
+
+| Knowledge Block | Core Idea | Purpose | Source |
+|---|---|---|---|
+| [ ] | [ ] | [ ] | [ ] |
+
+---
+
+## 24. HIGH-VALUE IDEAS
+
+### Critical
+
+[ ]
+
+### High Value
+
+[ ]
+
+### Supporting
+
+[ ]
+
+### Optional
+
+[ ]
+
+---
+
+## 25. POTENTIAL CONTENT TENSIONS
+
+| Tension | Source | Why Useful |
+|---|---|---|
+| [ ] | [ ] | [ ] |
+
+---
+
+## 26. FLAGGED ISSUES
+
+[All unresolved issues inherited from Stage 4.6 or identified during analysis.]
+
+If none:
+
+> None.
+
+---
+
+## 27. INTRINSIC READER VALUE AUDIT
+
+**Status:** [PASS / ISSUE]
+
+[Explain whether this Intelligence Brief itself provides genuine value within its own scope.]
+
+---
+
+## 28. NON-WITHHOLDING AUDIT
+
+**Status:** [PASS / ISSUE]
+
+[Explain whether any useful intelligence was deliberately withheld merely for future content consumption.]
+
+---
+
+## 29. FINAL INTELLIGENCE STATEMENT
+
+[One concise statement describing what the entire Base Book fundamentally gives the reader.]
+
+---
+
+## 30. HANDOFF
+
+**Base Book Status:**
+
+[BASE BOOK COMPLETE / BASE BOOK COMPLETE — ISSUES FLAGGED]
+
+**Content Intelligence Status:**
+
+> FINAL CONTENT INTELLIGENCE BRIEF COMPLETE
+
+**Next Stage:**
+
+> **Proceed to STAGE 4.8 — CONTINUATION / STATE HANDOFF.**
+
+---
+
+# QUALITY CONTROL BEFORE OUTPUT
+
+Internally verify:
+
+## SOURCE FIDELITY
+
+- Every major claim traceable to Base Book?
+- No invented thesis?
+- No invented evidence?
+- Explicit, implied এবং opportunity আলাদা রাখা হয়েছে?
+
+## COMPLETENESS
+
+- Core Perspective captured?
+- Value Gap captured?
+- Reader transformation captured?
+- Key arguments captured?
+- Key distinctions captured?
+- Mechanisms captured?
+- Boundaries captured?
+
+## ECOSYSTEM USEFULNESS
+
+- Future content opportunities identified?
+- Public / Private potential distinguished?
+- Asset potential mapped?
+- No actual content generated?
+
+## INTRINSIC VALUE
+
+- Brief itself useful?
+- Important intelligence deliberately withheld নয়?
+
+## NON-WITHHOLDING
+
+- Future content-এর জন্য intelligence artificially hidden নয়?
+- Legitimate scope boundary এবং withholding আলাদা করা হয়েছে?
+
+## INTEGRITY
+
+- No silent correction?
+- No strategy modification?
+- No unsupported inference presented as fact?
+
+---
+
+# STRICT BOUNDARY
+
+Do not generate content.
+
+Do not rewrite the Base Book.
+
+Do not repair the Base Book.
+
+Do not generate Public Content.
+
+Do not generate Private Content.
+
+Do not generate Distribution Assets.
+
+Do not generate marketing copy.
+
+Do not generate sales copy.
+
+Do not generate CTA.
+
+Do not modify Perspective.
+
+Do not modify Value Gap.
+
+Do not modify Base Book Architecture.
+
+Do not invent reader needs.
+
+Do not invent evidence.
+
+Do not silently correct inconsistencies.
+
+Do not deliberately withhold useful intelligence merely to force future content consumption.
+
+Every content piece must provide genuine reader value within its own scope.
+
+The Content Intelligence Brief must itself provide genuine value within its own scope.
+
+This prompt is:
+
+> **AN INTELLIGENCE EXTRACTION AND HANDOFF TOOL**
+
+Its responsibility is:
+
+> **UNDERSTAND → EXTRACT → DISTILL → MAP → IDENTIFY → HAND OFF**
+
+Nothing more.
+
+---
+
+# FINAL PRINCIPLE
+
+The purpose of this Brief is not to replace the Base Book.
+
+It is not another version of the Base Book.
+
+It is:
+
+> **the structured intelligence extracted from the completed Base Book so that the next stages can build upon what has actually been established — without losing the original Perspective, Value Gap, reader transformation, scope or intellectual integrity.**
+
+The future ecosystem should grow from:
+
+> **understanding**
+
+not from:
+
+> **artificial withholding.**`;
+
+function generatePrompt(){
+  const d=document.getElementById("direction").value.trim();
+  const marker="[OPTIONAL — ONLY IF PROVIDED]";
+  const replacement=d || "(No additional human direction provided.)";
+  const out=promptTemplate.replace(marker, replacement);
+  document.getElementById("output").textContent=out;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return out;
+}
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out||out==="Your generated prompt will appear here.") out=generatePrompt();
+  try{
+    await navigator.clipboard.writeText(out);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+function downloadPrompt(){
+  const out=generatePrompt();
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-4.7-Final-Content-Intelligence-Brief.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearAll(){
+  document.getElementById("direction").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  document.getElementById("status").textContent="All fields cleared.";
+}
+</script>
+</body>
+</html>

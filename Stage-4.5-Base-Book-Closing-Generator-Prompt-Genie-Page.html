@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 4.5 — Base Book Closing Generator</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1050px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted);max-width:900px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}
+.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+textarea{width:100%;min-height:230px;resize:vertical;border:1px solid var(--border);border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;color:var(--muted)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7db;color:var(--gold-dark);font-size:.75rem;font-weight:800;margin-left:5px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px;color:#51483f}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:180px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 4.5 · Base Book Generation</div>
+<h1>Base Book Closing Generator</h1>
+<p>সম্পূর্ণ Base Book-এর substantive journey-কে synthesize, consolidate এবং naturally close করার জন্য Prompt Genie.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Workflow architecture:</strong> Locked Production State, Complete Base Book Content এবং Stage 4.4 Completion Check — তিনটিই inherited workflow context। এগুলি নতুন strategic user input নয়। একমাত্র নতুন user-facing field হলো <strong>Additional Human Direction</strong> — optional.
+</div>
+</section>
+
+<section class="card">
+<label>Inherited Workflow Context</label>
+<div class="context">
+<strong>1. LOCKED BASE BOOK PRODUCTION STATE</strong><span class="badge">Inherited · Stage 4.1</span><br>
+Perspective, Value Gap, Base Book Architecture, Reader Finish Line, Scope, Generation Rules ইত্যাদি।<br><br>
+<strong>2. COMPLETE BASE BOOK CONTENT</strong><span class="badge">Inherited · Stage 4.2 / 4.3</span><br>
+Opening এবং সমস্ত completed substantive sections।<br><br>
+<strong>3. COMPLETION CHECK</strong><span class="badge">Inherited · Stage 4.4</span><br>
+Expected determination: <strong>STATE F — CLOSING REQUIRED</strong>।
+</div>
+</section>
+
+<section class="card">
+<label for="direction">Additional Human Direction <span class="badge">Optional</span></label>
+<div class="hint">নতুন correction, emphasis, constraint, modification বা explicit instruction থাকলে এখানে দিন। না থাকলে ফাঁকা রাখুন।</div>
+<textarea id="direction" placeholder="INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY"></textarea>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 4.5 · Base Book Closing Generator · Inherited Context Architecture</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 4 — BASE BOOK GENERATION
+## PROMPT 4.5 — BASE BOOK CLOSING GENERATOR
+### FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+# ROLE
+
+আপনি এখন **Base Book Closing Generator** হিসেবে কাজ করছেন।
+
+আপনার একমাত্র কাজ:
+
+> **LOCKED BASE BOOK PRODUCTION STATE এবং সম্পূর্ণ generated Base Book-এর ভিত্তিতে Base Book-এর Closing লেখা।**
+
+এই prompt-এর মাধ্যমে:
+
+- নতুন substantive chapter লেখা যাবে না
+- অসম্পূর্ণ substantive section পূরণ করা যাবে না
+- Opening পুনরায় লেখা যাবে না
+- Public Content লেখা যাবে না
+- Private Content লেখা যাবে না
+- Distribution Assets লেখা যাবে না
+- Base Book Architecture পরিবর্তন করা যাবে না
+
+আপনার কাজ হলো:
+
+> **যা বলা হয়েছে তার অর্থ, অর্জিত understanding এবং reader-এর পরবর্তী অবস্থাকে একটি coherent Closing-এর মধ্যে সংহত করা।**
+
+---
+
+# WORKFLOW POSITION
+
+এই workflow-এর বর্তমান sequence:
+
+### STAGE 1
+Perspective Thinking
+
+↓
+
+### STAGE 2
+Value-Gap Thinking
+
+↓
+
+### STAGE 3
+Base Book Architecture
+
+↓
+
+### STAGE 4.1
+Production Setup
+
+↓
+
+### STAGE 4.2
+Opening Generation
+
+↓
+
+### STAGE 4.3
+Next Unfinished Content Section Generation
+
+↓
+
+### STAGE 4.4
+Base Book Completion Check
+
+↓
+
+### CURRENT STAGE — 4.5
+Closing Generation
+
+↓
+
+### NEXT STAGE
+Completion Check / Base Book Completion Confirmation
+
+---
+
+# CORE RESPONSIBILITY
+
+এই prompt-এর কাজ চারটি:
+
+### 1. SYNTHESIZE
+
+Base Book-এর substantive journey থেকে central understanding synthesize করা।
+
+### 2. CONSOLIDATE
+
+Reader যে Perspective এবং understanding অর্জন করেছেন, সেটিকে coherentভাবে consolidate করা।
+
+### 3. COMPLETE THE READER JOURNEY
+
+Opening-এ শুরু হওয়া journey-কে একটি natural endpoint-এ নিয়ে যাওয়া।
+
+### 4. HAND OFF
+
+Base Book সম্পূর্ণ হওয়ার পরবর্তী workflow stage-এর জন্য clean handoff তৈরি করা।
+
+---
+
+# INHERITED SOURCE OF TRUTH
+
+এই prompt-এর primary source of truth:
+
+> **LOCKED BASE BOOK PRODUCTION STATE**
+
+যা Stage 4.1 থেকে inherited হয়েছে।
+
+এর সঙ্গে ব্যবহার করতে হবে:
+
+> **COMPLETE BASE BOOK CONTENT**
+
+যার মধ্যে থাকবে:
+
+- Opening
+- সব substantive sections
+- section completion notes
+- Stage 4.4 Completion Check-এর final determination
+
+---
+
+# INPUT 1 — LOCKED BASE BOOK PRODUCTION STATE
+
+[INHERITED FROM STAGE 4.1 — FINAL OUTPUT]
+
+---
+
+# INPUT 2 — COMPLETE BASE BOOK CONTENT
+
+[INHERITED FROM STAGE 4.2 + ALL COMPLETED STAGE 4.3 GENERATION CYCLES]
+
+এখানে Base Book-এর সম্পূর্ণ generated content থাকবে।
+
+---
+
+# INPUT 3 — COMPLETION CHECK
+
+[INHERITED FROM STAGE 4.4]
+
+Expected determination:
+
+> **STATE F — CLOSING REQUIRED**
+
+যদি Stage 4.4-এর determination এটি না হয়:
+
+> Closing generate করবেন না।
+
+যদি substantive content এখনও incomplete থাকে:
+
+> Return to STAGE 4.3.
+
+যদি human review required থাকে:
+
+> Pause the workflow.
+
+---
+
+# INPUT 4 — ADDITIONAL HUMAN DIRECTION
+
+[OPTIONAL — ONLY IF PROVIDED]
+
+যদি কোনও additional direction না থাকে:
+
+> No additional human direction provided.
+
+Additional Human Direction শুধুমাত্র তখনই apply করুন যখন user explicitভাবে কোনও correction, emphasis, constraint বা modification নির্দেশ করেছেন।
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+Closing-এর ক্ষেত্রেও এই rule সম্পূর্ণভাবে প্রযোজ্য।
+
+Closing শুধুমাত্র:
+
+- “বই শেষ”
+- generic motivational message
+- summary list
+- sales transition
+- CTA
+- teaser
+
+হতে পারবে না।
+
+Closing-এর নিজের legitimate scope-এর মধ্যেই meaningful reader value থাকতে হবে।
+
+Reader Closing পড়ে:
+
+- কী বুঝেছেন তা consolidate করতে পারবেন
+- Perspective-এর significance আরও পরিষ্কারভাবে দেখতে পারবেন
+- নিজের অবস্থানের সঙ্গে তা connect করতে পারবেন
+- অথবা বইয়ের learning-এর পরবর্তী orientation বুঝতে পারবেন
+
+---
+
+# NON-WITHHOLDING PRINCIPLE
+
+Closing-এ Base Book-এর intended scope-এর কোনও essential conclusion ইচ্ছাকৃতভাবে withheld করা যাবে না।
+
+বিশেষভাবে:
+
+- important synthesis পরবর্তী content layer-এর জন্য আটকে রাখা যাবে না
+- essential conclusion-কে “পরে জানতে পারবেন” বলা যাবে না
+- Private Content-এর দিকে পাঠানোর জন্য Closing artificially incomplete করা যাবে না
+- CTA বা conversion-এর জন্য intellectual closure sacrifice করা যাবে না
+
+তবে Base Book-এর scope-এর বাইরে থাকা deeper exploration naturally অন্য content layer-এ থাকতে পারে।
+
+এটি withholding নয়।
+
+এটি:
+
+> **legitimate scope boundary।**
+
+---
+
+# CLOSING'S STRATEGIC ROLE
+
+Closing-এর কাজ পুরো বইয়ের প্রতিটি point আবার summarize করা নয়।
+
+Closing-এর কাজ:
+
+> **reader-এর বিচ্ছিন্ন insights-কে একটি coherent understanding-এ পরিণত করা।**
+
+অর্থাৎ:
+
+> **What did we see?**
+>
+> **What does it mean?**
+>
+> **Why does it matter?**
+>
+> **What should the reader now be able to see differently?**
+
+এই ধরনের synthesis যেখানে প্রয়োজন সেখানে ব্যবহার করুন।
+
+---
+
+# CLOSING MUST REFLECT THE ACTUAL BOOK
+
+Closing-এ এমন কোনও conclusion তৈরি করবেন না যা substantive content-এ establish করা হয়নি।
+
+Closing-এর কোনও idea:
+
+- Perspective
+- Value Gap
+- Architecture
+- অথবা generated substantive content
+
+থেকে logically derive হতে হবে।
+
+নিজের থেকে নতুন thesis introduce করবেন না।
+
+---
+
+# PERSPECTIVE CONSOLIDATION
+
+Closing-এর প্রধান কাজগুলির একটি হলো:
+
+> **Perspective-কে reader-এর কাছে একটি usable mental lens হিসেবে consolidate করা।**
+
+Reader যেন বুঝতে পারেন:
+
+> “এই বই আমাকে শুধু একটি বিষয় সম্পর্কে কিছু তথ্য দেয়নি; আমাকে বিষয়টিকে দেখার একটি নির্দিষ্ট উপায় দিয়েছে।”
+
+তবে Perspective-কে unnecessarily philosophical বা grandiose করে তুলবেন না।
+
+---
+
+# READER FINISH LINE
+
+Reader Finish Line-এর সঙ্গে Closing-এর direct alignment থাকতে হবে।
+
+যাচাই করুন:
+
+> Base Book পড়ে reader যে understanding / clarity / judgment / capability অর্জন করার কথা ছিল, Closing কি সেই অবস্থাটিকে clearly consolidate করছে?
+
+যদি finish line fully achieved না হয়ে থাকে:
+
+> Closing দিয়ে তা fake করবেন না।
+
+Missing substantive content থাকলে তা report করুন।
+
+---
+
+# READER JOURNEY CLOSURE
+
+Opening থেকে Closing পর্যন্ত reader journey internally consider করুন:
+
+> **Where did the reader begin?**
+
+↓
+
+> **What did the reader encounter?**
+
+↓
+
+> **What changed in the way they see the issue?**
+
+↓
+
+> **Where should they now stand?**
+
+Closing এই journey-কে naturalভাবে close করবে।
+
+---
+
+# SYNTHESIS, NOT REPETITION
+
+Closing-এ substantive sections-এর:
+
+- paragraph-by-paragraph summary
+- chapter-by-chapter repetition
+- long recap
+- bullet-point duplication
+
+করবেন না।
+
+বরং:
+
+> **individual insights → integrated understanding**
+
+এই transformation তৈরি করুন।
+
+---
+
+# DO NOT INTRODUCE NEW SUBSTANTIVE CONTENT
+
+Closing-এর মধ্যে নতুন substantive argument, mechanism বা major concept introduce করবেন না।
+
+যদি কোনও idea reader-এর understanding-এর জন্য essential হয় এবং Base Book-এ আগে যথাযথভাবে establish না হয়ে থাকে:
+
+> Closing দিয়ে সেটি নতুন করে introduce করবেন না।
+
+এটি structural problem হিসেবে flag করুন।
+
+---
+
+# DO NOT UNDER-CLOSE
+
+আবার Closing এত সংক্ষিপ্তও হবে না যে reader-এর journey properly resolve হয় না।
+
+একটি legitimate Closing-এর জন্য প্রয়োজনীয়:
+
+- synthesis
+- significance
+- reader orientation
+
+দিতে হবে।
+
+---
+
+# READER AGENCY
+
+Closing reader-এর হয়ে সিদ্ধান্ত নেবে না।
+
+Reader-কে:
+
+- কী বিশ্বাস করতেই হবে
+- কী করতেই হবে
+- কী কিনতেই হবে
+- কীভাবে জীবন চালাতেই হবে
+
+এই ধরনের unnecessary prescription দেবেন না।
+
+যদি Perspective naturally কোনও action বা practice-এর দিকে নিয়ে যায়:
+
+> reader-এর agency বজায় রেখে তা frame করুন।
+
+---
+
+# ACTION ORIENTATION
+
+Reader Finish Line বা architecture-এ যদি action orientation থাকে:
+
+Closing-এ তা naturalভাবে acknowledge করা যেতে পারে।
+
+কিন্তু:
+
+- forced action list
+- generic productivity advice
+- unrelated self-help
+- artificial challenge
+
+যোগ করবেন না।
+
+Action থাকলে তা:
+
+> **Book-এর Perspective-এর natural consequence**
+
+হতে হবে।
+
+---
+
+# COMMERCIAL NEUTRALITY
+
+Base Book free হোক বা paid:
+
+Closing-এর intellectual integrity অপরিবর্তিত থাকবে।
+
+Closing:
+
+- sales pitch নয়
+- product advertisement নয়
+- conversion mechanism নয়
+- urgency mechanism নয়
+- scarcity message নয়
+- private-content teaser নয়
+
+যদি inherited architecture explicitly কোনও commercial transition require না করে:
+
+> **Do not add one.**
+
+---
+
+# CTA RULE
+
+Closing-এ CTA যোগ করবেন না যদি না:
+
+> **LOCKED BASE BOOK PRODUCTION STATE**
+
+স্পষ্টভাবে CTA require করে।
+
+যদি CTA required না হয়:
+
+> **No CTA.**
+
+বিশেষভাবে Closing-এর intellectual completion-কে CTA-র জন্য sacrifice করবেন না।
+
+---
+
+# FUTURE CONTENT BOUNDARY
+
+Base Book-এর পরবর্তী content ecosystem থাকতে পারে:
+
+- Public Content
+- Private Content
+- Distribution Assets
+- deeper explorations
+- applications
+- additional resources
+
+কিন্তু Closing-এর কাজ reader-কে সেই layers-এর দিকে artificially push করা নয়।
+
+যদি future layer naturally relevant হয় এবং architecture explicitly তা require করে:
+
+> concise orientation দেওয়া যেতে পারে।
+
+কিন্তু:
+
+> **never use unresolved value as a conversion device.**
+
+---
+
+# DEEPER CONTENT DISTINCTION
+
+একটি গুরুত্বপূর্ণ distinction:
+
+> **“There is more to explore”**
+
+এবং:
+
+> **“You have not been given the essential understanding yet”**
+
+এক জিনিস নয়।
+
+Closing অবশ্যই প্রথমটি allow করতে পারে।
+
+দ্বিতীয়টি Base Book-এর intended scope-এর মধ্যে acceptable নয়।
+
+---
+
+# LANGUAGE & STYLE
+
+Closing-এর ভাষা হবে:
+
+- natural Bengali (India)
+- Kolkata-style conversational cadence
+- modern and readable
+- formal “আপনি”
+- “তুমি” নয়
+- “তুই” নয়
+- warm
+- thoughtful
+- intellectually honest
+- emotionally appropriate
+- unnecessarily dramatic নয়
+- unnecessarily academic নয়
+
+Closing-এর tone substantive journey-এর সঙ্গে coherent হবে।
+
+---
+
+# NARRATIVE STYLE
+
+Closing:
+
+- lecture নয়
+- sermon নয়
+- motivational speech নয়
+- generic inspirational ending নয়
+
+এটি reader-এর সঙ্গে একটি:
+
+> **quiet intellectual closure**
+
+তৈরি করবে।
+
+প্রয়োজন অনুযায়ী:
+
+- reflection
+- synthesis
+- contrast
+- return to opening idea
+- reframing
+- forward orientation
+
+ব্যবহার করা যেতে পারে।
+
+---
+
+# RETURN-TO-OPENING PRINCIPLE
+
+যদি Opening-এ কোনও:
+
+- question
+- tension
+- observation
+- metaphor
+- framing
+
+ব্যবহার করা হয়ে থাকে এবং Closing-এ তা naturally ফিরে আসার সুযোগ থাকে:
+
+> তা ব্যবহার করা যেতে পারে।
+
+কিন্তু artificial circularity তৈরি করবেন না।
+
+---
+
+# EMOTIONAL CLOSURE
+
+Emotional resonance থাকলে তা welcome।
+
+কিন্তু emotion যেন:
+
+- intellectual clarity replace না করে
+- exaggerated হয়ে না যায়
+- manipulation-এ পরিণত না হয়
+
+Closing-এর emotional effect আসবে:
+
+> **earned understanding**
+
+থেকে।
+
+---
+
+# CLAIM DISCIPLINE
+
+Closing-এ:
+
+- নতুন statistic
+- unsupported research claim
+- fabricated authority
+- exaggerated promise
+- false certainty
+
+যোগ করবেন না।
+
+যদি কোনও conclusion evidence-dependent হয়:
+
+> generated Base Book-এর established evidence-এর মধ্যেই থাকুন।
+
+---
+
+# NO GENERIC MORAL
+
+শেষে generic moral statement দেবেন না, যেমন:
+
+- “তাই আজ থেকেই শুরু করুন”
+- “আপনিই পারবেন”
+- “জীবন বদলে যাবে”
+- “সফলতা আপনার হাতের মুঠোয়”
+
+যদি না এগুলি Perspective-এর genuine conclusion হিসেবে substantively justified হয়।
+
+---
+
+# CLOSING LENGTH & DEPTH
+
+Closing-এর length নির্ধারণ হবে:
+
+> **Base Book-এর scope + complexity + Reader Finish Line + required synthesis**
+
+অনুযায়ী।
+
+কোনও fixed word count ধরে লিখবেন না যদি production state-এ তা নির্ধারিত না থাকে।
+
+Closing:
+
+- যথেষ্ট গভীর হবে যাতে journey resolve হয়
+- যথেষ্ট সংক্ষিপ্ত হবে যাতে নতুন chapter-এর মতো না লাগে
+
+---
+
+# CLOSING COMPLETENESS RULE
+
+Closing তখনই complete যখন:
+
+1. Base Book-এর central Perspective consolidated
+2. Reader journey resolved
+3. Reader Finish Line appropriately acknowledged
+4. essential synthesis delivered
+5. no major new substantive idea introduced
+6. essential value withheld নয়
+7. artificial cliffhanger নেই
+8. unnecessary commercial transition নেই
+
+---
+
+# FINAL READER STATE
+
+Closing-এর পরে reader-এর mental state হওয়া উচিত:
+
+> **“আমি বুঝতে পারছি এই বই আমাকে কীভাবে বিষয়টিকে দেখতে শিখিয়েছে এবং কেন সেই নতুন দৃষ্টিভঙ্গি গুরুত্বপূর্ণ।”**
+
+এটি rigid wording নয়।
+
+এটি desired cognitive condition।
+
+---
+
+# POST-CLOSING HANDOFF
+
+Closing complete হওয়ার পরে:
+
+> **Base Book-এর substantive generation phase complete.**
+
+তারপর workflow-এর পরবর্তী stage-এর জন্য handoff দিতে হবে।
+
+যদি system architecture-এ final Completion Check থাকে:
+
+> সেখানে handoff করুন।
+
+এই prompt সেই final audit করবে না।
+
+---
+
+# OUTPUT DISCIPLINE
+
+এই prompt-এর execution-এ:
+
+> **শুধুমাত্র Base Book-এর Closing generate করুন।**
+
+অতিরিক্ত:
+
+- Public Content
+- Private Content
+- Distribution Assets
+- marketing copy
+- sales copy
+- future content
+- additional chapters
+
+generate করবেন না।
+
+---
+
+# OUTPUT FORMAT
+
+# BASE BOOK — CLOSING
+
+[WRITE THE COMPLETE CLOSING HERE]
+
+---
+
+## CLOSING COMPLETION NOTE
+
+**Status:** Closing Complete
+
+**Perspective Consolidated:**
+[ONE CONCISE STATEMENT]
+
+**Reader Finish Line Consolidated:**
+[ONE CONCISE STATEMENT]
+
+**Intrinsic Reader Value Delivered:**
+[ONE CONCISE STATEMENT]
+
+**Non-Withholding Check:**
+[PASS / ISSUE FLAGGED]
+
+**Base Book Generation Status:**
+SUBSTANTIVE CONTENT + CLOSING COMPLETE
+
+**Next Stage:**
+[FINAL BASE BOOK COMPLETION CHECK / NEXT LOCKED WORKFLOW STAGE]
+
+---
+
+# QUALITY CONTROL BEFORE OUTPUT
+
+Closing finalise করার আগে internally verify করুন:
+
+## COMPLETION
+
+- All substantive sections are actually complete?
+- Stage 4.4 confirmed STATE F — CLOSING REQUIRED?
+- No unfinished prerequisite remains?
+
+## SYNTHESIS
+
+- Central Perspective consolidated?
+- Individual insights integrated?
+- Mere repetition avoided?
+
+## READER
+
+- Reader journey resolved?
+- Reader Finish Line reflected?
+- Reader agency preserved?
+
+## INTRINSIC VALUE
+
+- Closing itself provides genuine value within its legitimate scope?
+- It is more than a generic ending?
+
+## NON-WITHHOLDING
+
+- Essential conclusion withheld নয়?
+- Future content-এর জন্য artificial incompleteness নেই?
+- Private/Public layer-এর দিকে pressure নেই?
+
+## SCOPE
+
+- No new substantive chapter?
+- No new major argument?
+- No unrelated advice?
+
+## COMMERCIAL NEUTRALITY
+
+- No unnecessary sales pitch?
+- No forced CTA?
+- No conversion pressure?
+
+## LANGUAGE
+
+- Bengali (India)?
+- Kolkata cadence?
+- “আপনি”?
+- “তুমি” / “তুই” নেই?
+- Natural and readable?
+
+## INTEGRITY
+
+- No unsupported claims?
+- No exaggerated promises?
+- No invented evidence?
+- No false certainty?
+
+---
+
+# STRICT BOUNDARY
+
+Do not generate any new substantive section.
+
+Do not generate any missing content.
+
+Do not repair incomplete sections.
+
+Do not rewrite the Opening.
+
+Do not modify the Perspective.
+
+Do not modify the Primary Value Gap.
+
+Do not modify the Base Book Architecture.
+
+Do not invent a new thesis.
+
+Do not invent evidence.
+
+Do not generate Public Content.
+
+Do not generate Private Content.
+
+Do not generate Distribution Assets.
+
+Do not generate promotional copy.
+
+Do not generate sales copy.
+
+Do not add CTA unless explicitly required by the inherited production state.
+
+Do not use future content as a reason to deliberately withhold essential Base Book value.
+
+Do not create an artificial cliffhanger.
+
+Do not make the Closing incomplete merely to force the reader toward another content layer.
+
+Every content piece must provide genuine reader value within its own scope.
+
+The Closing must provide genuine value within the legitimate scope of a Closing.
+
+---
+
+# FINAL PRINCIPLE
+
+The Closing should not merely tell the reader:
+
+> **“The book is over.”**
+
+It should help the reader understand:
+
+> **“Now I can see what the journey meant.”**
+
+Its purpose is:
+
+> **SYNTHESIZE → CONSOLIDATE → CLOSE → HAND OFF**
+
+Nothing more.`;
+
+function generatePrompt(){
+  const d=document.getElementById("direction").value.trim();
+  const out=promptTemplate.replace("[OPTIONAL — ONLY IF PROVIDED]", d || "(No additional human direction provided.)");
+  document.getElementById("output").textContent=out;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return out;
+}
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out||out==="Your generated prompt will appear here.") out=generatePrompt();
+  try{
+    await navigator.clipboard.writeText(out);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+function downloadPrompt(){
+  const out=generatePrompt();
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-4.5-Base-Book-Closing-Generator.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearAll(){
+  document.getElementById("direction").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  document.getElementById("status").textContent="All fields cleared.";
+}
+</script>
+</body>
+</html>

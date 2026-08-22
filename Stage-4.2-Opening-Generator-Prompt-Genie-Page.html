@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 4.2 — Opening Generator</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1000px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.55rem,4vw,2.35rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted);max-width:820px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}
+.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+textarea{width:100%;min-height:240px;resize:vertical;border:1px solid var(--border);border-radius:12px;padding:13px 14px;font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;color:var(--muted)}
+.optional{font-weight:600;color:var(--muted);font-size:.85rem}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:520px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px;color:#51483f}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:180px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 4.2 · Base Book Generation</div>
+<h1>Opening Generator</h1>
+<p>Stage 4.1-এর locked production state থেকে Base Book-এর Opening তৈরি করার জন্য Prompt Genie.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Workflow note:</strong> Stage 4.1-এর <strong>Locked Base Book Production State</strong> এখানে inherited context। এটি নতুন করে strategic input হিসেবে দিতে হবে না। একমাত্র নতুন user-facing field হলো <strong>Additional Human Direction</strong> — optional.
+</div>
+</section>
+
+<section class="card">
+<label>Inherited Workflow Context</label>
+<div class="context">
+<strong>LOCKED BASE BOOK PRODUCTION STATE</strong><br>
+Inherited automatically from STAGE 4.1 — Production Setup.<br><br>
+এর মধ্যে Perspective, Value Gap, Base Book Architecture, Reader Finish Line, Scope, Production State এবং সংশ্লিষ্ট generation rules রয়েছে।
+</div>
+</section>
+
+<section class="card">
+<label for="direction">Additional Human Direction <span class="optional">(optional)</span></label>
+<div class="hint">Opening-এর জন্য নতুন কোনও human thinking, preference, correction, constraint বা context থাকলে এখানে দিন। না থাকলে ফাঁকা রাখুন।</div>
+<textarea id="direction" placeholder="INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY"></textarea>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 4.2 — Opening Generator · Inherited Context Architecture</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 4 — BASE BOOK GENERATION
+## PROMPT 4.2 — OPENING GENERATOR
+### FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+# ROLE
+
+আপনি এখন **Base Book-এর Opening Generator** হিসেবে কাজ করছেন।
+
+আপনার একমাত্র কাজ:
+
+> **LOCKED BASE BOOK PRODUCTION STATE-এর ভিত্তিতে Base Book-এর Opening লেখা।**
+
+এই prompt-এর মাধ্যমে Base Book-এর substantive chapters, sections, Closing, Public Content, Private Content বা Distribution Assets লেখা যাবে না।
+
+---
+
+# WORKFLOW POSITION
+
+এই prompt-এর আগে সম্পন্ন হয়েছে:
+
+### STAGE 1
+Perspective Thinking
+
+↓
+
+### STAGE 2
+Value-Gap Thinking
+
+↓
+
+### STAGE 3
+Base Book Architecture
+
+↓
+
+### STAGE 4.1
+Production Setup
+
+↓
+
+### CURRENT STAGE — 4.2
+Opening Generation
+
+↓
+
+### NEXT STAGE — 4.3
+Next Unfinished Content Section Generation
+
+অতএব, এই prompt-এর একমাত্র responsibility হলো:
+
+> **Base Book-এর Opening তৈরি করা এবং substantive content generation-এর জন্য একটি clean handoff তৈরি করা।**
+
+---
+
+# INHERITED SOURCE OF TRUTH
+
+এই prompt-এ প্রধান source of truth হবে:
+
+> **LOCKED BASE BOOK PRODUCTION STATE**
+
+যা Stage 4.1 থেকে inherited হয়েছে।
+
+এটি Stage 1–3-এর strategy-কে ইতিমধ্যে compile করে একটি production-ready state-এ পরিণত করেছে।
+
+সুতরাং:
+
+- Perspective পুনরায় নির্ধারণ করবেন না
+- Value Gap পুনরায় নির্ধারণ করবেন না
+- Base Book Architecture পুনরায় তৈরি করবেন না
+- Reader Finish Line পরিবর্তন করবেন না
+- Base Book-এর scope পরিবর্তন করবেন না
+- নিজের strategic preference দিয়ে inherited decisions replace করবেন না
+
+---
+
+# INPUT
+
+## LOCKED BASE BOOK PRODUCTION STATE
+
+[INHERITED FROM STAGE 4.1 — FINAL OUTPUT]
+
+---
+
+## CURRENT PRODUCTION STATE
+
+[INHERITED FROM STAGE 4.1]
+
+Expected state:
+
+> **STATE B — OPENING REQUIRED**
+
+যদি current production state STATE B না হয়:
+
+> Opening পুনরায় generate করবেন না।
+
+বরং current state-এর সঙ্গে conflict flag করুন।
+
+---
+
+# ADDITIONAL HUMAN DIRECTION
+
+[INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY]
+
+যদি কোনও additional direction না থাকে:
+
+> No additional human direction provided.
+
+Additional Human Direction থাকলে সেটি শুধুমাত্র তখনই inherited production state-এর উপর প্রয়োগ করুন যখন user স্পষ্টভাবে কোনও পরিবর্তন, correction বা constraint নির্দেশ করেছেন।
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+এই rule Opening-এর ক্ষেত্রেও সম্পূর্ণভাবে প্রযোজ্য।
+
+Opening শুধু:
+
+- attention grabber
+- teaser
+- promise
+- emotional hook
+- chapter preview
+
+হতে পারবে না।
+
+Opening-এর নিজের scope-এর মধ্যেই reader-এর জন্য meaningful value থাকতে হবে।
+
+Reader Opening পড়ে অন্তত কিছু:
+
+- বুঝবেন
+- নতুনভাবে দেখবেন
+- নিজের অবস্থাকে চিনতে পারবেন
+- একটি গুরুত্বপূর্ণ distinction ধরতে পারবেন
+- অথবা Perspective-এর সঙ্গে meaningfulভাবে connect করতে পারবেন
+
+---
+
+# OPENING'S STRATEGIC ROLE
+
+Base Book-এর Opening-এর কাজ হলো reader-কে Perspective-এর substantive journey-তে প্রবেশ করানো।
+
+Opening reader-কে:
+
+> **বর্তমানভাবে বিষয়টিকে যেভাবে দেখছেন**
+
+থেকে:
+
+> **এই বই যে Perspective-এর lens দিয়ে বিষয়টিকে দেখতে বলছে**
+
+তার দিকে প্রথম meaningful shift তৈরি করবে।
+
+Opening-এর কাজ পুরো Perspective explain করা নয়।
+
+আবার Perspective-কে রহস্যময় করে রেখে reader-কে chapter-by-chapter explanation-এর জন্য artificially dependent করাও নয়।
+
+---
+
+# OPENING MUST ESTABLISH
+
+Opening-এর মাধ্যমে যেখানে architecture এবং production state অনুযায়ী প্রয়োজন, সেখানে reader-এর কাছে পরিষ্কার হওয়া উচিত:
+
+### 1. বর্তমান সমস্যা বা tension কী
+
+Reader কেন এই বিষয়টি নিয়ে ভাববেন?
+
+### 2. প্রচলিতভাবে বিষয়টি কীভাবে দেখা হয়
+
+প্রয়োজন হলে existing assumption বা default framing identify করুন।
+
+### 3. সেই framing-এর সীমাবদ্ধতা কোথায়
+
+কেন existing way of seeing যথেষ্ট নয়?
+
+### 4. এই বইয়ের Perspective কী ধরনের নতুন lens দিচ্ছে
+
+Perspective-এর core direction introduce করুন।
+
+### 5. এই Perspective কেন গুরুত্বপূর্ণ
+
+Reader-এর problem, Value Gap এবং desired shift-এর সঙ্গে তার relevance দেখান।
+
+### 6. বইটি কোথায় নিয়ে যাবে
+
+Reader Finish Line-এর দিকে একটি honest orientation দিন।
+
+### 7. বইটি কীভাবে এগোবে
+
+শুধুমাত্র reader-এর navigation-এর জন্য যতটুকু দরকার ততটুকু structural orientation দিন।
+
+---
+
+# DO NOT OVER-EXPLAIN THE PERSPECTIVE
+
+Opening-এ Perspective-এর সম্পূর্ণ argument, mechanism বা application লিখবেন না যদি তা পরবর্তী substantive sections-এর intended scope হয়।
+
+কিন্তু গুরুত্বপূর্ণ distinction বা foundational understanding ইচ্ছাকৃতভাবে আটকে রাখবেন না।
+
+Rule:
+
+> **Orient, establish, and meaningfully shift — but do not prematurely complete the book.**
+
+---
+
+# NON-WITHHOLDING PRINCIPLE
+
+Opening-এর value ইচ্ছাকৃতভাবে কমিয়ে দেওয়া যাবে না যাতে reader পরের section পড়তে বাধ্য হন।
+
+বিশেষভাবে:
+
+- essential context hide করবেন না
+- important conclusion deliberately delay করবেন না
+- reader-এর genuine question intentionally unanswered রাখবেন না যদি তার উত্তর Opening-এর scope-এর মধ্যেই থাকা উচিত
+- “এর উত্তর পরে জানতে পারবেন” ধরনের artificial suspense ব্যবহার করবেন না
+
+তবে Opening-এর scope-এর বাইরে থাকা deeper explanation naturally পরবর্তী substantive sections-এর জন্য থাকবে।
+
+এটি withholding নয়।
+
+এটি:
+
+> **appropriate scope management।**
+
+---
+
+# READER JOURNEY RULE
+
+Opening-এর শেষে reader-এর mental state Opening-এর শুরু থেকে meaningfulভাবে এগিয়ে থাকতে হবে।
+
+Ideal progression:
+
+> **Recognition → Reframing → Orientation → Readiness**
+
+তবে এই sequence rigid formula নয়।
+
+Perspective-এর প্রকৃতি অনুযায়ী appropriate progression ব্যবহার করুন।
+
+---
+
+# PERSPECTIVE-FIRST RULE
+
+Opening topic দিয়ে শুরু করলেও তার strategic function শেষ পর্যন্ত Perspective-এর দিকে নিয়ে যাবে।
+
+Content selection-এর organising principle:
+
+> **Perspective-first, not topic-first.**
+
+Topic-এর তথ্য ব্যবহার করা যাবে শুধুমাত্র:
+
+- Perspective-এর relevance establish করতে
+- Value Gap clarify করতে
+- reader-এর existing framing identify করতে
+- necessary context দিতে
+
+Topic নিজে Opening-এর objective নয়।
+
+---
+
+# VALUE-GAP CONNECTION
+
+Opening-কে Primary Value Gap-এর সঙ্গে coherent হতে হবে।
+
+Reader যেন বুঝতে পারেন:
+
+> **“আমার যে সমস্যাটি / confusion / friction / limitation এখানে addressed হচ্ছে, সেটিকে অন্যভাবে দেখার প্রয়োজন আছে।”**
+
+কিন্তু Opening-কে Value-Gap analysis-এর technical report বানাবেন না।
+
+Reader-facing narrative বজায় রাখুন।
+
+---
+
+# READER FINISH LINE
+
+Opening-এ Reader Finish Line-এর full delivery দেওয়ার প্রয়োজন নেই।
+
+কিন্তু reader-এর কাছে honest expectation তৈরি করুন:
+
+> **এই বই পড়ার শেষে তিনি কী ধরনের understanding, clarity, judgment বা capability নিয়ে বেরোতে পারবেন।**
+
+কোনও exaggerated transformation promise করবেন না।
+
+---
+
+# COMMERCIAL NEUTRALITY
+
+Base Book free হোক বা paid—Opening-এর quality বা completeness পরিবর্তন হবে না।
+
+Opening:
+
+- sales pitch নয়
+- product advertisement নয়
+- conversion mechanism নয়
+- artificial CTA নয়
+
+যদি commercial context inherited state-এ থাকেও:
+
+> Base Book-এর reader-facing value-এর উপর তার কোনও negative effect হতে দেওয়া যাবে না।
+
+---
+
+# NO FORCED CTA
+
+Opening-এর শেষে:
+
+- sales CTA
+- product pitch
+- purchase instruction
+- subscription pressure
+- private content promotion
+
+যোগ করবেন না, যদি না inherited architecture explicitly Opening-এর অংশ হিসেবে তা require করে।
+
+এমন instruction না থাকলে:
+
+> **Do not add a CTA.**
+
+---
+
+# LANGUAGE & STYLE
+
+Opening-এর ভাষা হবে:
+
+- natural Bengali (India)
+- Kolkata-style conversational cadence
+- modern and readable
+- formal “আপনি”
+- “তুমি” বা “তুই” নয়
+- warm but intellectually serious
+- conversational but not casual/slang-heavy
+- clear but not simplistic
+- thoughtful but not unnecessarily academic
+
+যদি inherited production state অন্য language বা terminology explicitly require করে, সেই instruction priority পাবে।
+
+---
+
+# NARRATIVE STYLE
+
+Opening:
+
+- reader-এর সঙ্গে কথা বলবে
+- lecture-এর মতো শুরু হবে না
+- unnecessary definitions দিয়ে ভারী হবে না
+- abstract philosophical statement-এর স্তূপ হবে না
+- generic motivational introduction হবে না
+
+প্রয়োজন অনুযায়ী:
+
+- observation
+- relatable tension
+- misconception
+- contrast
+- question
+- short scenario
+- surprising distinction
+
+ব্যবহার করা যেতে পারে।
+
+কিন্তু এগুলো narrative device হিসেবে ব্যবহার হবে, objective হিসেবে নয়।
+
+---
+
+# CLAIM DISCIPLINE
+
+Opening-এ কোনও:
+
+- fabricated statistic
+- unsupported research claim
+- invented authority
+- false certainty
+- exaggerated promise
+
+ব্যবহার করবেন না।
+
+Inherited context-এ evidence requirement থাকলে তা respect করুন।
+
+যদি কোনও claim evidence-dependent হয় এবং evidence available না থাকে:
+
+> claim-টি appropriately qualify করুন অথবা issue flag করুন।
+
+---
+
+# EXAMPLE DISCIPLINE
+
+Opening-এ example ব্যবহার করলে তার কাজ হবে:
+
+- reader-এর existing experience activate করা
+- problem recognizable করা
+- Perspective-এর relevance দেখানো
+- একটি distinction সহজ করা
+
+শুধু attention পাওয়ার জন্য dramatic বা sensational example ব্যবহার করবেন না।
+
+---
+
+# LENGTH & DEPTH
+
+Opening-এর length নির্ধারণ হবে:
+
+> **Base Book-এর scope + Perspective-এর complexity + Reader's required orientation**
+
+অনুযায়ী।
+
+কোনও fixed word count ধরে লিখবেন না যদি production state-এ তা নির্ধারিত না থাকে।
+
+Opening:
+
+- এত ছোট হবে না যাতে reader-এর orientation অসম্পূর্ণ থাকে
+- এত বড় হবে না যাতে substantive content-এর কাজ শুরু হয়ে যায়
+
+---
+
+# STRUCTURAL BOUNDARY
+
+Opening-এর মধ্যে:
+
+- substantive chapter লেখা যাবে না
+- পরবর্তী section-এর full explanation দেওয়া যাবে না
+- Closing লেখা যাবে না
+- future content-এর detailed outline দেওয়া যাবে না
+- Private Content বা Public Content লেখা যাবে না
+- Distribution Assets লেখা যাবে না
+
+Opening-এর কাজ শেষ হবে যখন:
+
+> **reader Perspective-এর substantive exploration শুরু করার জন্য intellectually এবং narratively ready।**
+
+---
+
+# HANDOFF TO STAGE 4.3
+
+Opening complete হওয়ার পরে পরবর্তী unfinished substantive section identify করা Stage 4.3-এর কাজ।
+
+এই prompt:
+
+- next chapter লিখবে না
+- next section generate করবে না
+- completion check করবে না
+- Closing-এর প্রয়োজন determine করবে না
+
+তবে handoff-এর জন্য output-এ একটি concise production note থাকবে:
+
+> **Opening complete. Proceed to Stage 4.3 — Next Unfinished Content Section Generator.**
+
+এর সঙ্গে:
+
+> **Next Unfinished Substantive Section: [NAME / IDENTIFIER FROM STAGE 3 ARCHITECTURE]**
+
+দেওয়া যাবে।
+
+এটি নতুন strategic decision নয়।
+
+এটি Stage 3 architecture এবং current production state থেকে সরাসরি derived হবে।
+
+---
+
+# QUALITY CONTROL BEFORE OUTPUT
+
+Opening finalise করার আগে internally verify করুন:
+
+## PERSPECTIVE
+
+- Perspective clearly introduced?
+- Perspective distort বা redefine করা হয়নি?
+- Reader-এর existing framing থেকে meaningful shift শুরু হয়েছে?
+
+## VALUE GAP
+
+- Primary Value Gap-এর relevance clear?
+- Opening নিজের scope-এর মধ্যে genuine value দেয়?
+
+## READER
+
+- Reader-এর সঙ্গে natural connection তৈরি হয়েছে?
+- Reader-এর agency বজায় আছে?
+- কোনও unsupported audience assumption নেই?
+
+## NON-WITHHOLDING
+
+- essential context deliberately withheld নয়?
+- artificial suspense নেই?
+- next layer-এ যাওয়ার জন্য value intentionally blocked নয়?
+
+## SCOPE
+
+- Opening-এর boundary respected?
+- substantive section prematurely লেখা হয়নি?
+- Closing লেখা হয়নি?
+
+## COMMERCIAL NEUTRALITY
+
+- unnecessary selling নেই?
+- forced CTA নেই?
+- product pressure নেই?
+
+## CONTINUITY
+
+- Opening Stage 3 architecture-এর সঙ্গে coherent?
+- next substantive section-এর জন্য logical readiness তৈরি হয়েছে?
+
+## LANGUAGE
+
+- Bengali (India)?
+- Kolkata cadence?
+- “আপনি” ব্যবহার?
+- “তুমি” / “তুই” নেই?
+- natural এবং readable?
+
+---
+
+# OUTPUT FORMAT
+
+শুধু নিচের structure অনুসরণ করুন।
+
+# BASE BOOK — OPENING
+
+[WRITE THE COMPLETE OPENING HERE]
+
+---
+
+## OPENING COMPLETION NOTE
+
+**Status:** Opening Complete
+
+**Current Production State:** STATE C — SUBSTANTIVE SECTION IN PROGRESS
+
+**Next Unfinished Substantive Section:**
+[IDENTIFY FROM THE LOCKED BASE BOOK PRODUCTION STATE]
+
+**Next Prompt:**
+STAGE 4.3 — NEXT UNFINISHED CONTENT SECTION GENERATOR
+
+---
+
+# STRICT BOUNDARY
+
+Do not generate the Base Book beyond the Opening.
+
+Do not generate the first substantive chapter/section.
+
+Do not generate Closing.
+
+Do not generate Public Content.
+
+Do not generate Private Content.
+
+Do not generate Distribution Assets.
+
+Do not generate promotional copy.
+
+Do not generate sales copy.
+
+Do not generate CTA unless explicitly required by inherited production state.
+
+Do not modify the Perspective.
+
+Do not modify the Value Gap.
+
+Do not modify the Base Book Architecture.
+
+Do not invent a target audience.
+
+Do not invent evidence.
+
+Do not deliberately withhold useful information merely to create curiosity.
+
+Do not make the Opening artificially incomplete to force the reader into another content layer.
+
+Every content piece must provide genuine reader value within its own scope.
+
+The Opening must be genuinely useful in its own right while remaining within the legitimate scope of an Opening.
+
+This prompt is a:
+
+> **BASE BOOK OPENING GENERATION TOOL**
+
+Its sole responsibility is to create the Opening and hand off cleanly to Stage 4.3.`;
+
+function generatePrompt(){
+  const d=document.getElementById("direction").value.trim();
+  const out=promptTemplate.replace("[INSERT ANY NEW HUMAN DIRECTION HERE, IF ANY]", d || "(No additional human direction provided.)");
+  document.getElementById("output").textContent=out;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return out;
+}
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out||out==="Your generated prompt will appear here.") out=generatePrompt();
+  try{await navigator.clipboard.writeText(out);document.getElementById("status").textContent="Prompt copied to clipboard."}
+  catch(e){document.getElementById("status").textContent="Copy failed. Please copy manually."}
+}
+function downloadPrompt(){
+  const out=generatePrompt();
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download="Stage-4.2-Prompt-Opening-Generator.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearAll(){
+  document.getElementById("direction").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  document.getElementById("status").textContent="All fields cleared.";
+}
+</script>
+</body>
+</html>

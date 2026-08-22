@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 1 Prompt 1</title>
+<style>
+  :root{
+    --bg:#f7f1e3;
+    --card:#ffffff;
+    --text:#2f2a24;
+    --muted:#6f665d;
+    --border:#ded6ca;
+    --gold:#c89b3c;
+    --gold-dark:#8b5e1a;
+    --soft:#fbf8f1;
+    --danger:#9a3d2f;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.55;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:28px 16px 56px}
+  .hero{
+    background:linear-gradient(135deg,#fffdf8,#f4ead5);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:28px;
+    margin-bottom:18px;
+  }
+  .eyebrow{
+    font-size:.78rem;font-weight:800;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px
+  }
+  h1{margin:0 0 8px;font-size:clamp(1.55rem,4vw,2.35rem);line-height:1.15}
+  .hero p{margin:8px 0 0;color:var(--muted);max-width:780px}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px;
+    margin:16px 0;
+    box-shadow:0 5px 18px rgba(80,60,35,.05);
+  }
+  label{
+    display:block;font-weight:800;margin-bottom:8px;
+  }
+  .hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+  textarea{
+    width:100%;min-height:150px;resize:vertical;
+    border:1px solid var(--border);border-radius:12px;
+    padding:13px 14px;font:inherit;color:var(--text);
+    background:#fffdf9;outline:none;
+  }
+  textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+  .optional{font-weight:600;color:var(--muted);font-size:.85rem}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  button{
+    border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;
+    cursor:pointer;background:var(--gold);color:#fff;
+  }
+  button.secondary{background:#eee7db;color:var(--text)}
+  button.danger{background:#f2e0dc;color:var(--danger)}
+  button:hover{filter:brightness(.98)}
+  .status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+  .output{
+    min-height:420px;white-space:pre-wrap;
+    background:#fbfaf7;border:1px solid var(--border);
+    border-radius:12px;padding:16px;overflow:auto;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:.9rem;
+  }
+  .note{
+    background:var(--soft);border-left:4px solid var(--gold);
+    padding:14px 16px;border-radius:8px;color:#51483f;
+  }
+  .footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+  @media(max-width:600px){
+    .wrap{padding:16px 10px 40px}
+    .hero,.card{padding:17px}
+    textarea{min-height:135px}
+    button{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Stage 1 · Prompt 1</div>
+    <h1>Perspective / Narrative Interpretation</h1>
+    <p>A thinking tool to determine what must actually be done to establish a Perspective — without generating the content itself.</p>
+  </section>
+
+  <section class="card">
+    <div class="note">
+      <strong>Purpose:</strong> Perspective-first, not topic-first. This tool analyses your thinking and produces a strategic foundation for the next stage. It does not write the Base Book or later content.
+    </div>
+  </section>
+
+  <section class="card">
+    <label for="perspective">1. Perspective / Narrative <span style="color:#9a3d2f">*</span></label>
+    <div class="hint">The Perspective / Narrative you want to establish.</div>
+    <textarea id="perspective" placeholder="INSERT THE PERSPECTIVE / NARRATIVE HERE"></textarea>
+  </section>
+
+  <section class="card">
+    <label for="thinking">2. My Initial Thinking <span class="optional">(optional)</span></label>
+    <div class="hint">Any initial explanation, observation, belief, contrast, intuition, or reasoning you already have.</div>
+    <textarea id="thinking" placeholder="INSERT ANY INITIAL EXPLANATION, OBSERVATION, BELIEF, CONTRAST, OR INTUITION HERE"></textarea>
+  </section>
+
+  <section class="card">
+    <label for="context">3. Relevant Context <span class="optional">(optional)</span></label>
+    <div class="hint">Any context that may materially affect the analysis.</div>
+    <textarea id="context" placeholder="INSERT RELEVANT CONTEXT, IF ANY"></textarea>
+  </section>
+
+  <section class="card">
+    <div class="actions">
+      <button onclick="generatePrompt()">Generate Prompt</button>
+      <button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+      <button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+      <button class="danger" onclick="clearAll()">Clear</button>
+    </div>
+    <div id="status" class="status"></div>
+  </section>
+
+  <section class="card">
+    <label>Generated Prompt</label>
+    <div id="output" class="output">Your generated prompt will appear here.</div>
+  </section>
+
+  <div class="footer">Prompt Genie · Stage 1 — Perspective Thinking · Prompt 1</div>
+</div>
+
+<script>
+const promptTemplate = String.raw`# STAGE 1 — PERSPECTIVE THINKING
+## PROMPT 1 — PERSPECTIVE / NARRATIVE INTERPRETATION
+### FINAL OPTIMIZED & LOCKED VERSION
+
+---
+
+## PURPOSE
+
+এই prompt-এর কাজ content তৈরি করা নয়।
+
+এর কাজ হলো আপনার দেওয়া একটি Perspective / Narrative-কে গভীরভাবে examine করে বোঝা:
+
+> এই Perspective-টি আসলে কী বলতে চায়, কেন এটি গুরুত্বপূর্ণ, পাঠকের বর্তমান way of seeing-এর সঙ্গে এর পার্থক্য কোথায়, এবং এই Perspective-টি প্রতিষ্ঠা করতে পাঠকের মধ্যে কী পরিবর্তন ঘটতে হবে।
+
+এই stage-এ কোনও ebook, article, post, product, funnel বা content series তৈরি করবেন না।
+
+প্রথমে Perspective-টিকে বুঝুন।
+
+এই prompt-এর ultimate purpose হলো উত্তর খুঁজে বের করা:
+
+> **“আমার Perspective প্রতিষ্ঠা করার জন্য আসলে কী করা দরকার?”**
+
+---
+
+# INPUT
+
+## PERSPECTIVE / NARRATIVE
+
+[INSERT THE PERSPECTIVE / NARRATIVE HERE]
+
+## MY INITIAL THINKING
+
+[INSERT ANY INITIAL EXPLANATION, OBSERVATION, BELIEF, CONTRAST, OR INTUITION HERE]
+
+## RELEVANT CONTEXT
+
+[INSERT RELEVANT CONTEXT, IF ANY]
+
+---
+
+# CORE DOCTRINE
+
+Content creation must remain:
+
+> **Perspective-first, not topic-first.**
+
+Do not begin by asking:
+
+> “এই বিষয় নিয়ে কী কী content তৈরি করা যায়?”
+
+Begin by asking:
+
+> **“আমি আসলে কোন Perspective / way of seeing প্রতিষ্ঠা করতে চাই এবং পাঠকের বর্তমান way of seeing থেকে সেটি কীভাবে আলাদা?”**
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+---
+
+# TASK
+
+Analyse the supplied Perspective / Narrative and determine the following.
+
+---
+
+## 1. PERSPECTIVE VALIDITY TEST
+
+প্রথমে determine করুন:
+
+> **এটি কি সত্যিই একটি Perspective?**
+
+পরীক্ষা করুন এটি মূলত কোন ধরনের:
+
+- way of seeing
+- belief
+- interpretation
+- approach
+- principle
+- narrative
+
+নাকি এটি মূলত:
+
+- একটি topic
+- একটি slogan
+- একটি preference
+- একটি isolated opinion
+- অথবা একটি broad subject description
+
+যদি এটি এখনও genuine Perspective না হয়, তাহলে determine করুন:
+
+### What Is Missing?
+
+[ ]
+
+### What Would Make It a Genuine Perspective?
+
+[ ]
+
+Perspective-কে জোর করে valid ঘোষণা করবেন না।
+
+---
+
+## 2. PERSPECTIVE IN PLAIN LANGUAGE
+
+এই Perspective-টিকে এমনভাবে ব্যাখ্যা করুন যাতে একজন সাধারণ পাঠক বুঝতে পারেন:
+
+- Perspective-টি আসলে কী বলছে
+- এটি কোন বিষয়কে কীভাবে দেখতে বলছে
+- এর central interpretation কী
+- এর underlying belief বা assumption কী
+- এটি পাঠককে কীভাবে ভাবতে বা interpret করতে বলছে
+
+এখানে Perspective-টিকে শুধু একটি slogan হিসেবে ব্যাখ্যা করবেন না।
+
+এর actual meaning বের করুন।
+
+---
+
+## 3. CURRENT COMMON WAY OF SEEING
+
+Determine:
+
+- মানুষ সাধারণত এই বিষয়টিকে কীভাবে দেখে
+- প্রচলিত topic understanding কী
+- প্রচলিত belief কী
+- প্রচলিত interpretation কী
+- প্রচলিত assumption কী
+- প্রচলিত behaviour / approach কী
+- Perspective-টি কোন প্রচলিত ধারণাকে challenge, refine বা replace করতে চায়
+
+যেখানে evidence নেই সেখানে universal claim করবেন না।
+
+প্রয়োজনে বলুন:
+
+> “এই Perspective যে প্রচলিত ধারণাটিকে challenge করছে বলে মনে হচ্ছে...”
+
+---
+
+## 4. CURRENT INTERPRETATION CHAIN
+
+বর্তমান way of seeing-কে এই chain-এ analyse করুন:
+
+> **Current Topic Understanding**
+>
+> →
+>
+> **Current Belief**
+>
+> →
+>
+> **Current Interpretation**
+>
+> →
+>
+> **Current Behaviour / Approach**
+
+প্রতিটি স্তরে determine করুন:
+
+### Current Topic Understanding
+
+[ ]
+
+### Current Belief
+
+[ ]
+
+### Current Interpretation
+
+[ ]
+
+### Current Behaviour / Approach
+
+[ ]
+
+এর মধ্যে কোন স্তরটি Perspective-এর দ্বারা সবচেয়ে বেশি পরিবর্তিত হওয়ার কথা, সেটিও identify করুন।
+
+---
+
+## 5. THE PERSPECTIVE SHIFT
+
+Identify the central shift:
+
+> **From → To**
+
+### Current Way of Seeing
+
+[ ]
+
+### Proposed Way of Seeing
+
+[ ]
+
+### What Changes in Interpretation
+
+[ ]
+
+### What Changes in Thinking
+
+[ ]
+
+### What Changes in Belief
+
+[ ]
+
+### What Changes in Possible Action
+
+[ ]
+
+এই shift-টি Perspective-এর core intellectual movement হিসেবে ধরুন।
+
+---
+
+## 6. WHY THIS PERSPECTIVE MATTERS
+
+Determine:
+
+- এই Perspective গুরুত্বপূর্ণ কেন
+- এটি কোন meaningful problem / confusion / limitation / missed opportunity address করতে পারে
+- বর্তমান way of seeing-এর সীমাবদ্ধতা কোথায়
+- Perspective গ্রহণ করলে কী নতুনভাবে দেখা সম্ভব হয়
+- এই নতুন way of seeing বাস্তব decision বা action-এ কেন গুরুত্বপূর্ণ হতে পারে
+
+শুধু:
+
+> “এটি গুরুত্বপূর্ণ কারণ এটি useful”
+
+এমন generic explanation দেবেন না।
+
+---
+
+## 7. READER'S CURRENT STATE
+
+Perspective প্রতিষ্ঠার আগে reader-এর সম্ভাব্য অবস্থান নির্ধারণ করুন।
+
+Determine:
+
+- Reader কী ভাবতে পারেন
+- কী জানেন না
+- কী ভুলভাবে interpret করতে পারেন
+- কী recognise করেন না
+- কোন assumption-এর মধ্যে থাকতে পারেন
+- কী believe করতে পারেন
+- কোন problem অনুভব করতে পারেন
+- কী result চান
+- কী করতে চান কিন্তু পারেন না
+
+এখানে demographic profile বানানোর প্রয়োজন নেই।
+
+Focus করুন:
+
+> **Reader's state of understanding, awareness, belief, interpretation, capability, and decision-readiness.**
+
+---
+
+## 8. DESIRED READER STATE
+
+Perspective-এর সঙ্গে meaningful exposure-এর পরে reader-এর অবস্থান কী হওয়া উচিত?
+
+Determine:
+
+- কী নতুনভাবে বুঝবেন
+- কী নতুনভাবে দেখবেন
+- কোন distinction recognise করবেন
+- কোন assumption question করবেন
+- কোন belief বা interpretation reconsider করবেন
+- কোন possibility দেখতে পাবেন
+- কোন decision নিতে প্রস্তুত হবেন
+- কোন action সম্পর্কে clearer হবেন
+
+এটি guaranteed transformation হিসেবে লিখবেন না।
+
+---
+
+## 9. PRIMARY READER SHIFT
+
+সবচেয়ে গুরুত্বপূর্ণ ONE reader shift নির্বাচন করুন।
+
+Use:
+
+> **Before → After**
+
+### Primary Reader Shift
+
+[ ]
+
+### Why This Shift Matters
+
+[ ]
+
+### Evidence of the Shift
+
+[ ]
+
+একাধিক shift থাকলে তাদের priority দিন।
+
+সবকিছুকে সমান গুরুত্বপূর্ণ করবেন না।
+
+---
+
+## 10. PRIMARY VALUE GAP
+
+Perspective-এর জন্য সবচেয়ে গুরুত্বপূর্ণ Value Gap শনাক্ত করুন।
+
+Determine:
+
+### Current State
+
+[ ]
+
+### Desired State
+
+[ ]
+
+### Primary Value Gap
+
+[ ]
+
+### Why This Is the Primary Gap
+
+[ ]
+
+### What Prevents the Reader From Crossing It
+
+[ ]
+
+Value Gap যেন শুধু “knowledge gap” না হয়।
+
+যেখানে relevant, এটি হতে পারে:
+
+- understanding gap
+- awareness gap
+- interpretation gap
+- belief gap
+- decision gap
+- capability gap
+- confidence-through-understanding gap
+- implementation gap
+- judgment gap
+
+একটি Primary Value Gap নির্বাচন করুন।
+
+Supporting gaps থাকতে পারে, কিন্তু তারা Primary Gap-এর সঙ্গে compete করবে না।
+
+---
+
+## 11. SPECIFIC PROBLEM
+
+Primary Value Gap-এর সবচেয়ে গুরুত্বপূর্ণ practical expression শনাক্ত করুন।
+
+Determine:
+
+### Specific Problem
+
+[ ]
+
+### Why This Problem Matters
+
+[ ]
+
+### What This Content Can Realistically Address
+
+[ ]
+
+### What This Content Will NOT Solve
+
+[ ]
+
+Generic problem গ্রহণ করবেন না।
+
+উদাহরণ:
+
+- “মানুষের knowledge দরকার”
+- “মানুষ সমস্যায় আছে”
+- “জীবন কঠিন”
+- “মানুষ improve করতে চায়”
+
+এসব যথেষ্ট specific নয়।
+
+---
+
+## 12. SPECIFIC RESULT
+
+Perspective-এর সঙ্গে কাজ করার ফলে reader realistically কোন result-এর দিকে এগোতে পারবেন?
+
+Determine:
+
+### Desired Result
+
+[ ]
+
+### Observable Evidence of Result
+
+[ ]
+
+Result-টি এমন হওয়া উচিত যা reader বাস্তবে recognise করতে পারেন।
+
+Guaranteed transformation হিসেবে লিখবেন না।
+
+---
+
+## 13. WHAT THE PERSPECTIVE ENABLES
+
+Determine what becomes possible once the reader genuinely understands the Perspective.
+
+Focus on:
+
+- better interpretation
+- better recognition
+- better judgment
+- better evaluation
+- better decision
+- better action
+- better practice
+
+যা Perspective realistically enable করতে পারে না, তা claim করবেন না।
+
+---
+
+## 14. WHAT THE PERSPECTIVE DOES NOT CLAIM
+
+এটি গুরুত্বপূর্ণ।
+
+Determine:
+
+- Perspective-এর scope
+- Perspective-এর boundary
+- Perspective কী solve করে না
+- Perspective কী guarantee করে না
+- কোন বিষয় অন্য framework / knowledge / method-এর প্রয়োজন হতে পারে
+
+এতে Perspective-এর promise বাস্তবসম্মত থাকবে।
+
+---
+
+## 15. READER'S KEY QUESTION
+
+Perspective-টি প্রতিষ্ঠা করতে reader-এর মনে কোন ONE গুরুত্বপূর্ণ প্রশ্নের উত্তর পাওয়া দরকার?
+
+উদাহরণ:
+
+> “আমি এতদিন যেভাবে বিষয়টিকে দেখেছি, সেটা কি আসলেই সঠিক?”
+
+অথবা:
+
+> “এই সমস্যাটিকে অন্যভাবে দেখলে কী পরিবর্তন হতে পারে?”
+
+অথবা:
+
+> “আমি কীভাবে বুঝব কোন approach আমার জন্য উপযুক্ত?”
+
+একটি primary question নির্বাচন করুন।
+
+---
+
+## 16. KEY DECISION
+
+Perspective বোঝার পরে reader কোন গুরুত্বপূর্ণ decision নেওয়ার অবস্থায় পৌঁছাতে পারেন?
+
+Determine:
+
+### Decision
+
+[ ]
+
+### Before Perspective
+
+[ ]
+
+### After Perspective
+
+[ ]
+
+Decision অবশ্যই Perspective-এর natural consequence হতে হবে।
+
+Artificial CTA বা commercial decision তৈরি করবেন না।
+
+---
+
+## 17. REQUIRED UNDERSTANDING
+
+Perspective গ্রহণ করার আগে বা Perspective-টি meaningfulভাবে বোঝার জন্য reader-এর কী কী foundational understanding দরকার?
+
+Identify:
+
+- prerequisite knowledge
+- prerequisite awareness
+- necessary distinctions
+- misconceptions that must be clarified
+- concepts that must be understood
+- experiences that may need interpretation
+- beliefs or assumptions that may need examination
+
+সব prerequisite সমান গুরুত্বপূর্ণ ধরে নেবেন না।
+
+---
+
+## 18. WHAT MUST CHANGE
+
+Perspective প্রতিষ্ঠা করতে reader-এর মধ্যে বাস্তবে কী কী পরিবর্তন ঘটতে হবে?
+
+Categorise where relevant:
+
+### What must they understand?
+
+[ ]
+
+### What must they recognise?
+
+[ ]
+
+### What must they believe or interpret differently?
+
+[ ]
+
+### What must they stop assuming?
+
+[ ]
+
+### What must they start noticing?
+
+[ ]
+
+### What must they be able to decide?
+
+[ ]
+
+### What must they eventually be able to do?
+
+[ ]
+
+এর মধ্যে PRIMARY change আলাদা করে identify করুন।
+
+---
+
+## 19. CORE NARRATIVE
+
+Perspective-টির underlying narrative logic একটিমাত্র coherent chain-এ প্রকাশ করুন:
+
+> **Current Way of Seeing**
+>
+> →
+>
+> **Its Limitation**
+>
+> →
+>
+> **What the Reader Is Missing**
+>
+> →
+>
+> **New Perspective**
+>
+> →
+>
+> **Why It Changes the Interpretation**
+>
+> →
+>
+> **What Becomes Possible**
+>
+> →
+>
+> **What the Reader Can Now Decide / Do**
+
+প্রয়োজন অনুযায়ী chain adapt করুন।
+
+Artificially সব element force করবেন না।
+
+---
+
+## 20. BASE CONTENT IMPLICATION
+
+এখনও Base Book তৈরি করবেন না।
+
+শুধু determine করুন:
+
+> **এই Perspective প্রতিষ্ঠার জন্য একটি ideal foundational Base Content / Base Book-এর কী কাজ করতে হবে?**
+
+Determine:
+
+### Base Content Job
+
+[ ]
+
+### What It Must Establish
+
+[ ]
+
+### What It Must Not Attempt to Do
+
+[ ]
+
+### Reader Starting State
+
+[ ]
+
+### Reader Ending State
+
+[ ]
+
+### Why a Base Content Is Needed
+
+[ ]
+
+### Why a Simple Article / Post May Not Be Sufficient
+
+[যদি সত্যিই প্রযোজ্য হয়]
+
+### Whether an Ebook Is Actually the Ideal Base Format
+
+[Yes / No / Uncertain]
+
+### Why
+
+[ ]
+
+খুব গুরুত্বপূর্ণ:
+
+> Ebook-কে আগে থেকেই ধরে নেবেন না।
+
+যদি Perspective establish করার জন্য ebook ideal না হয়, সেটি স্পষ্টভাবে বলুন।
+
+একটি Free ebook, paid ebook, guide, manifesto, foundational report, course বা অন্য format বেশি appropriate হলে তা reasoning সহ উল্লেখ করুন।
+
+---
+
+## 21. IDEAL BASE CONTENT FUNCTION
+
+Base Content-এর function এক বাক্যে লিখুন:
+
+> **“This Base Content should help the reader move from [CURRENT STATE] to [DESIRED STATE] by helping them [CORE SHIFT].”**
+
+এটি Perspective establishment-এর central delivery statement হবে।
+
+---
+
+## 22. CONTENT ECOSYSTEM IMPLICATION
+
+এই stage-এ full content ecosystem তৈরি করবেন না।
+
+শুধু determine করুন:
+
+### What the Base Content should establish
+
+[ ]
+
+### What may need to exist before the Base Content
+
+[ ]
+
+### What may need to exist after the Base Content
+
+[ ]
+
+### Why
+
+[ ]
+
+এখানে শুধু genuine dependency identify করুন।
+
+Artificial content layers তৈরি করবেন না।
+
+---
+
+## 23. NO-WITHHOLDING TEST
+
+Perspective ecosystem-এর জন্য internally verify করুন:
+
+> **“আমি কি কোনও useful information শুধু এই কারণে অন্য layer-এ রেখে দিচ্ছি যাতে reader পরের content consume করতে বাধ্য হন?”**
+
+যদি হ্যাঁ হয়:
+
+> সেই reasoning reject করুন।
+
+Progression তৈরি হবে:
+
+- increasing relevance
+- increasing depth
+- increasing capability
+- increasing usefulness
+- increasing readiness
+
+এর মাধ্যমে।
+
+Artificial information withholding-এর মাধ্যমে নয়।
+
+---
+
+## 24. TEN-MINUTE THINKING TEST
+
+এখানে final Ten-Minute Win তৈরি করার দরকার নেই।
+
+শুধু determine করুন:
+
+> **Perspective-টি বোঝার পথে reader-এর জন্য এমন কোনও ছোট কিন্তু meaningful first realisation বা action আছে কি, যা প্রায় দশ মিনিটের মধ্যে করা সম্ভব?**
+
+যদি থাকে:
+
+### Potential Ten-Minute Win
+
+[ ]
+
+যদি না থাকে:
+
+> No meaningful Ten-Minute Win identified at this stage.
+
+Force করবেন না।
+
+---
+
+## 25. CORE VALUE ASSET IMPLICATION
+
+এখানে final asset design করবেন না।
+
+শুধু determine করুন:
+
+> Perspective-এর Primary Value Gap কমাতে কোন ধরনের practical asset ভবিষ্যতে সবচেয়ে বেশি reader work কমাতে পারে?
+
+Determine:
+
+### Potential Core Value Asset
+
+[ ]
+
+### What Reader Work It Removes
+
+[ ]
+
+### Why It Is Relevant
+
+[ ]
+
+যদি asset দরকার না হয়:
+
+> No meaningful Core Value Asset identified.
+
+---
+
+## 26. PERSPECTIVE ESTABLISHMENT TEST
+
+Perspective-টি genuinely establish করতে reader-এর শেষে ideally বুঝতে হবে:
+
+1. বিষয়টিকে আগের মতো দেখলে কোথায় limitation ছিল।
+2. নতুন Perspective কীভাবে আলাদা।
+3. এই Perspective কেন relevant।
+4. এটি কীভাবে তাদের interpretation পরিবর্তন করে।
+5. এটি কোন belief বা assumption reconsider করতে সাহায্য করে।
+6. Perspective-এর scope কী।
+7. Perspective-এর limitation কী।
+8. এই Perspective গ্রহণ করলে কোন decision / action নতুনভাবে সম্ভব হয়।
+
+---
+
+## 27. FINAL PERSPECTIVE STATEMENT
+
+সব analysis-এর পরে Perspective-টিকে একটি clear statement-এ compress করুন।
+
+Format:
+
+> **“The Perspective is: [CLEAR PERSPECTIVE].”**
+
+তারপর:
+
+### In Simpler Language
+
+[ ]
+
+### The Shift It Creates
+
+[ ]
+
+### Why the Reader Should Care
+
+[ ]
+
+---
+
+## 28. FINAL BASE-CONTENT RECOMMENDATION
+
+সবশেষে নির্ধারণ করুন:
+
+### Ideal Base Content
+
+[ ]
+
+### Recommended Format
+
+[ ]
+
+### Core Reader Promise
+
+[ ]
+
+### Primary Reader Shift
+
+[ ]
+
+### Primary Value Gap
+
+[ ]
+
+### Specific Problem
+
+[ ]
+
+### Specific Result
+
+[ ]
+
+### Base Content Job
+
+[ ]
+
+### Reader Starting State
+
+[ ]
+
+### Reader Ending State
+
+[ ]
+
+### Key Decision
+
+[ ]
+
+### Observable Result
+
+[ ]
+
+### Why This Is the Right Foundation
+
+[ ]
+
+---
+
+# QUALITY CONTROL
+
+Finalising করার আগে internally verify করুন।
+
+## PERSPECTIVE
+
+- Perspective clearly defined?
+- এটি topic নয়, genuine way of seeing?
+- Perspective Validity Test passed?
+- Current interpretation বনাম proposed interpretation পরিষ্কার?
+- Current belief বনাম proposed belief পরিষ্কার?
+- Perspective-এর scope clear?
+- Perspective-এর boundary clear?
+
+## READER
+
+- Reader State Before clear?
+- Desired State clear?
+- Primary Reader Shift clear?
+- Reader-এর Key Question clear?
+- Key Decision clear?
+- Required Understanding clear?
+- Required Belief / Interpretation Shift clear?
+
+## VALUE GAP
+
+- One Primary Value Gap selected?
+- Gap practical?
+- Gap Perspective-এর সঙ্গে directly connected?
+- Specific Problem identifiable?
+- Specific Result realistic?
+- Bottleneck or main obstacle identifiable?
+
+## BASE CONTENT
+
+- Base Content-এর job clear?
+- Base Content কি Perspective-এর core coherent understanding establish করবে?
+- Base Content-এর Starting State ও Ending State clear?
+- Ebook automatically assumed নয়?
+- Format actually appropriate?
+- Free / paid status কি unnecessarily predetermined নয়?
+- Reader journey Base Content-এর মাধ্যমে realistically deliverable?
+
+## ECOSYSTEM
+
+- Pre-Base requirement genuine?
+- Post-Base requirement genuine?
+- Public / Base / Private roles কি conceptually distinguishable?
+- কোনও layer-এর useful information artificially withheld হচ্ছে না?
+- Progression genuine?
+
+## READER VALUE
+
+- Every content piece can provide genuine value within its scope?
+- কোনও content deliberately incomplete করা হচ্ছে না?
+- কোনও information শুধু conversion pressure তৈরি করার জন্য withheld করা হচ্ছে না?
+
+## THINKING QUALITY
+
+- AI কি শুধু supplied Perspective paraphrase করেছে?
+- কোনও hidden assumption identify করেছে?
+- কোনও important boundary identify করেছে?
+- কোনও contradiction বা ambiguity আছে?
+- কোনও major question unanswered আছে?
+- Perspective-এর সঙ্গে Value Gap-এর logical connection clear?
+- Perspective → Reader Shift → Value Gap → Base Content-এর connection coherent?
+
+যদি কোনও critical answer “না” হয়, final output দেওয়ার আগে relevant analysis revise করুন।
+
+---
+
+# OUTPUT FORMAT
+
+শুধুমাত্র নিচের structure অনুসরণ করে final strategic analysis দিন:
+
+## 1. Perspective Validity Test
+
+## 2. Perspective in Plain Language
+
+## 3. Current Common Way of Seeing
+
+## 4. Current Interpretation Chain
+
+## 5. The Perspective Shift
+
+## 6. Why This Perspective Matters
+
+## 7. Reader's Current State
+
+## 8. Desired Reader State
+
+## 9. Primary Reader Shift
+
+## 10. Primary Value Gap
+
+## 11. Specific Problem
+
+## 12. Specific Result
+
+## 13. What the Perspective Enables
+
+## 14. What the Perspective Does Not Claim
+
+## 15. Reader's Key Question
+
+## 16. Key Decision
+
+## 17. Required Understanding
+
+## 18. What Must Change
+
+## 19. Core Narrative
+
+## 20. Base Content Implication
+
+## 21. Ideal Base Content Function
+
+## 22. Content Ecosystem Implication
+
+## 23. No-Withholding Test
+
+## 24. Ten-Minute Thinking Test
+
+## 25. Core Value Asset Implication
+
+## 26. Perspective Establishment Test
+
+## 27. Final Perspective Statement
+
+## 28. Final Base-Content Recommendation
+
+---
+
+# STRICT BOUNDARY
+
+Do not generate the actual Base Book.
+
+Do not generate the final Base Book title unless explicitly requested in a later stage.
+
+Do not generate blog posts.
+
+Do not generate social media posts.
+
+Do not generate Public Content ideas.
+
+Do not generate Private Content ideas.
+
+Do not generate Distribution Assets.
+
+Do not generate a sales funnel.
+
+Do not generate promotional copy.
+
+Do not solve later-stage content-generation tasks prematurely.
+
+Do not turn this analysis into a finished content piece.
+
+This is a THINKING TOOL.
+
+Its purpose is to determine:
+
+> **“আমার Perspective প্রতিষ্ঠা করার জন্য আসলে কী করা দরকার?”**
+
+The output of this prompt will become the strategic foundation for the next stage of the Perspective-Building Content Workflow.`;
+
+function fill(template, token, value){
+  return template.split(token).join(value || "");
+}
+
+function buildPrompt(){
+  const p = document.getElementById("perspective").value.trim();
+  const t = document.getElementById("thinking").value.trim();
+  const c = document.getElementById("context").value.trim();
+
+  if(!p){
+    setStatus("Perspective / Narrative is required.");
+    return "";
+  }
+
+  let out = promptTemplate;
+  out = fill(out, "[INSERT THE PERSPECTIVE / NARRATIVE HERE]", p);
+  out = fill(out, "[INSERT ANY INITIAL EXPLANATION, OBSERVATION, BELIEF, CONTRAST, OR INTUITION HERE]", t || "(No additional initial thinking provided.)");
+  out = fill(out, "[INSERT RELEVANT CONTEXT, IF ANY]", c || "(No additional relevant context provided.)");
+
+  document.getElementById("output").textContent = out;
+  setStatus("Prompt generated successfully.");
+  return out;
+}
+
+function generatePrompt(){ buildPrompt(); }
+
+async function copyPrompt(){
+  const out = document.getElementById("output").textContent;
+  if(!out || out === "Your generated prompt will appear here."){
+    buildPrompt();
+  }
+  const finalOut = document.getElementById("output").textContent;
+  try{
+    await navigator.clipboard.writeText(finalOut);
+    setStatus("Prompt copied to clipboard.");
+  }catch(e){
+    setStatus("Copy failed. Please select and copy the prompt manually.");
+  }
+}
+
+function downloadPrompt(){
+  const out = buildPrompt();
+  if(!out) return;
+  const blob = new Blob([out], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "Stage-1-Prompt-1-Perspective-Narrative-Interpretation.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setStatus("Prompt downloaded.");
+}
+
+function clearAll(){
+  document.getElementById("perspective").value="";
+  document.getElementById("thinking").value="";
+  document.getElementById("context").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  setStatus("All fields cleared.");
+}
+
+function setStatus(msg){
+  document.getElementById("status").textContent=msg;
+}
+</script>
+</body>
+</html>
