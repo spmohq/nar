@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 6 Asset 1 — 3D Report Ecover</title>
+<style>
+:root{
+  --bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;
+  --border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;
+  --soft:#fbf8f1;--danger:#9a3d2f
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1080px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);
+border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;
+box-shadow:0 5px 18px rgba(80,60,35,.05)}
+label{display:block;font-weight:800;margin-bottom:8px}
+.hint{font-size:.9rem;color:var(--muted);margin:-2px 0 10px}
+textarea,input{width:100%;border:1px solid var(--border);border-radius:12px;padding:13px 14px;
+font:inherit;color:var(--text);background:#fffdf9;outline:none}
+textarea{min-height:180px;resize:vertical}
+textarea:focus,input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,155,60,.13)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#eee7db;color:var(--gold-dark);
+font-size:.75rem;font-weight:800;margin-left:5px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;
+padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:14px 16px;color:var(--muted)}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:14px 16px;border-radius:8px}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}textarea{min-height:150px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 6 · Asset 1</div>
+<h1>3D Report Ecover — Prompt Genie</h1>
+<p>Generate the locked production prompt for the official 3D report ecover.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>User-facing inputs: 3</strong><br>
+1. Final Report Title · 2. Author or Brand Name · 3. Completed Report
+</div>
+</section>
+
+<section class="card">
+<label for="title">Final Report Title <span class="badge">Required</span></label>
+<div class="hint">Enter the exact final report title. It will be preserved character-for-character in the generated prompt.</div>
+<input id="title" placeholder="Enter the exact final report title">
+</section>
+
+<section class="card">
+<label for="author">Author or Brand Name <span class="badge">Required</span></label>
+<div class="hint">Enter the exact author or brand name to appear on the ecover.</div>
+<input id="author" placeholder="Enter the exact author or brand name">
+</section>
+
+<section class="card">
+<label for="report">Completed Report <span class="badge">Required</span></label>
+<div class="hint">Paste the completed Base Book / Report. This is the source for subject, Perspective, positioning, reader promise and visual direction.</div>
+<textarea id="report" placeholder="Paste the completed report here"></textarea>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="generatePrompt()">Generate Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearAll()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Your generated prompt will appear here.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 6 · Asset 1 · 3D Report Ecover</div>
+</div>
+
+<script>
+const template = String.raw`# STAGE 6 — ASSET 1
+## 3D REPORT ECOVER
+### FINAL OPTIMIZED & LOCKED
+
+---
+
+# ROLE
+
+You are the **3D Report Ecover Designer** within the Perspective Ecosystem Asset Architecture.
+
+Your task is to create the final, production-ready 3D digital report ecover for the completed Base Book / Report.
+
+This ecover will serve as the:
+
+> **OFFICIAL PRODUCT VISUAL**
+
+for the report and as the authoritative visual reference for subsequent ecosystem assets representing the same report.
+
+---
+
+# INPUTS
+
+## FINAL REPORT TITLE
+
+{{TITLE}}
+
+## AUTHOR OR BRAND NAME
+
+{{AUTHOR}}
+
+## COMPLETED REPORT
+
+{{REPORT}}
+
+---
+
+# PRIMARY OBJECTIVE
+
+Create one premium 3D digital report cover that:
+
+- clearly identifies the report
+- accurately communicates its subject and established positioning
+- establishes a credible product identity
+- remains highly readable at thumbnail size
+- creates a distinctive and reusable visual identity
+- can serve as the official visual reference for later ecosystem assets
+
+The cover must feel specific to this report.
+
+Do not create a generic cover that could belong to an unrelated product.
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+For this asset, the requirement applies within the legitimate scope of a report cover.
+
+A cover's intrinsic value is:
+
+> **clear identification + accurate expectation-setting + credible presentation**
+
+It is not required to reproduce the report's substantive content.
+
+Therefore:
+
+- do not deliberately obscure the report's subject
+- do not create misleading mystery
+- do not use deceptive visual promises
+- do not make the cover merely a curiosity trap
+- do not deliberately withhold useful identifying information to force another asset to be consumed
+
+Attention must come from:
+
+> **clarity, relevance, visual quality and distinctive presentation.**
+
+---
+
+# SOURCE FIDELITY
+
+The visual concept must be grounded in the established:
+
+- report subject
+- actual problem
+- established Perspective
+- established positioning
+- intended reader
+- legitimate reader promise
+
+Do not invent a new thesis, positioning, promise or audience.
+
+The cover must represent what the report actually is.
+
+---
+
+# OFFICIAL PRODUCT VISUAL RULE
+
+This ecover becomes the official visual identity of the report.
+
+Therefore:
+
+- preserve the exact report title
+- preserve the exact author / brand name
+- establish one coherent visual identity
+- make the design distinctive
+- make it reusable across later assets
+- avoid disposable or generic visual decisions
+
+Later ecosystem assets may derive:
+
+- visual atmosphere
+- colour direction
+- artwork cues
+- typography character
+- product identity
+- overall visual language
+
+from this ecover.
+
+---
+
+# TITLE RULE
+
+The exact report title must be the dominant textual focal point.
+
+Requirements:
+
+- reproduce the title exactly
+- do not paraphrase it
+- do not shorten it
+- do not alter spelling
+- do not invent additional title wording
+- use highly readable typography
+- ensure readability at thumbnail size
+
+Before finalizing, verify the title character-by-character.
+
+---
+
+# SUBTITLE RULE
+
+Use a subtitle only if an established subtitle already exists in the available report context.
+
+If an established subtitle exists:
+
+- reproduce it accurately
+- keep it visually subordinate to the title
+- ensure it strengthens rather than competes with the title
+
+Do not invent a new subtitle.
+
+Do not create a new promise merely for visual appeal.
+
+---
+
+# AUTHOR / BRAND RULE
+
+Use the exact author or brand name provided.
+
+Do not:
+
+- alter spelling
+- abbreviate without instruction
+- invent credentials
+- invent affiliations
+- add unsupported authority claims
+
+---
+
+# COVER INFORMATION RULE
+
+The cover should contain only information legitimately appropriate for a report cover.
+
+Permitted:
+
+- exact report title
+- established subtitle
+- exact author / brand
+- minimal visually necessary cover information supported by the source context
+
+Do not extract arbitrary promotional material from the report merely because it sounds persuasive.
+
+Do not add:
+
+- testimonials
+- statistics
+- prices
+- guarantees
+- awards
+- endorsements
+- badges
+- credentials
+- unsupported claims
+- invented benefits
+- invented marketing statements
+
+---
+
+# VISUAL CONCEPT
+
+Build the visual language around the report's actual conceptual identity.
+
+Use:
+
+- topic-relevant visual storytelling
+- purposeful composition
+- strong visual hierarchy
+- confident typography
+- appropriate contrast
+- dimensional lighting
+- realistic depth
+- appropriate texture
+- balanced spacing
+
+Avoid:
+
+- generic stock-template aesthetics
+- predictable topic icons used without purpose
+- random decorative elements
+- excessive text
+- visual noise
+- weak hierarchy
+- muddy contrast
+- unnecessary effects
+- competing focal points
+
+The design should communicate the report's identity visually without attempting to become an infographic.
+
+---
+
+# VISUAL QUALITY STANDARD
+
+The final result must feel:
+
+- premium
+- polished
+- professionally art-directed
+- distinctive
+- credible
+- desirable
+- production-ready
+
+Every major visual decision must serve either:
+
+> **identity, relevance, readability or presentation quality.**
+
+---
+
+# 3D MOCKUP REQUIREMENTS
+
+Create a believable premium 3D digital report / PDF cover mockup.
+
+Use:
+
+- realistic perspective
+- clean edges
+- believable dimensionality
+- controlled shadows
+- dimensional lighting
+- professional proportions
+
+The result should look like a real professionally produced digital product.
+
+Do not make it look like:
+
+- a flat poster
+- a generic social-media graphic
+- a physical book unless the established context specifically requires that treatment
+- an unrelated product mockup
+
+---
+
+# BACKGROUND REQUIREMENT
+
+Use:
+
+> **SOLID PURE WHITE #FFFFFF**
+
+across the entire image canvas.
+
+The background must remain:
+
+- pure white
+- clean
+- uncluttered
+
+Do not use:
+
+- transparency
+- gradients
+- coloured backdrops
+- room scenes
+- desks
+- shelves
+- hands
+- lifestyle environments
+- dark backgrounds
+
+A subtle natural product shadow is permitted only when it improves realism without compromising the pure white background.
+
+---
+
+# COMPOSITION
+
+Create:
+
+> **ONE standalone 3D report ecover image.**
+
+Keep the complete product comfortably inside the canvas with generous white space.
+
+Maintain:
+
+- one clear focal point
+- strong hierarchy
+- balanced proportions
+- safe margins
+- thumbnail readability
+
+Do not crowd the canvas.
+
+Do not introduce:
+
+- multiple covers
+- secondary products
+- unrelated objects
+- unnecessary visual elements
+
+---
+
+# THUMBNAIL READABILITY
+
+The design must remain recognizable when significantly reduced in size.
+
+At thumbnail scale:
+
+- title must remain readable
+- report identity must remain clear
+- main visual concept must remain distinguishable
+- important elements must not collapse into visual noise
+
+Prioritize:
+
+> **recognition over decoration.**
+
+---
+
+# TEXT ACCURACY & TRUST
+
+Before finalizing, verify:
+
+- every visible word
+- title accuracy
+- author / brand accuracy
+- spelling
+- spacing
+- legibility
+- cropping
+- safe margins
+
+Do not include accidental:
+
+- nonsense lettering
+- placeholder text
+- duplicate words
+- unrelated logos
+- invented claims
+
+---
+
+# ASSET BOUNDARY
+
+This asset is:
+
+> **A 3D REPORT ECOVER.**
+
+It is NOT:
+
+- a sales page
+- a Facebook advertisement
+- a promotional post
+- a product description
+- an infographic
+- a CTA graphic
+- a bonus graphic
+- a testimonial graphic
+
+Do not perform the job of later assets.
+
+The cover should identify and present the report—not sell, explain or teach the entire report.
+
+---
+
+# ECOSYSTEM CONTINUITY
+
+Treat this ecover as the authoritative visual reference for the same report across the ecosystem.
+
+Future assets may adapt its:
+
+- visual language
+- colour relationships
+- typography character
+- artwork direction
+- atmosphere
+- product identity
+
+But they must not contradict the report's established identity.
+
+---
+
+# FINAL QUALITY CONTROL
+
+Before producing the image, internally verify:
+
+### IDENTITY
+- Is the exact report title present?
+- Is the exact author / brand present?
+- Is the report immediately identifiable?
+
+### SOURCE FIDELITY
+- Does the visual reflect the actual report?
+- Is the visual concept grounded in the established Perspective and positioning?
+- Has no new thesis or promise been invented?
+
+### VALUE
+- Does the cover provide clear identification and accurate expectation-setting within its legitimate scope?
+- Has useful identifying information been deliberately withheld?
+- Is the design free from deceptive curiosity manipulation?
+
+### VISUAL QUALITY
+- Premium?
+- Professional?
+- Distinctive?
+- Relevant?
+- Clean?
+- Production-ready?
+
+### READABILITY
+- Title readable at thumbnail size?
+- Hierarchy clear?
+- No overcrowding?
+
+### ACCURACY
+- No spelling errors?
+- No invented claims?
+- No accidental text?
+- No unsupported authority signals?
+
+### COMPOSITION
+- One clear focal point?
+- Complete product inside canvas?
+- Generous white space?
+- No unrelated objects?
+
+### BACKGROUND
+- Solid pure #FFFFFF?
+- No environmental scene?
+- No unnecessary backdrop?
+
+### ECOSYSTEM CONTINUITY
+- Strong enough to become the official visual reference for later assets?
+
+---
+
+# FINAL OUTPUT
+
+Create the actual final image now.
+
+Return:
+
+> **ONE polished, production-ready standalone 3D report ecover image only.**
+
+Do NOT return:
+
+- an image prompt
+- a design brief
+- a plan
+- code
+- HTML
+- CSS
+- SVG
+- instructions
+- explanation
+- setup commentary
+
+The final image must:
+
+- use a solid pure **#FFFFFF** white background
+- contain one complete 3D report ecover
+- preserve the exact report title
+- preserve the exact author / brand
+- visually represent the actual report
+- establish the official visual identity for subsequent ecosystem assets
+
+This prompt is:
+
+> **LOCKED.**`;
+
+function generatePrompt(){
+  const title=document.getElementById("title").value.trim();
+  const author=document.getElementById("author").value.trim();
+  const report=document.getElementById("report").value.trim();
+
+  if(!title || !author || !report){
+    document.getElementById("status").textContent="Please complete all 3 required fields.";
+    return "";
+  }
+
+  const p=template
+    .replace("{{TITLE}}",title)
+    .replace("{{AUTHOR}}",author)
+    .replace("{{REPORT}}",report);
+
+  document.getElementById("output").textContent=p;
+  document.getElementById("status").textContent="Prompt generated successfully.";
+  return p;
+}
+
+async function copyPrompt(){
+  let out=document.getElementById("output").textContent;
+  if(!out || out==="Your generated prompt will appear here.") out=generatePrompt();
+  if(!out) return;
+  try{
+    await navigator.clipboard.writeText(out);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+
+function downloadPrompt(){
+  const out=generatePrompt();
+  if(!out) return;
+  const blob=new Blob([out],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-6-Asset-1-3D-Report-Ecover-Prompt.txt";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+
+function clearAll(){
+  document.getElementById("title").value="";
+  document.getElementById("author").value="";
+  document.getElementById("report").value="";
+  document.getElementById("output").textContent="Your generated prompt will appear here.";
+  document.getElementById("status").textContent="All fields cleared.";
+}
+</script>
+</body>
+</html>
