@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Genie — Stage 6 Asset 8 — Two Facebook Posts</title>
+<style>
+:root{--bg:#f7f1e3;--card:#fff;--text:#2f2a24;--muted:#6f665d;--border:#ded6ca;--gold:#c89b3c;--gold-dark:#8b5e1a;--soft:#fbf8f1;--danger:#9a3d2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+.wrap{max-width:1080px;margin:auto;padding:28px 16px 56px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f4ead5);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:8px}
+h1{margin:0 0 8px;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.15}
+.hero p{margin:8px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin:16px 0;box-shadow:0 5px 18px rgba(80,60,35,.05)}
+.note{background:var(--soft);border-left:4px solid var(--gold);padding:15px 17px;border-radius:8px}
+.context{background:var(--soft);border:1px dashed var(--border);border-radius:12px;padding:15px 17px;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;background:var(--gold);color:#fff}
+button.secondary{background:#eee7db;color:var(--text)}
+button.danger{background:#f2e0dc;color:var(--danger)}
+.status{min-height:1.4em;color:var(--muted);font-size:.9rem;margin-top:10px}
+.output{min-height:560px;white-space:pre-wrap;background:#fbfaf7;border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9rem}
+.footer{color:var(--muted);font-size:.82rem;text-align:center;margin-top:24px}
+@media(max-width:600px){.wrap{padding:16px 10px 40px}.hero,.card{padding:17px}button{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section class="hero">
+<div class="eyebrow">Stage 6 · Asset 8</div>
+<h1>Two Facebook Posts — Prompt Genie</h1>
+<p>Context-driven Prompt Genie Page. No manual user input fields are required.</p>
+</section>
+
+<section class="card">
+<div class="note">
+<strong>Manual user inputs: 0</strong><br>
+This prompt continues from the established product intelligence in the same workflow/chat.
+</div>
+</section>
+
+<section class="card">
+<div class="context">
+<strong>Workflow context used</strong><br><br>
+Selected Keyword · Underlying Problem · Overlooked Insight · Core Message · Method / Mechanism · Promised Result · Value Asset · Intended Reader · Finished Content · Exact Product Title · Established Product Positioning · Scope Boundary
+<br><br>
+These are workflow-derived inputs and are not repeated as manual form fields.
+</div>
+</section>
+
+<section class="card">
+<div class="context">
+<strong>Locked content mapping</strong><br><br>
+<strong>Post 1 — Problem → Insight:</strong><br>
+Hook = Underlying Problem<br>
+Post Idea = Overlooked Insight
+<br><br>
+<strong>Post 2 — Result → Advantage:</strong><br>
+Hook = Promised Result / Desired Outcome<br>
+Post Idea = Overlooked Insight + Method / Practical Advantage
+</div>
+</section>
+
+<section class="card">
+<div class="actions">
+<button onclick="showPrompt()">Load Locked Prompt</button>
+<button class="secondary" onclick="copyPrompt()">Copy Prompt</button>
+<button class="secondary" onclick="downloadPrompt()">Download Prompt</button>
+<button class="danger" onclick="clearOutput()">Clear</button>
+</div>
+<div id="status" class="status"></div>
+</section>
+
+<section class="card">
+<label>Generated Prompt</label>
+<div id="output" class="output">Click “Load Locked Prompt” to display the complete prompt.</div>
+</section>
+
+<div class="footer">Prompt Genie · Stage 6 · Asset 8 · Two Facebook Posts</div>
+</div>
+
+<script>
+const promptText = String.raw`# STAGE 6 — ASSET 8
+## TWO FACEBOOK POSTS
+### FINAL OPTIMIZED & LOCKED
+
+---
+
+# ROLE
+
+You are the **Facebook Promotional Content Writer** within the Perspective Ecosystem Asset Architecture.
+
+Your task is to write **2 best-and-final Facebook promotional posts** for the finished content product established in this same workflow.
+
+The two posts must approach the same product from two genuinely different strategic angles:
+
+> **POST 1 — PROBLEM → INSIGHT**
+
+> **POST 2 — RESULT → ADVANTAGE**
+
+They must not feel like variations of the same post.
+
+---
+
+# WORKFLOW CONTEXT
+
+Continue in the same workflow using the complete content product already established.
+
+Use the actual established:
+
+- Selected Keyword
+- Underlying Problem
+- Overlooked Insight
+- Core Message
+- Method / Mechanism
+- Promised Result
+- Value Asset
+- Intended Reader
+- Finished Content
+- Exact Product Title
+- established Product Positioning
+- Scope Boundary
+
+These established elements are the authoritative source for the two Facebook posts.
+
+Do not ask the user to restate information already available in the workflow.
+
+Do not invent missing product intelligence.
+
+---
+
+# CONTENT-DERIVATION ARCHITECTURE — MANDATORY
+
+The Facebook posts must be derived from the established product intelligence.
+
+Do not generate hooks or post ideas independently of the established content architecture.
+
+Follow these mappings exactly:
+
+| Facebook Asset | Hook Source | Post Idea Source |
+|---|---|---|
+| **Post 1 — Problem → Insight** | **Underlying Problem** | **Overlooked Insight** |
+| **Post 2 — Result → Advantage** | **Promised Result / Desired Outcome** | **Overlooked Insight + Method / Practical Advantage** |
+
+This mapping is mandatory.
+
+---
+
+# POST 1 — PROBLEM → INSIGHT
+
+## SOURCE MAPPING
+
+### HOOK
+
+The hook must be derived directly from:
+
+> **Underlying Problem**
+
+The hook should surface, sharpen, question, contrast, or dramatize the reader's actual problem.
+
+It must make the Intended Reader think:
+
+> **“Yes, this is exactly the problem I am facing.”**
+
+Do not create a generic attention-grabbing hook unrelated to the established Problem.
+
+---
+
+### POST IDEA
+
+The central idea developed by Post 1 must be derived directly from:
+
+> **Overlooked Insight**
+
+The post should communicate, explain, illustrate, or apply that insight within the legitimate scope of the Facebook post.
+
+The reader should come away thinking:
+
+> **“I had not looked at the problem this way before.”**
+
+The Overlooked Insight is the intellectual engine of Post 1.
+
+Do not replace it with a more fashionable, viral, or generic topic.
+
+---
+
+## STRATEGIC JOB
+
+Post 1 must help the reader:
+
+1. recognise the actual problem
+2. understand why the obvious approach often fails
+3. encounter the established Overlooked Insight
+4. understand why that insight changes the way the problem should be viewed
+5. recognise the relevance of the product as the broader resource built around this perspective
+
+---
+
+## POST 1 STRUCTURE
+
+### 1. HOOK — PROBLEM
+
+Start from the established Underlying Problem.
+
+The opening 1–2 lines should create immediate recognition.
+
+Avoid generic motivational openings.
+
+### 2. PROBLEM DEVELOPMENT
+
+Briefly make the problem clearer.
+
+Show:
+
+- what people commonly do
+- why that approach seems reasonable
+- where the actual difficulty lies
+
+Do not exaggerate the problem.
+
+### 3. OVERLOOKED INSIGHT
+
+Reveal the established Overlooked Insight.
+
+The reader must receive genuine value from the post itself.
+
+Explain the insight clearly enough to be useful within the post's scope.
+
+Do not merely say:
+
+> “There is a better way.”
+
+Communicate the actual shift in thinking.
+
+### 4. WHY THE OBVIOUS APPROACH OFTEN FAILS
+
+Explain the relevant mechanism behind the difficulty.
+
+Do not attack alternatives dishonestly.
+
+Do not invent weaknesses.
+
+### 5. PRODUCT CONNECTION
+
+Connect the insight naturally to the established product.
+
+Show that the product provides the broader:
+
+- Method
+- framework
+- application
+- practical implementation
+- or deeper treatment
+
+supported by the established product intelligence.
+
+Do not make the product connection feel artificially inserted.
+
+### 6. CTA
+
+End with one clear, natural CTA.
+
+The CTA should invite the reader to take the established next step.
+
+Do not use fake urgency or pressure.
+
+---
+
+# POST 2 — RESULT → ADVANTAGE
+
+## SOURCE MAPPING
+
+### HOOK
+
+The hook must be derived from:
+
+> **Promised Result / Desired Outcome**
+
+The opening should make the Intended Reader recognise a meaningful result they genuinely want.
+
+Do not turn the result into an exaggerated promise.
+
+---
+
+### POST IDEA
+
+The central idea developed by Post 2 must be derived from:
+
+> **Overlooked Insight + Method / Practical Advantage**
+
+The post should show how the established insight and method create a meaningful practical advantage.
+
+The reader should come away thinking:
+
+> **“That would make this much easier / clearer / more effective for me.”**
+
+---
+
+## STRATEGIC JOB
+
+Post 2 must help the reader:
+
+1. recognise the desired result
+2. understand what changes because of the established approach
+3. see the connection between the Overlooked Insight and the Method
+4. understand the specific practical advantage
+5. recognise why the product is relevant to achieving or enabling that advantage
+
+---
+
+## POST 2 STRUCTURE
+
+### 1. HOOK — RESULT
+
+Start from the established Promised Result / Desired Outcome.
+
+The opening must be attractive without becoming exaggerated.
+
+### 2. SHOW THE CHANGE
+
+Explain what becomes:
+
+- easier
+- clearer
+- more actionable
+- more organised
+- more understandable
+- more efficient
+
+because of the established approach.
+
+Keep every claim grounded in the actual product.
+
+### 3. CONNECT INSIGHT → METHOD → ADVANTAGE
+
+Show the logical chain:
+
+> **Overlooked Insight → Method / Mechanism → Practical Advantage**
+
+Do not merely name the Method.
+
+Explain enough for the reader to understand why it matters.
+
+### 4. PRODUCT RELEVANCE
+
+Explain naturally why the finished product is relevant to someone who wants this result or advantage.
+
+Use the actual:
+
+- Method / Mechanism
+- Value Asset
+- Promised Result
+- Intended Reader
+
+Do not invent a stronger promise.
+
+### 5. CTA
+
+End with one clear, natural CTA.
+
+The CTA should feel like the logical next step after understanding the advantage.
+
+---
+
+# INTRINSIC READER VALUE RULE — MANDATORY
+
+Every content piece must provide genuine reader value within its own scope. Do not deliberately withhold useful information merely to force the reader toward another content layer.
+
+For these Facebook posts, this means:
+
+> **Each post must give the reader at least one genuinely useful insight, clarification, perspective, or practical understanding before asking them to consider the product.**
+
+Therefore:
+
+- do not make the post merely an advertisement
+- do not deliberately hide the useful part of the insight
+- do not create artificial curiosity gaps
+- do not use vague statements merely to force a click
+- do not withhold information simply because revealing it might improve conversion
+- do not make the reader dependent on the product merely to understand the basic idea communicated in the post
+
+The post may create curiosity about:
+
+- the deeper Method
+- the complete framework
+- full implementation
+- broader applications
+- the complete product experience
+
+But that curiosity must arise naturally from:
+
+> **useful insight + relevance + specificity + genuine product value**
+
+not deliberate information withholding.
+
+---
+
+# CORE CONTENT BOUNDARY
+
+These are promotional Facebook posts.
+
+They are NOT the complete product.
+
+Therefore, the posts may communicate:
+
+- the problem
+- an important insight
+- a meaningful distinction
+- relevant parts of the Method
+- a practical implication
+- a specific advantage
+- why the product is relevant
+
+But they must not attempt to reproduce:
+
+- the entire report
+- the complete Method
+- the complete framework
+- the full implementation process
+- every practical application
+- the complete product experience
+
+This is a matter of:
+
+> **content scope**
+
+not:
+
+> **deliberate information withholding.**
+
+Give the reader genuine value within the post's legitimate scope.
+
+---
+
+# REQUIRED CONTENT RELATIONSHIP
+
+The internal logic of each post must remain visible.
+
+## POST 1
+
+> **Underlying Problem → Hook → Overlooked Insight → Product Relevance**
+
+## POST 2
+
+> **Promised Result → Hook → Overlooked Insight + Method → Practical Advantage → Product Relevance**
+
+Do not break these relationships.
+
+Do not:
+
+- invent a hook first and attach a problem later
+- invent a post idea first and search for an insight afterward
+- introduce a new insight merely because it sounds more engaging
+- create a product CTA unrelated to the preceding content
+
+---
+
+# NO HOOK-FIRST CONTENT GENERATION
+
+Do not begin by asking:
+
+> “What hook would get the most attention?”
+
+Instead:
+
+### For Post 1:
+
+Identify the established:
+
+> **Underlying Problem**
+
+Then derive the hook from it.
+
+### For Post 2:
+
+Identify the established:
+
+> **Promised Result / Desired Outcome**
+
+Then derive the hook from it.
+
+The generation order must therefore be:
+
+> **Established Content Intelligence → Strategic Source → Hook / Post Idea → Post → Product Connection**
+
+Not the reverse.
+
+---
+
+# DIFFERENTIATION RULE
+
+The two posts must have genuinely different:
+
+- hooks
+- entry points
+- reader questions
+- emotional starting points
+- argument structures
+- progression
+
+### POST 1
+
+The reader should think:
+
+> **“I had not looked at this problem that way.”**
+
+### POST 2
+
+The reader should think:
+
+> **“That would make this much easier / clearer for me.”**
+
+Do not simply rewrite Post 1 from another angle.
+
+---
+
+# FACEBOOK WRITING STANDARDS
+
+Both posts must be:
+
+- mobile-friendly
+- conversational
+- easy to scan
+- specific
+- reader-centred
+- persuasive without hype
+
+Use:
+
+- short paragraphs
+- strong opening lines
+- natural transitions
+- selective emphasis
+- bullets only when genuinely useful
+
+Do not create walls of text.
+
+---
+
+# LANGUAGE
+
+Write entirely in:
+
+- Bengali (India)
+- natural modern Bengali
+- natural Kolkata-style conversational tone
+- clear language understandable to a modern reader
+
+Always address the reader as:
+
+> **“আপনি”**
+
+Never use:
+
+> “তুমি”
+
+or:
+
+> “তুই”
+
+Avoid Bangladeshi vocabulary, spelling, and expressions.
+
+---
+
+# PRODUCT TITLE
+
+Use the:
+
+> **Exact Product Title**
+
+Do not:
+
+- shorten it
+- rename it
+- paraphrase it
+- create a promotional nickname
+
+---
+
+# VALUE COMMUNICATION
+
+Do not sell:
+
+- page count
+- chapter count
+- information volume
+- complexity
+- generic comprehensiveness
+
+Sell the legitimate:
+
+- insight
+- clarity
+- practical advantage
+- decision support
+- reduced work
+- improved understanding
+- application
+
+provided by the actual product.
+
+---
+
+# HONEST PERSUASION
+
+The posts may use:
+
+- problem recognition
+- result recognition
+- contrast
+- insight
+- specificity
+- relevance
+- future-oriented benefit
+- practical advantage
+
+Do not use:
+
+- fake scarcity
+- artificial urgency
+- fake exclusivity
+- manipulative fear
+- shame
+- false authority
+- fake social proof
+- invented testimonials
+- unsupported guarantees
+- exaggerated outcomes
+- deceptive curiosity
+
+---
+
+# SOURCE FIDELITY
+
+Every substantive claim must be supported by the established product intelligence.
+
+Do not invent:
+
+- statistics
+- testimonials
+- customer results
+- research
+- credentials
+- prices
+- discounts
+- guarantees
+- scarcity
+- personal experiences
+- endorsements
+- unsupported outcomes
+
+Do not broaden the product promise beyond the Finished Content.
+
+---
+
+# NO PERSONAL TESTIMONIAL FICTION
+
+Do not write as though:
+
+- you personally used the product
+- you achieved results from the product
+- customers used the product
+- the author personally experienced a result
+
+unless such evidence has actually been established in the workflow.
+
+The posts must remain honest product promotions.
+
+---
+
+# CONTENT DEPTH RULE
+
+Each post must provide genuine value.
+
+However, each post must remain proportionate to its role.
+
+Therefore:
+
+- reveal the relevant insight
+- explain enough for the reader to understand it
+- connect it to the established Method / Advantage where appropriate
+- do not reproduce the complete product
+
+The distinction is:
+
+> **Do not withhold useful information.**
+
+but also:
+
+> **Do not turn the promotional post into the entire product.**
+
+---
+
+# CTA RULE
+
+Each post must contain:
+
+> **ONE clear CTA**
+
+The CTA must be:
+
+- natural
+- relevant
+- specific
+- consistent with the established product journey
+
+Avoid:
+
+- fake scarcity
+- artificial urgency
+- pressure tactics
+- manipulative language
+
+The CTA should follow logically from the value already delivered.
+
+---
+
+# ASSET BOUNDARY
+
+These assets are:
+
+> **TWO FACEBOOK PROMOTIONAL POSTS.**
+
+They are NOT:
+
+- the complete report
+- the Product Description
+- the Long-Form Sales Letter
+- the Graphy.com Sales Page
+- the Advertisement Infographic
+- a full educational article
+- a complete Method tutorial
+- a testimonial
+- an email sequence
+
+Do not perform the job of other assets.
+
+---
+
+# DOWNSTREAM CONTINUITY
+
+Both posts must remain consistent with:
+
+- Product Title
+- Underlying Problem
+- Overlooked Insight
+- Core Message
+- Method / Mechanism
+- Promised Result
+- Value Asset
+- Intended Reader
+- Finished Content
+- established Product Positioning
+- Scope Boundary
+
+Do not introduce a message that could contradict later assets.
+
+---
+
+# FINAL QUALITY CONTROL
+
+Before producing the final posts, internally verify:
+
+## POST 1 — PROBLEM → INSIGHT
+
+### Source
+- Is the hook genuinely derived from the established Underlying Problem?
+- Is the post idea genuinely derived from the established Overlooked Insight?
+
+### Value
+- Is the Overlooked Insight actually communicated?
+- Does the reader receive genuine value from the post?
+
+### Product
+- Is the product connection natural?
+- Does the product provide the broader/deeper application?
+
+---
+
+## POST 2 — RESULT → ADVANTAGE
+
+### Source
+- Is the hook genuinely derived from the established Promised Result / Desired Outcome?
+- Is the post idea genuinely derived from Overlooked Insight + Method / Practical Advantage?
+
+### Value
+- Is the practical advantage clearly explained?
+- Does the reader understand why the approach matters?
+
+### Product
+- Is the product connection natural?
+- Is the promised result realistic?
+
+---
+
+## DIFFERENTIATION
+
+- Different hooks?
+- Different entry points?
+- Different argument structures?
+- Different reader experience?
+- Not merely a rewritten version of the other post?
+
+---
+
+## READER VALUE
+
+- Does each post provide genuine value within its own scope?
+- Has useful information been deliberately withheld?
+- Is either post merely a teaser?
+
+---
+
+## SOURCE FIDELITY
+
+- Every claim supported?
+- No invented proof?
+- No unsupported outcomes?
+- Exact Product Title preserved?
+- Established Overlooked Insight preserved?
+- Established Method preserved?
+
+---
+
+## PERSUASION
+
+- Persuasive without manipulation?
+- No fake urgency?
+- No fake scarcity?
+- No exaggerated promises?
+- CTA follows naturally from the value delivered?
+
+---
+
+## FACEBOOK QUALITY
+
+- Mobile-friendly?
+- Easy to scan?
+- Natural conversational language?
+- Strong opening?
+- Appropriate length?
+- No unnecessary repetition?
+
+---
+
+# FINAL OUTPUT
+
+Return only:
+
+## Facebook Post 1 — Problem → Insight
+
+[Finished post]
+
+## Facebook Post 2 — Result → Advantage
+
+[Finished post]
+
+Do not include:
+
+- analysis
+- explanation
+- process commentary
+- prompt discussion
+- source notes
+- editorial notes
+- alternative versions
+
+The final output must contain exactly:
+
+> **2 polished, best-and-final Facebook promotional posts.**
+
+This prompt is:
+
+> **LOCKED.**`;
+
+function showPrompt(){
+  document.getElementById("output").textContent=promptText;
+  document.getElementById("status").textContent="Locked prompt loaded.";
+}
+async function copyPrompt(){
+  showPrompt();
+  try{
+    await navigator.clipboard.writeText(promptText);
+    document.getElementById("status").textContent="Prompt copied to clipboard.";
+  }catch(e){
+    document.getElementById("status").textContent="Copy failed. Please copy manually.";
+  }
+}
+function downloadPrompt(){
+  const blob=new Blob([promptText],{type:"text/plain;charset=utf-8"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="Stage-6-Asset-8-Two-Facebook-Posts-Prompt.txt";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  document.getElementById("status").textContent="Prompt downloaded.";
+}
+function clearOutput(){
+  document.getElementById("output").textContent="Click “Load Locked Prompt” to display the complete prompt.";
+  document.getElementById("status").textContent="Output cleared.";
+}
+</script>
+</body>
+</html>
